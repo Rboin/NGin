@@ -55,6 +55,8 @@
 
 using namespace std;
 
+vec3 camera_position, direction;
+
 // Camera position
 float x = 0.0, y = -5.0, z = 1.0f; // initially 5 units south of origin
 float zmove = 0.0;
@@ -75,6 +77,14 @@ int xDragStart = 0; // records the x-coordinate when dragging starts
 
 scene * scene1;
 actor * actor_1, * actor2, * actor3, * actor4;
+
+mat2 rotateDeg(float degrees) {
+    double rad = (3.14f / 180) * degrees;
+    return mat2(
+            cos(rad), -sin(rad),
+            sin(rad), cos(rad)
+    );
+}
 
 //----------------------------------------------------------------------
 // Reshape callback
@@ -245,13 +255,17 @@ void mouseMove(int x, int y) {
         deltaAngle = (x - xDragStart) * 0.005;
         float yangl = (y - zmove) * 0.005;
 
-//        cout << deltaAngle << endl;
+
+
+        vec2 mid_point(glutGet(GLUT_WINDOW_WIDTH)/2, glutGet(GLUT_WINDOW_HEIGHT)/2);
+
+        cerr << deltaAngle << endl;
 
         // camera's direction is set to angle + deltaAngle
-        lx = -sin(angle + deltaAngle);
-        ly = cos(angle + deltaAngle);
-        lz = cos(yAngle + yangl);
-        //glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH)/2, glutGet(GLUT_WINDOW_HEIGHT)/2);
+        lx = (mid_point.x - x) * 0.005;//sin(angle + deltaAngle);
+//        ly = cos(angle + deltaAngle);
+        lz = (mid_point.y - y) * 0.005;//sin(yAngle - yangl);
+        //glutWarpPointer(mid_point.x, mid_point.y);
     }
 }
 
@@ -267,6 +281,25 @@ void mouseButton(int button, int state, int x, int y) {
         }
     }
 }
+float test = 1.0f;
+mat4 Trx = mat4(
+        1, 0, 0 ,0,
+        0, cos(test), -cos(test), 0,
+        0, sin(test), cos(test), 0,
+        0,0,0,1
+);
+mat4 Try = mat4(
+        cos(test), 0, sin(test), 0,
+        0, 1, 0, 0,
+        -sin(test), 0, cos(test), 0,
+        0,0,0,1
+);
+mat4 Trz = mat4(
+        cos(test), -sin(test), 0, 0,
+        sin(test), cos(test), 0, 0,
+        0,0,1,0,
+        0,0,0,1
+);
 
 //----------------------------------------------------------------------
 // Main program  - standard GLUT initializations and callbacks
