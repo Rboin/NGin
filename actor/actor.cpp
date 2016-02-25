@@ -2,7 +2,7 @@
 // Created by erik on 2/21/16.
 //
 
-#include "actor.h"
+#include "Actor.h"
 
 vec3 truncate(vec3 v, float cap) {
     vec3 n;
@@ -19,14 +19,14 @@ vec3 truncate(vec3 v, float cap) {
     return n;
 }
 
-void actor::update(vector<actor*> actors) {
+void Actor::update(vector<Actor *> actors) {
 
     if (faction == FACTION_SNOWMEN) {
 
         float prev_dist = 1000;
         vec3 nearest;
 
-        for(vector<actor*>::iterator it = actors.begin(); it != actors.end(); ++it) {
+        for(vector<Actor *>::iterator it = actors.begin(); it != actors.end(); ++it) {
             vec3 from = (*it)->position;
             vec3 distance = from - position;
             vec3 mult = distance * distance;
@@ -71,6 +71,6 @@ void actor::update(vector<actor*> actors) {
 
 }
 
-void actor::set_target(vec3 t) {
+void Actor::set_target(vec3 t) {
     target = t;
 }

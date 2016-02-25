@@ -28,9 +28,9 @@
 //#else
 //
 //#include <GL/glut.h>
-#include "scene.h"
-#include "actor/actor.h"
-#include "faction/faction.h"
+#include "scene/Scene.h"
+//#include "actor/Actor.h"
+//#include "faction/faction.h"
 #include "render/render.h"
 
 //#endif
@@ -76,8 +76,8 @@ float yAngle = 0.0, zmove = 0.0f;
 int isDragging = 0; // true when dragging
 int xDragStart = 0; // records the x-coordinate when dragging starts
 
-scene * scene1;
-actor * actor_1, * actor2, * actor3, * actor4;
+Scene * scene1;
+Actor * actor_1, * actor2, * actor3, * actor4;
 
 mat2 rotateDeg(float degrees) {
     double rad = (3.14f / 180) * degrees;
@@ -316,20 +316,20 @@ int main(int argc, char **argv) {
   - q or ESC to quit\n\
 -----------------------------------------------------------------------\n");
 
-    actor_1 = new actor(FACTION_OUTLAW,3.0f, 0.35f, glm::vec3(0.5, 0.5, 0), glm::vec3(0, 0, 45), render_outlaw);
+    actor_1 = new Actor(FACTION_OUTLAW, 3.0f, 0.35f, glm::vec3(0.5, 0.5, 0), glm::vec3(0, 0, 45), render_outlaw);
     actor_1->set_target(glm::vec3(20, 0, 0));
-    actor2 = new actor(FACTION_OUTLAW,3.0f, 0.35f, glm::vec3(0.5, 0.5, 0), glm::vec3(0, 0, 45), render_outlaw);
+    actor2 = new Actor(FACTION_OUTLAW, 3.0f, 0.35f, glm::vec3(0.5, 0.5, 0), glm::vec3(0, 0, 45), render_outlaw);
     actor2->set_target(glm::vec3(-20, 0, 0));
-    actor3 = new actor(FACTION_OUTLAW,3.0f, 0.35f, glm::vec3(0.5, 0.5, 0), glm::vec3(0, 0, 45), render_outlaw);
+    actor3 = new Actor(FACTION_OUTLAW, 3.0f, 0.35f, glm::vec3(0.5, 0.5, 0), glm::vec3(0, 0, 45), render_outlaw);
     actor3->set_target(glm::vec3(0, -20, 0));
-    actor4 = new actor(FACTION_OUTLAW,3.0f, 0.35f, glm::vec3(0.5, 0.5, 0), glm::vec3(0, 0, 45), render_outlaw);
+    actor4 = new Actor(FACTION_OUTLAW, 3.0f, 0.35f, glm::vec3(0.5, 0.5, 0), glm::vec3(0, 0, 45), render_outlaw);
     actor4->set_target(glm::vec3(-20, -20, 0));
 
-    scene1 = new scene();
+    scene1 = new Scene();
     // Draw 36 snow men
     for (int i = -3; i < 3; i++)
         for (int j = -3; j < 3; j++)
-            scene1->add_actor(new actor(FACTION_SNOWMEN, 3.0f, 0.35f, vec3(i*7.5f, j*7.5f, 0), glm::vec3(0, 0, 45), render_snowmen));
+            scene1->add_actor(new Actor(FACTION_SNOWMEN, 3.0f, 0.35f, vec3(i * 7.5f, j * 7.5f, 0), glm::vec3(0, 0, 45), render_snowmen));
 
 
     scene1->add_actor(actor_1);

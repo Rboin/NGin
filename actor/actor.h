@@ -14,13 +14,13 @@
 using namespace std;
 using namespace glm;
 
-class actor {
+class Actor {
 private:
     float mass, max_velocity, max_speed = 0.05;
     vec3 position, velocity, look, target;
 public:
     int faction;
-    actor(int f, float m, float mv, vec3 p, vec3 l, void (*r) (vec3, vec3))
+    Actor (int f, float m, float mv, vec3 p, vec3 l, void (*r) (vec3, vec3))
             : faction(f),
               mass(m),
               max_velocity(mv),
@@ -30,7 +30,7 @@ public:
               render(r) {};
     void set_target(vec3 t);
     void (*render) (vec3,vec3);
-    void update(vector<actor*> near_actors);
+    void update(vector<Actor *> near_actors);
     vec3 pos() {return position;}
     vec3 angle() {return look;}
 };

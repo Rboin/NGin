@@ -2,8 +2,8 @@
 // Created by erik on 2/22/16.
 //
 
-#include "movement.h"
+#include "Movement.h"
 
-void movement::update() {
+void Movement::update() {
 
 };

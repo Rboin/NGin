@@ -6,11 +6,11 @@
 #define CAMERA_GLEW_MOVEMENT_H
 
 #include <glm/glm.hpp>
-#include "../ability.h"
+#include "../Ability.h"
 
 using namespace glm;
 
-class movement : public ability {
+class Movement : public Ability {
 private:
     vec3 * position, * look, * target, velocity;
 public:

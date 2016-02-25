@@ -5,7 +5,7 @@
 #ifndef CAMERA_GLEW_ABILITY_H
 #define CAMERA_GLEW_ABILITY_H
 
-class ability {
+class Ability {
 public:
     virtual void update() = 0;
 };
