@@ -38,9 +38,9 @@ void Actor::update(vector<Actor *> actors) {
                     nearest = m_position - distance;
                     break;
                 } else if ((*it)->m_faction == FACTION_SNOWMEN) {
-                    // seek friend
-                    if (m_position != from && dist < prev_dist) {
-                        //cout << "new distance " << dist << endl;
+                    // seek friend if not too close
+                    if (trunc(m_position) != trunc(from) && dist < prev_dist) {
+                        vec3 ts = trunc(m_position - from);
                         nearest = from;
                         prev_dist = dist;
                     }
@@ -49,8 +49,8 @@ void Actor::update(vector<Actor *> actors) {
             }
         }
 
-        cout << "setting target to " << nearest.x << ' ' << nearest.y << endl;
-        cout << "current is " << m_position.x << ' ' << m_position.y << endl << endl;
+//        cout << "setting target to " << nearest.x << ' ' << nearest.y << endl;
+//        cout << "current is " << m_position.x << ' ' << m_position.y << endl << endl;
 
         m_target = nearest;
 

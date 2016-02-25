@@ -58,17 +58,17 @@ using namespace std;
 vec3 camera_position, direction;
 
 // Camera m_position
-float x = 0.0, y = -5.0, z = 1.0f; // initially 5 units south of origin
+float x = 0.0f, y = -5.0f, z = 1.0f; // initially 5 units south of origin
 float yDragStart = 0.0f;
-float deltaMove = 0.0; // initially camera doesn't move
+float deltaMove = 0.0f, strafeMove = 0.0f; // initially camera doesn't move
 float dyAngle = 0.0f;
 //float strafeMove = 0.0;
 
 // Camera direction
-float lx = 0.0, ly = 1.0, lz = 0; // camera points initially along y-axis
-float angle = 0.0; // angle of rotation for the camera direction
-float deltaAngle = 0.0; // additional angle change when dragging
-float yAngle = 0.0, zmove = 0.0f;
+float lx = 0.0f, ly = 1.0f, lz = 0.0f; // camera points initially along y-axis
+float angle = 0.0f; // angle of rotation for the camera direction
+float deltaAngle = 0.0f; // additional angle change when dragging
+float yAngle = 0.0f, zmove = 0.0f;
 
 
 
@@ -119,13 +119,15 @@ void update(void) {
         y += deltaMove * ly * 0.1;
     }
     if(zmove) {
-        cout << "hoi" << endl;
         z += zmove * 0.1;
     }
-//    if (strafeMove) {
-//        x += strafeMove * (sin(angle + 1.0f)) * 0.1;
-//        y += strafeMove * (cos(angle - 1.0f)) * 0.1;
-//    }
+    if (strafeMove) {
+
+        vec3 strafe = cross(vec3(x, y, 1), vec3(x+lx,y+ly, 1));
+
+        x += strafeMove * strafe.x * 0.1;
+        y += strafeMove * strafe.y * 0.1;
+    }
 
     //cout << timer << endl;
 
@@ -151,7 +153,6 @@ void update(void) {
 // origin and its direction.
 //----------------------------------------------------------------------
 void renderScene(void) {
-    int i, j;
 
     // Clear color and depth buffers
     glClearColor(0.0, 0.7, 1.0, 1.0); // sky color is light blue
@@ -210,12 +211,12 @@ void press_key(unsigned char key, int xx, int yy) {
         case 'z' :
             zmove = -1.5;
             break;
-//        case 'a':
-//            strafeMove = -1.5;
-//            break;
-//        case 'd':
-//            strafeMove = 1.5;
-//            break;
+        case 'a':
+            strafeMove = 1.5;
+            break;
+        case 'd':
+            strafeMove = -1.5;
+            break;
     }
 }
 
@@ -227,12 +228,12 @@ void release_key(unsigned char key, int xx, int yy) {
         case 's' :
             deltaMove = 0.0;
             break;
-//        case 'a':
-//            strafeMove = 0;
-//            break;
-//        case 'd':
-//            strafeMove = 0;
-//            break;
+        case 'a':
+            strafeMove = 0;
+            break;
+        case 'd':
+            strafeMove = 0;
+            break;
         case 'x' :
             zmove = 0;
             break;
@@ -257,8 +258,6 @@ void mouseMove(int x, int y) {
         dyAngle = (y - yDragStart) * 0.005;
 
         vec2 mid_point(glutGet(GLUT_WINDOW_WIDTH)/2, glutGet(GLUT_WINDOW_HEIGHT)/2);
-
-        cerr << deltaAngle << endl;
 
         // camera's direction is set to angle + deltaAngle
         lx = sin(angle + deltaAngle);
