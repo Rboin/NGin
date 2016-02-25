@@ -59,15 +59,16 @@ vec3 camera_position, direction;
 
 // Camera position
 float x = 0.0, y = -5.0, z = 1.0f; // initially 5 units south of origin
-float zmove = 0.0;
+float yDragStart = 0.0f;
 float deltaMove = 0.0; // initially camera doesn't move
+float dyAngle = 0.0f;
 //float strafeMove = 0.0;
 
 // Camera direction
 float lx = 0.0, ly = 1.0, lz = 0; // camera points initially along y-axis
 float angle = 0.0; // angle of rotation for the camera direction
 float deltaAngle = 0.0; // additional angle change when dragging
-float yAngle = 0.0;
+float yAngle = 0.0, zmove = 0.0f;
 
 
 
@@ -253,7 +254,7 @@ void mouseMove(int x, int y) {
     if (isDragging) { // only when dragging
         // update the change in angle
         deltaAngle = (x - xDragStart) * 0.005;
-        float yangl = (y - zmove) * 0.005;
+        dyAngle = (y - yDragStart) * 0.005;
 
 
 
@@ -262,9 +263,9 @@ void mouseMove(int x, int y) {
         cerr << deltaAngle << endl;
 
         // camera's direction is set to angle + deltaAngle
-        lx = (mid_point.x - x) * 0.005;//sin(angle + deltaAngle);
-//        ly = cos(angle + deltaAngle);
-        lz = (mid_point.y - y) * 0.005;//sin(yAngle - yangl);
+        lx = sin(angle + deltaAngle);
+        ly = cos(angle + deltaAngle);
+        lz = -sin(yAngle + dyAngle);
         //glutWarpPointer(mid_point.x, mid_point.y);
     }
 }
@@ -274,9 +275,11 @@ void mouseButton(int button, int state, int x, int y) {
         if (state == GLUT_DOWN) { // left mouse button pressed
             isDragging = 1; // start dragging
             xDragStart = x; // save x where button first pressed
+			yDragStart = y;
         }
         else { /* (state = GLUT_UP) */
             angle += deltaAngle; // update camera turning angle
+			yAngle += dyAngle;
             isDragging = 0; // no longer dragging
         }
     }
