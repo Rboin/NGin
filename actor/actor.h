@@ -16,25 +16,34 @@ using namespace glm;
 
 class Actor {
 private:
-    float mass, max_velocity, max_speed = 0.05;
-    vec3 position, velocity, look, target;
+    float m_mass, m_max_velocity, m_max_speed = 0.005f;
+    vec3 m_position, m_velocity, m_look, m_target;
 public:
-    int faction;
-    Actor (int f, float m, float mv, vec3 p, vec3 l, void (*r) (vec3, vec3))
-            : faction(f),
-              mass(m),
-              max_velocity(mv),
-              position(p),
-              target(p),
-              look(l),
-              render(r) {};
+    int m_faction;
+
+    /**
+     * Use this constructor to create a stereotype
+     */
+    Actor (float mass, float max_velocity, void (*r) (vec3, vec3))
+            : m_mass(mass), m_max_velocity(max_velocity), render(r) {};
+
+    Actor (int faction, vec3 position, Actor &stereotype)
+            : Actor(stereotype.m_mass, stereotype.m_max_velocity, stereotype.render) {
+        m_faction = faction;
+        m_position = position;
+        m_target = position;
+    };
+
+    Actor (int faction, vec3 position, vec3 look, Actor &stereotype)
+            : Actor(faction, position, stereotype) {
+        m_look = look;
+    }
+
     void set_target(vec3 t);
     void (*render) (vec3,vec3);
     void update(vector<Actor *> near_actors);
-    vec3 pos() {return position;}
-    vec3 angle() {return look;}
+    vec3 pos() {return m_position;}
+    vec3 angle() {return m_look;}
 };
-
-//TODO diferentieren van opengl render
 
 #endif //CAMERA_GLEW_ORGANISM_H

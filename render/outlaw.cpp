@@ -22,13 +22,13 @@ void render_outlaw(vec3 position, vec3 look) {
 
     // Draw the head (a sphere of radius 0.25 at height 1.75)
     glPushMatrix();
-    glTranslatef(0.0, 0.0, 1.75); // position head
+    glTranslatef(0.0, 0.0, 1.75); // m_position head
     glutSolidSphere(0.25, 20, 20); // head sphere
 
     // Draw Eyes (two small white spheres)
     glColor3f(1.0, 1.0, 1.0); // set drawing color to white
     glPushMatrix();
-    glTranslatef(0.0, -0.18, 0.10); // lift eyes to final position
+    glTranslatef(0.0, -0.18, 0.10); // lift eyes to final m_position
     glPushMatrix();
     glTranslatef(-0.05, 0.0, 0.0);
     glutSolidSphere(0.05, 10, 10); // right eye

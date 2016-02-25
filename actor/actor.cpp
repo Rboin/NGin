@@ -21,26 +21,26 @@ vec3 truncate(vec3 v, float cap) {
 
 void Actor::update(vector<Actor *> actors) {
 
-    if (faction == FACTION_SNOWMEN) {
+    if (m_faction == FACTION_SNOWMEN) {
 
         float prev_dist = 1000;
         vec3 nearest;
 
         for(vector<Actor *>::iterator it = actors.begin(); it != actors.end(); ++it) {
-            vec3 from = (*it)->position;
-            vec3 distance = from - position;
+            vec3 from = (*it)->m_position;
+            vec3 distance = from - m_position;
             vec3 mult = distance * distance;
             float dist = sqrtf(mult.x + mult.y);
-            if (dist < 15.0f) {
+            if (dist < 5.0f) {
                 // in range
-                if ((*it)->faction == FACTION_OUTLAW) {
+                if ((*it)->m_faction == FACTION_OUTLAW) {
                     // flee
-                    nearest = position - distance;
+                    nearest = m_position - distance;
                     break;
-                } else if ((*it)->faction == FACTION_SNOWMEN) {
+                } else if ((*it)->m_faction == FACTION_SNOWMEN) {
                     // seek friend
-                    if (dist < prev_dist) {
-                        cout << "new distance " << dist << endl;
+                    if (m_position != from && dist < prev_dist) {
+                        //cout << "new distance " << dist << endl;
                         nearest = from;
                         prev_dist = dist;
                     }
@@ -49,28 +49,31 @@ void Actor::update(vector<Actor *> actors) {
             }
         }
 
-        target = nearest;
+        cout << "setting target to " << nearest.x << ' ' << nearest.y << endl;
+        cout << "current is " << m_position.x << ' ' << m_position.y << endl << endl;
 
-    } else if (faction == FACTION_OUTLAW) {
+        m_target = nearest;
+
+    } else if (m_faction == FACTION_OUTLAW) {
 
     }
 
     // to target
-    if (position != target) {
-        vec3 desired_velocity = glm::normalize(target - position) * max_velocity;
-        vec3 steering = desired_velocity - velocity;
+    if (m_position != m_target) {
+        vec3 desired_velocity = glm::normalize(m_target - m_position) * m_max_velocity;
+        vec3 steering = desired_velocity - m_velocity;
         steering = truncate(steering, 0.0055f);
-        steering /= mass;
+        steering /= m_mass;
 
-        velocity = truncate(velocity + steering, max_speed);
+        m_velocity = truncate(m_velocity + steering, m_max_speed);
         // update camera
-        look.z = (atan2(velocity.y, velocity.x) * (180.0f / 3.1415926f)) + 90.0f;
-        // update the position
-        position += velocity;
+        m_look.z = (atan2(m_velocity.y, m_velocity.x) * (180.0f / 3.1415926f)) + 90.0f;
+        // update the m_position
+        m_position += m_velocity;
     }
 
 }
 
 void Actor::set_target(vec3 t) {
-    target = t;
+    m_target = t;
 }

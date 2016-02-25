@@ -45,7 +45,7 @@
 // is the ground, and the z-axis is directed upwards. The y-axis points
 // to the north and the x-axis points to the east.
 //
-// The values (x,y) are the current camera position. The values (lx, ly)
+// The values (x,y) are the current camera m_position. The values (lx, ly)
 // point in the direction the camera is looking. The variables angle and
 // deltaAngle control the camera's angle. The variable deltaMove
 // indicates the amount of incremental motion for the camera with each
@@ -57,7 +57,7 @@ using namespace std;
 
 vec3 camera_position, direction;
 
-// Camera position
+// Camera m_position
 float x = 0.0, y = -5.0, z = 1.0f; // initially 5 units south of origin
 float yDragStart = 0.0f;
 float deltaMove = 0.0; // initially camera doesn't move
@@ -76,7 +76,7 @@ float yAngle = 0.0, zmove = 0.0f;
 int isDragging = 0; // true when dragging
 int xDragStart = 0; // records the x-coordinate when dragging starts
 
-Scene * scene1;
+Scene *scene;
 Actor * actor_1, * actor2, * actor3, * actor4;
 
 mat2 rotateDeg(float degrees) {
@@ -114,7 +114,7 @@ int timer = 1;
 // redrawn.
 //----------------------------------------------------------------------
 void update(void) {
-    if (deltaMove) { // update camera position
+    if (deltaMove) { // update camera m_position
         x += deltaMove * lx * 0.1;
         y += deltaMove * ly * 0.1;
     }
@@ -138,7 +138,7 @@ void update(void) {
 //        actor_1->set_target(vec3(-5,-30,0));
 
 
-    scene1->update();
+    scene->update();
 //    actor_1->update();
 
     glutPostRedisplay(); // redisplay everything
@@ -177,7 +177,7 @@ void renderScene(void) {
     glEnd();
 
     //actor_1->render();
-    scene1->render();
+    scene->render();
 
     glutSwapBuffers(); // Make it all visible
 }
@@ -256,8 +256,6 @@ void mouseMove(int x, int y) {
         deltaAngle = (x - xDragStart) * 0.005;
         dyAngle = (y - yDragStart) * 0.005;
 
-
-
         vec2 mid_point(glutGet(GLUT_WINDOW_WIDTH)/2, glutGet(GLUT_WINDOW_HEIGHT)/2);
 
         cerr << deltaAngle << endl;
@@ -316,26 +314,35 @@ int main(int argc, char **argv) {
   - q or ESC to quit\n\
 -----------------------------------------------------------------------\n");
 
-    actor_1 = new Actor(FACTION_OUTLAW, 3.0f, 0.35f, glm::vec3(0.5, 0.5, 0), glm::vec3(0, 0, 45), render_outlaw);
+    scene = new Scene();
+
+    Actor * snowmen = new Actor(3.0f, 0.35f, render_snowmen);
+    Actor * outlaw = new Actor(3.0f, 0.35f, render_outlaw);
+
+    scene->add_stereotype("snowmen", snowmen);
+    scene->add_stereotype("outlaw", outlaw);
+
+
+    actor_1 = new Actor(FACTION_OUTLAW, vec3(0.5, 0.5, 0), vec3(0, 0, 45), *outlaw);
     actor_1->set_target(glm::vec3(20, 0, 0));
-    actor2 = new Actor(FACTION_OUTLAW, 3.0f, 0.35f, glm::vec3(0.5, 0.5, 0), glm::vec3(0, 0, 45), render_outlaw);
+    actor2 = new Actor(FACTION_OUTLAW, vec3(0.5, 0.5, 0), vec3(0, 0, 45), *outlaw);
     actor2->set_target(glm::vec3(-20, 0, 0));
-    actor3 = new Actor(FACTION_OUTLAW, 3.0f, 0.35f, glm::vec3(0.5, 0.5, 0), glm::vec3(0, 0, 45), render_outlaw);
+    actor3 = new Actor(FACTION_OUTLAW, vec3(0.5, 0.5, 0), vec3(0, 0, 45), *outlaw);
     actor3->set_target(glm::vec3(0, -20, 0));
-    actor4 = new Actor(FACTION_OUTLAW, 3.0f, 0.35f, glm::vec3(0.5, 0.5, 0), glm::vec3(0, 0, 45), render_outlaw);
+    actor4 = new Actor(FACTION_OUTLAW, vec3(0.5, 0.5, 0), vec3(0, 0, 45), *outlaw);
     actor4->set_target(glm::vec3(-20, -20, 0));
 
-    scene1 = new Scene();
+    scene->add_actor(actor_1);
+    scene->add_actor(actor2);
+    scene->add_actor(actor3);
+    scene->add_actor(actor4);
+
     // Draw 36 snow men
     for (int i = -3; i < 3; i++)
         for (int j = -3; j < 3; j++)
-            scene1->add_actor(new Actor(FACTION_SNOWMEN, 3.0f, 0.35f, vec3(i * 7.5f, j * 7.5f, 0), glm::vec3(0, 0, 45), render_snowmen));
+            scene->add_actor(new Actor(FACTION_SNOWMEN, vec3(i * 7.5f, j * 7.5f, 0), glm::vec3(0, 0, 45), *snowmen));
 
 
-    scene1->add_actor(actor_1);
-    scene1->add_actor(actor2);
-    scene1->add_actor(actor3);
-    scene1->add_actor(actor4);
 
     // general initializations
     glutInit(&argc, argv);
