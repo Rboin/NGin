@@ -4,6 +4,8 @@
 
 #include "actor.h"
 
+const vec3 zero;
+
 vec3 truncate(vec3 v, float cap) {
     vec3 n;
 
@@ -52,7 +54,8 @@ void Actor::update(vector<Actor *> actors) {
 //        cout << "setting target to " << nearest.x << ' ' << nearest.y << endl;
 //        cout << "current is " << m_position.x << ' ' << m_position.y << endl << endl;
 
-        m_target = nearest;
+        if (nearest != zero)
+            m_target = nearest;
 
     } else if (m_faction == FACTION_OUTLAW) {
 
