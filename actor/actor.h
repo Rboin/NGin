@@ -16,7 +16,7 @@ using namespace glm;
 
 class Actor {
 private:
-    float m_mass, m_max_velocity, m_max_speed = 0.05f;
+    float m_mass, m_max_velocity, m_max_speed = 0.002f;
     vec3 m_position, m_velocity, m_look, m_target;
 public:
     int m_faction;

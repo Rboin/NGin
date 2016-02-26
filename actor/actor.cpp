@@ -4,8 +4,6 @@
 
 #include "actor.h"
 
-const vec3 zero;
-
 vec3 truncate(vec3 v, float cap) {
     vec3 n;
 
@@ -29,15 +27,20 @@ void Actor::update(vector<Actor *> actors) {
         vec3 nearest;
 
         for(vector<Actor *>::iterator it = actors.begin(); it != actors.end(); ++it) {
+
+            if ((*it) == this)
+                continue;
             vec3 from = (*it)->m_position;
             vec3 distance = from - m_position;
             vec3 mult = distance * distance;
             float dist = mult.x + mult.y;
-            if (dist < 5.0f) {
+
+            if (dist < 275.0f) {
                 // in range
                 if ((*it)->m_faction == FACTION_OUTLAW) {
                     // flee
-                    nearest = m_position - distance;
+                    prev_dist = 1000;
+                    m_target = m_position - distance;
                     break;
                 } else if ((*it)->m_faction == FACTION_SNOWMEN) {
                     // seek friend if not too close
@@ -54,7 +57,7 @@ void Actor::update(vector<Actor *> actors) {
 //        cout << "setting target to " << nearest.x << ' ' << nearest.y << endl;
 //        cout << "current is " << m_position.x << ' ' << m_position.y << endl << endl;
 
-        if (nearest != zero)
+        if (prev_dist != 1000)
             m_target = nearest;
 
     } else if (m_faction == FACTION_OUTLAW) {
