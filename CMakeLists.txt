@@ -30,6 +30,11 @@ if(NOT OPENGL_FOUND)
     message(ERROR " OPENGL not found!")
 endif(NOT OPENGL_FOUND)
 
+# on mingw not provided with cmake search
+if(WIN32)
+    set(GLUT_LIBRARIES libfreeglut.a)
+endif(WIN32)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES main.cpp actor/actor.h actor/actor.cpp scene/scene.cpp scene/scene.h faction/faction.h ability/ability.h ability/movement/movement.cpp ability/movement/movement.h render/render.h render/snowmen.cpp render/outlaw.cpp)
