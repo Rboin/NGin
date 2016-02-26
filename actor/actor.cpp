@@ -32,7 +32,7 @@ void Actor::update(vector<Actor *> actors) {
             vec3 from = (*it)->m_position;
             vec3 distance = from - m_position;
             vec3 mult = distance * distance;
-            float dist = sqrtf(mult.x + mult.y);
+            float dist = mult.x + mult.y;
             if (dist < 5.0f) {
                 // in range
                 if ((*it)->m_faction == FACTION_OUTLAW) {
