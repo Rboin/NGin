@@ -2,7 +2,7 @@
 // Created by erik on 2/21/16.
 //
 
-#include "Actor.h"
+#include "actor.h"
 
 vec3 truncate(vec3 v, float cap) {
     vec3 n;

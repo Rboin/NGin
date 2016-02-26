@@ -32,7 +32,7 @@ endif(NOT OPENGL_FOUND)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp actor/Actor.h actor/Actor.cpp scene/Scene.cpp scene/Scene.h faction/faction.h ability/Ability.h ability/movement/Movement.cpp ability/movement/Movement.h render/render.h render/snowmen.cpp render/outlaw.cpp)
+set(SOURCE_FILES main.cpp actor/actor.h actor/actor.cpp scene/scene.cpp scene/scene.h faction/faction.h ability/ability.h ability/movement/movement.cpp ability/movement/movement.h render/render.h render/snowmen.cpp render/outlaw.cpp)
 add_executable(camera_glew ${SOURCE_FILES})
 
-target_link_libraries(camera_glew ${OPENGL_LIBRARIES} libfreeglut.a ${GLEW_LIBRARIES})
+target_link_libraries(camera_glew ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES})

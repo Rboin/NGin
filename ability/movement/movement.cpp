@@ -2,7 +2,7 @@
 // Created by erik on 2/22/16.
 //
 
-#include "Movement.h"
+#include "movement.h"
 
 void Movement::update() {
 

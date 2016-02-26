@@ -2,7 +2,7 @@
 // Created by erik on 2/22/16.
 //
 
-#include "Scene.h"
+#include "scene.h"
 
 void Scene::add_actor(Actor *actor1) {
     actors.push_back(actor1);

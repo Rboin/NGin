@@ -7,7 +7,7 @@
 
 #include <map>
 #include <vector>
-#include "../actor/Actor.h"
+#include "../actor/actor.h"
 
 class Scene {
 private:

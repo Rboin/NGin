@@ -6,7 +6,7 @@
 #define CAMERA_GLEW_MOVEMENT_H
 
 #include <glm/glm.hpp>
-#include "../Ability.h"
+#include "../ability.h"
 
 using namespace glm;
 

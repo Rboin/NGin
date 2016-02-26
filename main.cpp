@@ -28,7 +28,7 @@
 //#else
 //
 //#include <GL/glut.h>
-#include "scene/Scene.h"
+#include "scene/scene.h"
 //#include "actor/Actor.h"
 //#include "faction/faction.h"
 #include "render/render.h"
