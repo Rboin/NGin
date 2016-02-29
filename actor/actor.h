@@ -10,6 +10,7 @@
 #include <glm/glm.hpp>
 
 #include "../faction/faction.h"
+#include "steering.h"
 
 using namespace std;
 using namespace glm;

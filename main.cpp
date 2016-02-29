@@ -33,6 +33,8 @@
 //#include "faction/faction.h"
 #include "render/render.h"
 
+
+
 //#endif
 
 // escape key (for exit)
@@ -46,8 +48,8 @@
 // to the north and the x-axis points to the east.
 //
 // The values (x,y) are the current camera m_position. The values (lx, ly)
-// point in the direction the camera is looking. The variables angle and
-// deltaAngle control the camera's angle. The variable deltaMove
+// point in the direction the camera is looking. The variables _angle and
+// deltaAngle control the camera's _angle. The variable deltaMove
 // indicates the amount of incremental motion for the camera with each
 // redraw cycle. The variables isDragging and xDragStart are used to
 // monitor the mouse when it drags (with the left button down).
@@ -66,8 +68,8 @@ float dyAngle = 0.0f;
 
 // Camera direction
 float lx = 0.0f, ly = 1.0f, lz = 0.0f; // camera points initially along y-axis
-float angle = 0.0f; // angle of rotation for the camera direction
-float deltaAngle = 0.0f; // additional angle change when dragging
+float _angle = 0.0f; // _angle of rotation for the camera direction
+float deltaAngle = 0.0f; // additional _angle change when dragging
 float yAngle = 0.0f, zmove = 0.0f;
 
 
@@ -78,6 +80,8 @@ int xDragStart = 0; // records the x-coordinate when dragging starts
 
 Scene *scene;
 Actor * actor_1, * actor2, * actor3, * actor4;
+
+Steering steering(15.0f, vec3(), vec3());
 
 mat2 rotateDeg(float degrees) {
     double rad = (3.14f / 180) * degrees;
@@ -131,14 +135,21 @@ void update(void) {
 
     //cout << timer << endl;
 
-    if (timer++ % 150 == 0) {
-        actor_1->set_target(glm::vec3(20, 20, 0));
-        actor2->set_target(glm::vec3(-20, 20, 0));
-        actor3->set_target(glm::vec3(20, -20, 0));
-        actor4->set_target(glm::vec3(-20, -20, 0));
+    if (timer++ % 180 == 0) {
+//        actor_1->set_target(glm::vec3(20, 20, 0));
+//        actor2->set_target(glm::vec3(-20, 20, 0));
+//        actor3->set_target(glm::vec3(20, -20, 0));
+//        actor4->set_target(glm::vec3(-20, -20, 0));
+        //steering.seek(vec3(-5, -15, 0));
     }
+    if(timer % 100 == 0)
+        steering.wander();
 //        actor_1->set_target(vec3(-5,-30,0));
 
+
+//    cout << glm::to_string(steering.m_position) << ' ' << glm::to_string(steering.m_velocity) << endl;
+
+    steering.move();
 
     scene->update();
 //    actor_1->update();
@@ -176,6 +187,8 @@ void renderScene(void) {
     glVertex3f(100.0, 100.0, 0.0);
     glVertex3f(100.0, -100.0, 0.0);
     glEnd();
+
+    render_snowmen(steering.m_position, steering.m_look);
 
     //actor_1->render();
     scene->render();
@@ -247,21 +260,21 @@ void release_key(unsigned char key, int xx, int yy) {
 // Process mouse drag events
 // 
 // This is called when dragging motion occurs. The variable
-// angle stores the camera angle at the instance when dragging
-// started, and deltaAngle is a additional angle based on the
+// _angle stores the camera _angle at the instance when dragging
+// started, and deltaAngle is a additional _angle based on the
 // mouse movement since dragging started.
 //----------------------------------------------------------------------
 void mouseMove(int x, int y) {
     if (isDragging) { // only when dragging
-        // update the change in angle
+        // update the change in _angle
         deltaAngle = (x - xDragStart) * 0.005;
         dyAngle = (y - yDragStart) * 0.005;
 
         vec2 mid_point(glutGet(GLUT_WINDOW_WIDTH)/2, glutGet(GLUT_WINDOW_HEIGHT)/2);
 
-        // camera's direction is set to angle + deltaAngle
-        lx = sin(angle + deltaAngle);
-        ly = cos(angle + deltaAngle);
+        // camera's direction is set to _angle + deltaAngle
+        lx = sin(_angle + deltaAngle);
+        ly = cos(_angle + deltaAngle);
         lz = -sin(yAngle + dyAngle);
         //glutWarpPointer(mid_point.x, mid_point.y);
     }
@@ -275,7 +288,7 @@ void mouseButton(int button, int state, int x, int y) {
 			yDragStart = y;
         }
         else { /* (state = GLUT_UP) */
-            angle += deltaAngle; // update camera turning angle
+            _angle += deltaAngle; // update camera turning _angle
 			yAngle += dyAngle;
             isDragging = 0; // no longer dragging
         }
@@ -318,6 +331,8 @@ int main(int argc, char **argv) {
     Actor * snowmen = new Actor(3.0f, 0.35f, render_snowmen);
     Actor * outlaw = new Actor(3.0f, 0.35f, render_outlaw);
 
+    steering.seek(vec3(5, 5, 0));
+
     scene->add_stereotype("snowmen", snowmen);
     scene->add_stereotype("outlaw", outlaw);
 
@@ -331,15 +346,15 @@ int main(int argc, char **argv) {
     actor4 = new Actor(FACTION_OUTLAW, vec3(0.5, 0.5, 0), vec3(0, 0, 45), *outlaw);
     actor4->set_target(glm::vec3(-20, -20, 0));
 
-    scene->add_actor(actor_1);
-    scene->add_actor(actor2);
-    scene->add_actor(actor3);
-    scene->add_actor(actor4);
+//    scene->add_actor(actor_1);
+//    scene->add_actor(actor2);
+//    scene->add_actor(actor3);
+//    scene->add_actor(actor4);
 
     // Draw 36 snow men
-    for (int i = -3; i < 3; i++)
-        for (int j = -3; j < 3; j++)
-            scene->add_actor(new Actor(FACTION_SNOWMEN, vec3(i * 7.5f, j * 7.5f, 0), glm::vec3(0, 0, 45), *snowmen));
+//    for (int i = -3; i < 3; i++)
+//        for (int j = -3; j < 3; j++)
+//            scene->add_actor(new Actor(FACTION_SNOWMEN, vec3(i * 7.5f, j * 7.5f, 0), glm::vec3(0, 0, 45), *snowmen));
 
 
 

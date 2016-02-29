@@ -37,7 +37,7 @@ endif(WIN32)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp actor/actor.h actor/actor.cpp scene/scene.cpp scene/scene.h faction/faction.h ability/ability.h ability/movement/movement.cpp ability/movement/movement.h render/render.h render/snowmen.cpp render/outlaw.cpp)
+set(SOURCE_FILES main.cpp actor/actor.h actor/actor.cpp scene/scene.cpp scene/scene.h faction/faction.h ability/ability.h ability/movement/movement.cpp ability/movement/movement.h render/render.h render/snowmen.cpp render/outlaw.cpp actor/steering.cpp actor/steering.h)
 add_executable(camera_glew ${SOURCE_FILES})
 
 target_link_libraries(camera_glew ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES})
