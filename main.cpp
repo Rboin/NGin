@@ -81,7 +81,9 @@ int xDragStart = 0; // records the x-coordinate when dragging starts
 Scene *scene;
 Actor * actor_1, * actor2, * actor3, * actor4;
 
-Steering steering(15.0f, vec3(), vec3());
+vec3 *dudes_position = new vec3();
+
+Steering steering(15.0f, dudes_position, vec3());
 
 mat2 rotateDeg(float degrees) {
     double rad = (3.14f / 180) * degrees;
@@ -188,7 +190,14 @@ void renderScene(void) {
     glVertex3f(100.0, -100.0, 0.0);
     glEnd();
 
-    render_snowmen(steering.m_position, steering.m_look);
+    glLineWidth(2.5);
+    glColor3f(1.0, 0.0, 0.0);
+    glBegin(GL_LINES);
+    glVertex3f(0.0, -5.0, 0.0);
+    glVertex3f(0, 0, 0);
+    glEnd();
+
+    render_snowmen(*steering.m_position, steering.m_look);
 
     //actor_1->render();
     scene->render();
@@ -331,7 +340,7 @@ int main(int argc, char **argv) {
     Actor * snowmen = new Actor(3.0f, 0.35f, render_snowmen);
     Actor * outlaw = new Actor(3.0f, 0.35f, render_outlaw);
 
-    steering.seek(vec3(5, 5, 0));
+//    steering.seek(vec3(0, 5, 0));
 
     scene->add_stereotype("snowmen", snowmen);
     scene->add_stereotype("outlaw", outlaw);

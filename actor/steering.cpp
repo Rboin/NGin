@@ -14,7 +14,7 @@ void yield(vec3 &v, float max) {
 
 void Steering::move() {
 
-    vec3 desired_velocity = normalize(m_target - m_position) * MAX_VELOCITY;
+    vec3 desired_velocity = normalize(m_target - *m_position) * MAX_VELOCITY;
 
     vec3 steering = desired_velocity - m_velocity;
 
@@ -31,7 +31,7 @@ void Steering::move() {
 
     m_look.z = (atan2(m_velocity.y, m_velocity.x) * (180.0f / 3.1415926f)) + 90.0f;
 
-    m_position += m_velocity;
+    *m_position += m_velocity;
 
 }
 
@@ -40,12 +40,12 @@ void Steering::seek(vec3 target) {
 }
 
 void Steering::flee(vec3 from) {
-    vec3 distance = from - m_position;
-    m_target = m_position - distance;
+    vec3 distance = from - *m_position;
+    m_target = *m_position - distance;
 }
 
 void Steering::wander() {
-    vec3 wanderForce, circleCenter, displacement(0, -1, 0);
+    vec3 circleCenter, displacement(0, -1, 0);
     mat4 circleRadius = scale(vec3(6.0f));
 
     circleCenter = vec3(normalize(vec4(m_velocity, 1.0f)));
@@ -58,7 +58,7 @@ void Steering::wander() {
     displacement.x = cos(m_look.z) * displacement.length();
     displacement.y = sin(m_look.z) * displacement.length();
 
-    m_look.z += rand() * 1 - 1 * .5f;
+    m_look.z += rand();
 
     m_target = circleCenter + displacement;
 

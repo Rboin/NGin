@@ -20,8 +20,8 @@ class Steering {
 private:
     float m_mass;
 public:
-    vec3 m_position, m_look, m_target, m_velocity;
-    Steering(float mass, vec3 pos, vec3 look) : m_mass(mass), m_position(pos), m_look(look) {}
+    vec3 *m_position, m_look, m_target, m_velocity;
+    Steering(float mass, vec3 *pos, vec3 look) : m_mass(mass), m_position(pos), m_look(look), m_target(*pos + vec3()) {}
     void move();
 
     void seek(vec3 target);
