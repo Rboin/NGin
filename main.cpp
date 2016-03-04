@@ -32,6 +32,7 @@
 //#include "actor/Actor.h"
 //#include "faction/faction.h"
 #include "render/render.h"
+#include "faction/faction.h"
 
 
 
@@ -81,9 +82,10 @@ int xDragStart = 0; // records the x-coordinate when dragging starts
 Scene *scene;
 Actor * actor_1, * actor2, * actor3, * actor4;
 
-vec3 *dudes_position = new vec3();
+vec3 *dudes_position = new vec3(-5, 5, 0);
+vec3 *dudes_look = new vec3();
 
-Steering steering(15.0f, dudes_position, vec3());
+Steering steering(5.0f, dudes_position, dudes_look);
 
 mat2 rotateDeg(float degrees) {
     double rad = (3.14f / 180) * degrees;
@@ -144,8 +146,8 @@ void update(void) {
 //        actor4->set_target(glm::vec3(-20, -20, 0));
         //steering.seek(vec3(-5, -15, 0));
     }
-    if(timer % 100 == 0)
-        steering.wander();
+//    if(timer % 100 == 0)
+//        steering.wander();
 //        actor_1->set_target(vec3(-5,-30,0));
 
 
@@ -181,23 +183,61 @@ void renderScene(void) {
             x + lx, y + ly, z + lz,
             0.0, 0.0, 1.0);
 
+//    glEnable(GL_LIGHTING);
+//
+//    glEnable(GL_LIGHT0);
+//
+//    GLfloat lightpos[] = {.5f, 1.f, 1.f, 0.f};
+//    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+//
+//    glEnable(GL_LIGHT1);
+//
+//    GLfloat lightpos2[] = {.5f, 1.f, 1.f, 0.f};
+//    glLightfv(GL_LIGHT1, GL_POSITION, lightpos);
+//
+//    glEnable(GL_NORMALIZE);
+
+    // Somewhere in the initialization part of your program…
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+
+// Create light components
+    GLfloat ambientLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+    GLfloat diffuseLight[] = { 0.8f, 0.8f, 0.8, 1.0f };
+    GLfloat specularLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+    GLfloat position[] = { -1.5f, 1.0f, 4.0f, 1.0f };
+
+// Assign created components to GL_LIGHT0
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
+    glLightfv(GL_LIGHT0, GL_POSITION, position);
+
+    glEnable(GL_COLOR_MATERIAL);
+
+    float colorBlue[] = { 0.1, 0.7, 0.2, 1.0f };
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorBlue);
+    glColor3f(0.1f,0.7f,0.2f);
+    glBegin(GL_TRIANGLES);
+    glVertex3f(-100.0f, -100.0f, 0.0f);
+    glVertex3f(-100.0f, 100.0f, 0.0f);
+    glVertex3f(100.0f, 100.0f, 0.0f);
+    glVertex3f(100.0f, 100.0f, 0.0f);
+    glVertex3f(100.0f, -100.0f, 0.0f);
+    glVertex3f(-100.0f, -100.0f, 0.0f);
+    glEnd();
+//    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 15.f);
+
     // Draw ground - 200x200 square colored green
-    glColor3f(0.1, 0.7, 0.2);
-    glBegin(GL_QUADS);
-    glVertex3f(-100.0, -100.0, 0.0);
-    glVertex3f(-100.0, 100.0, 0.0);
-    glVertex3f(100.0, 100.0, 0.0);
-    glVertex3f(100.0, -100.0, 0.0);
-    glEnd();
+//    glColor3f(0.1, 0.7, 0.2);
+//    glBegin(GL_QUADS);
+//    glVertex3f(-100.0, -100.0, 0.0);
+//    glVertex3f(-100.0, 100.0, 0.0);
+//    glVertex3f(100.0, 100.0, 0.0);
+//    glVertex3f(100.0, -100.0, 0.0);
+//    glEnd();
 
-    glLineWidth(2.5);
-    glColor3f(1.0, 0.0, 0.0);
-    glBegin(GL_LINES);
-    glVertex3f(0.0, -5.0, 0.0);
-    glVertex3f(0, 0, 0);
-    glEnd();
-
-    render_snowmen(*steering.m_position, steering.m_look);
+    render_snowmen(*dudes_position, *dudes_look);
 
     //actor_1->render();
     scene->render();
@@ -337,10 +377,17 @@ int main(int argc, char **argv) {
 
     scene = new Scene();
 
+    Faction *snow_faction = new Faction();
+    Faction *outlaw_faction = new Faction();
+    outlaw_faction->hostile_to(snow_faction);
+//    cout << outlaw_faction->enemies.size() << endl;
+    outlaw_faction->make_peace(snow_faction);
+//    cout << outlaw_faction->enemies.size() << endl;
+
     Actor * snowmen = new Actor(3.0f, 0.35f, render_snowmen);
     Actor * outlaw = new Actor(3.0f, 0.35f, render_outlaw);
 
-//    steering.seek(vec3(0, 5, 0));
+    steering.seek(vec3(4, 5, 0));
 
     scene->add_stereotype("snowmen", snowmen);
     scene->add_stereotype("outlaw", outlaw);

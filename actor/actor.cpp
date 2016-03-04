@@ -21,7 +21,7 @@ vec3 truncate(vec3 v, float cap) {
 
 void Actor::update(vector<Actor *> actors) {
 
-    if (m_faction == FACTION_SNOWMEN) {
+    if (m_faction == 1) {
 
         float prev_dist = 1000;
         vec3 nearest;
@@ -37,12 +37,12 @@ void Actor::update(vector<Actor *> actors) {
 
             if (dist < 275.0f) {
                 // in range
-                if ((*it)->m_faction == FACTION_OUTLAW) {
+                if ((*it)->m_faction == 2) {
                     // flee
                     prev_dist = 1000;
                     m_target = m_position - distance;
                     break;
-                } else if ((*it)->m_faction == FACTION_SNOWMEN) {
+                } else if ((*it)->m_faction == 1) {
                     // seek friend if not too close
                     if (trunc(m_position) != trunc(from) && dist < prev_dist) {
                         vec3 ts = trunc(m_position - from);
@@ -60,7 +60,7 @@ void Actor::update(vector<Actor *> actors) {
         if (prev_dist != 1000)
             m_target = nearest;
 
-    } else if (m_faction == FACTION_OUTLAW) {
+    } else if (m_faction == 2) {
 
     }
 

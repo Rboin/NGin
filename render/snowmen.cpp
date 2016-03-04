@@ -4,6 +4,10 @@
 
 #include "render.h"
 
+GLfloat body_color[] = {1.0f,1.0f,1.0f};
+GLfloat nose_color[] = {};
+GLfloat eye_color[] = {};
+
 void render_snowmen(vec3 pos, vec3 look) {
     glPushMatrix();
     glTranslatef(pos.x, pos.y, pos.z);
@@ -45,14 +49,6 @@ void render_snowmen(vec3 pos, vec3 look) {
     glRotatef(90.0, 1.0, 0.0, 0.0); // rotate to point along -y
     glutSolidCone(0.08, 0.5, 10, 2); // draw cone
     glPopMatrix();
-    glPopMatrix();
-
-    // Draw a faux shadow beneath snow man (dark green circle)
-    glColor3f(0.0, 0.5, 0.0);
-    glPushMatrix();
-    glTranslatef(0.2, 0.2, 0.001);    // translate to just above ground
-    glScalef(1.0, 1.0, 0.0); // scale sphere into a flat pancake
-    glutSolidSphere(0.75, 20, 20); // shadow same size as body
     glPopMatrix();
 
     glPopMatrix();

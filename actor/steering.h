@@ -5,8 +5,8 @@
 #ifndef CAMERA_GLEW_STEERING_H
 #define CAMERA_GLEW_STEERING_H
 
-#define MAX_FORCE 0.1f
-#define MAX_VELOCITY 0.35f
+#define MAX_FORCE 0.6f
+#define MAX_VELOCITY 3.f
 
 #include <iostream>
 #include <glm/glm.hpp>
@@ -18,16 +18,26 @@ using namespace std;
 
 class Steering {
 private:
-    float m_mass;
+    float   m_mass;
+
+    vec3    *m_position,
+            *m_look;
+protected:
+    vec3    m_target,
+            m_velocity;
+
 public:
-    vec3 *m_position, m_look, m_target, m_velocity;
-    Steering(float mass, vec3 *pos, vec3 look) : m_mass(mass), m_position(pos), m_look(look), m_target(*pos + vec3()) {}
+    Steering(float mass, vec3 *pos, vec3 *look)
+            : m_mass(mass),
+              m_position(pos),
+              m_look(look),
+              m_target(*pos + vec3()) {}
+
     void move();
 
     void seek(vec3 target);
     void flee(vec3 from);
     void wander();
-    void arrival();
 private:
 
 };

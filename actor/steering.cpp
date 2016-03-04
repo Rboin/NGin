@@ -16,20 +16,24 @@ void Steering::move() {
 
     vec3 desired_velocity = normalize(m_target - *m_position) * MAX_VELOCITY;
 
+    float dist = length(desired_velocity);//glm::distance(m_target, *m_position);
+
+    if (dist < 200) {
+        desired_velocity *= dist / 200;
+        cout << dist / 200 << endl;
+    }
+
     vec3 steering = desired_velocity - m_velocity;
 
     yield(steering, MAX_FORCE);
 
-//    std::cout << steering.x << ' ' << steering.y << std::endl;
-
-    mat4 scaleMat = scale(vec3(1/m_mass));
+    mat4 scaleMat = scale(vec3(1 / m_mass));
 
     steering = vec3(scaleMat * vec4(steering, 1));
-
     m_velocity += steering;
-    //yield(m_velocity, MAX_VELOCITY);
 
-    m_look.z = (atan2(m_velocity.y, m_velocity.x) * (180.0f / 3.1415926f)) + 90.0f;
+    // update rotation
+    m_look->z = (atan2(m_velocity.y, m_velocity.x) * (180.0f / 3.1415926f)) + 90.0f;
 
     *m_position += m_velocity;
 
@@ -50,20 +54,13 @@ void Steering::wander() {
 
     circleCenter = vec3(normalize(vec4(m_velocity, 1.0f)));
     circleCenter = vec3(circleRadius * vec4(circleCenter, 1.0f));
-    cout << to_string(circleCenter) << endl;
 
     displacement = vec3(circleRadius * vec4(displacement, 1.0f));
 
     //set angle
-    displacement.x = cos(m_look.z) * displacement.length();
-    displacement.y = sin(m_look.z) * displacement.length();
-
-    m_look.z += rand();
+    displacement.x = cos(m_look->z) * displacement.length();
+    displacement.y = sin(m_look->z) * displacement.length();
 
     m_target = circleCenter + displacement;
-
-}
-
-void Steering::arrival() {
 
 }
