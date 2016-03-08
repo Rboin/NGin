@@ -1,71 +1,20 @@
-//----------------------------------------------------------------------
-//	Best if viewed with tab stops set every 2 columns.
-//----------------------------------------------------------------------
-//	File: opengl-3D-sample.cpp - Sample 3D OpenGL/GLUT program
-//	Origin: Lighthouse3D (heavily modified by Dave Mount)
-//
-//	This is a sample program that illustrates OpenGL and GLUT. It
-//	renders a picture of 36 snowmen. The camera can be moved by dragging
-//	the mouse. The camera moves forward by hitting the up-arrow key and
-//	back by moving the down-arrow key. Hit ESC, 'q' or 'Q' to exit.
-//
-//	Warning #1: This program uses the function glutSpecialUpFunc, which
-//	may not be available in all GLUT implementations. If your system
-//	does not have it, you can comment this line out, but the up arrow
-//	processing will not be correct.
-//
-//	Warning #2: This is a minimalist program. Very little attention has
-//	been paid to good programming technique.
-//----------------------------------------------------------------------
 #include <iostream>
 #include <stdlib.h> // standard definitions
 #include <math.h> // math definitions
 #include <stdio.h> // standard I/O
 
-// include files are in a slightly different location for MacOS
-//#ifdef __APPLE__
-//#include <GLUT/glut.h>
-//#else
-//
-//#include <GL/glut.h>
 #include "scene/scene.h"
-//#include "actor/Actor.h"
-//#include "faction/faction.h"
 #include "render/render.h"
 #include "faction/faction.h"
 
-
-
-//#endif
-
-// escape key (for exit)
-#define ESC 27
-
-//----------------------------------------------------------------------
-// Global variables
-//
-// The coordinate system is set up so that the (x,y)-coordinate plane
-// is the ground, and the z-axis is directed upwards. The y-axis points
-// to the north and the x-axis points to the east.
-//
-// The values (x,y) are the current camera m_position. The values (lx, ly)
-// point in the direction the camera is looking. The variables _angle and
-// deltaAngle control the camera's _angle. The variable deltaMove
-// indicates the amount of incremental motion for the camera with each
-// redraw cycle. The variables isDragging and xDragStart are used to
-// monitor the mouse when it drags (with the left button down).
-//----------------------------------------------------------------------
+#include "keyboard.h"
 
 using namespace std;
-
-vec3 camera_position, direction;
 
 // Camera m_position
 float x = 0.0f, y = -5.0f, z = 1.0f; // initially 5 units south of origin
 float yDragStart = 0.0f;
-float deltaMove = 0.0f, strafeMove = 0.0f; // initially camera doesn't move
 float dyAngle = 0.0f;
-//float strafeMove = 0.0;
 
 // Camera direction
 float lx = 0.0f, ly = 1.0f, lz = 0.0f; // camera points initially along y-axis
@@ -122,19 +71,19 @@ int timer = 1;
 // redrawn.
 //----------------------------------------------------------------------
 void update(void) {
-    if (deltaMove) { // update camera m_position
-        x += deltaMove * lx * 0.1;
-        y += deltaMove * ly * 0.1;
+    if (keyboard::forward) { // update camera m_position
+        x += keyboard::forward * lx * 0.1;
+        y += keyboard::forward * ly * 0.1;
     }
-    if(zmove) {
-        z += zmove * 0.1;
-    }
-    if (strafeMove) {
+    if (keyboard::strafe) {
 
         vec3 strafe = cross(vec3(x, y, 1), vec3(x+lx,y+ly, 1));
 
-        x += strafeMove * strafe.x * 0.1;
-        y += strafeMove * strafe.y * 0.1;
+        x += keyboard::strafe * strafe.x * 0.1;
+        y += keyboard::strafe * strafe.y * 0.1;
+    }
+    if(keyboard::upward) {
+        z += keyboard::upward * 0.1;
     }
 
     //cout << timer << endl;
@@ -243,66 +192,6 @@ void renderScene(void) {
     scene->render();
 
     glutSwapBuffers(); // Make it all visible
-}
-
-//----------------------------------------------------------------------
-// User-input callbacks
-//
-// processNormalKeys: ESC, q, and Q cause program to exit
-// pressSpecialKey: Up arrow = forward motion, down arrow = backwards
-// releaseSpecialKey: Set incremental motion to zero
-//----------------------------------------------------------------------
-void press_key(unsigned char key, int xx, int yy) {
-    switch (key) {
-        case ESC:
-        case 'q':
-        case 'Q':
-            exit(0);
-        case 'f':
-            glutFullScreen();
-            break;
-        case 'w' :
-            deltaMove = 1.5;
-            break;
-        case 's' :
-            deltaMove = -1.5;
-            break;
-        case 'x' :
-            zmove = 1.5;
-            break;
-        case 'z' :
-            zmove = -1.5;
-            break;
-        case 'a':
-            strafeMove = 1.5;
-            break;
-        case 'd':
-            strafeMove = -1.5;
-            break;
-    }
-}
-
-void release_key(unsigned char key, int xx, int yy) {
-    switch (key) {
-        case 'w' :
-            deltaMove = 0.0;
-            break;
-        case 's' :
-            deltaMove = 0.0;
-            break;
-        case 'a':
-            strafeMove = 0;
-            break;
-        case 'd':
-            strafeMove = 0;
-            break;
-        case 'x' :
-            zmove = 0;
-            break;
-        case 'z' :
-            zmove = 0;
-            break;
-    }
 }
 
 //----------------------------------------------------------------------
@@ -428,8 +317,8 @@ int main(int argc, char **argv) {
     glutIgnoreKeyRepeat(1); // ignore key repeat when holding key down
     glutMouseFunc(mouseButton); // process mouse button push/release
     glutMotionFunc(mouseMove); // process mouse dragging motion
-    glutKeyboardFunc(press_key); // process standard key clicks
-    glutKeyboardUpFunc(release_key);
+    glutKeyboardFunc(keyboard::press_key); // process standard key clicks
+    glutKeyboardUpFunc(keyboard::release_key);
     //glutSpecialFunc(pressSpecialKey); // process special key pressed
     // Warning: Nonstandard function! Delete if desired.
     //glutSpecialUpFunc(releaseSpecialKey); // process special key release
