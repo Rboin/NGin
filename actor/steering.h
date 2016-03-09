@@ -2,8 +2,8 @@
 // Created by erik on 2/29/16.
 //
 
-#ifndef CAMERA_GLEW_STEERING_H
-#define CAMERA_GLEW_STEERING_H
+#ifndef SNOWMENS_STEERING_H
+#define SNOWMENS_STEERING_H
 
 #define MAX_FORCE 0.6f
 #define MAX_VELOCITY 3.f
@@ -43,4 +43,4 @@ private:
 };
 
 
-#endif //CAMERA_GLEW_STEERING_H
+#endif //SNOWMENS_STEERING_H

@@ -2,8 +2,8 @@
 // Created by erik on 2/22/16.
 //
 
-#ifndef CAMERA_GLEW_SCENE_H
-#define CAMERA_GLEW_SCENE_H
+#ifndef SNOWMENS_SCENE_H
+#define SNOWMENS_SCENE_H
 
 #include <map>
 #include <vector>
@@ -22,4 +22,4 @@ public:
 };
 
 
-#endif //CAMERA_GLEW_SCENE_H
+#endif //SNOWMENS_SCENE_H

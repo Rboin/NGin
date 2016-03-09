@@ -2,8 +2,8 @@
 // Created by erik on 2/22/16.
 //
 
-#ifndef CAMERA_GLEW_FACTION_H
-#define CAMERA_GLEW_FACTION_H
+#ifndef SNOWMENS_FACTION_H
+#define SNOWMENS_FACTION_H
 
 #include <vector>
 #include "../actor/actor.h"
@@ -23,4 +23,4 @@ public:
     void make_peace(Faction *f);
 };
 
-#endif //CAMERA_GLEW_FACTION_H
+#endif //SNOWMENS_FACTION_H

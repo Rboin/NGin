@@ -2,8 +2,8 @@
 // Created by erik on 2/21/16.
 //
 
-#ifndef CAMERA_GLEW_ORGANISM_H
-#define CAMERA_GLEW_ORGANISM_H
+#ifndef SNOWMENS_ORGANISM_H
+#define SNOWMENS_ORGANISM_H
 
 #include <iostream>
 #include <vector>
@@ -46,4 +46,4 @@ public:
     vec3 angle() {return m_look;}
 };
 
-#endif //CAMERA_GLEW_ORGANISM_H
+#endif //SNOWMENS_ORGANISM_H

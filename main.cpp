@@ -1,58 +1,25 @@
 #include <iostream>
-#include <stdlib.h> // standard definitions
-#include <math.h> // math definitions
-#include <stdio.h> // standard I/O
 
 #include "scene/scene.h"
 #include "render/render.h"
-#include "faction/faction.h"
-
-#include "keyboard.h"
 
 using namespace std;
 
-// Camera m_position
-float x = 0.0f, y = -5.0f, z = 1.0f; // initially 5 units south of origin
-float yDragStart = 0.0f;
-float dyAngle = 0.0f;
+// functions to be implemented
+void render_camera();
 
-// Camera direction
-float lx = 0.0f, ly = 1.0f, lz = 0.0f; // camera points initially along y-axis
-float _angle = 0.0f; // _angle of rotation for the camera direction
-float deltaAngle = 0.0f; // additional _angle change when dragging
-float yAngle = 0.0f, zmove = 0.0f;
+void mouse_click(int button, int state, int x, int y);
+void mouse_move(int x, int y);
 
+float _forward, _strafe, _upward;
+void press_key (unsigned char key, int xx, int yy);
+void release_key (unsigned char key, int xx, int yy);
 
-
-// Mouse drag control
-int isDragging = 0; // true when dragging
-int xDragStart = 0; // records the x-coordinate when dragging starts
-
-Scene *scene;
-Actor * actor_1, * actor2, * actor3, * actor4;
-
-vec3 *dudes_position = new vec3(-5, 5, 0);
+vec3 *dudes_position = new vec3(0.0f, 1.0f, -1.0f);
 vec3 *dudes_look = new vec3();
 
 Steering steering(5.0f, dudes_position, dudes_look);
 
-mat2 rotateDeg(float degrees) {
-    double rad = (3.14f / 180) * degrees;
-    return mat2(
-            cos(rad), -sin(rad),
-            sin(rad), cos(rad)
-    );
-}
-
-//----------------------------------------------------------------------
-// Reshape callback
-//
-// Window size has been set/changed to w by h pixels. Set the camera
-// perspective to 45 degree vertical field of view, a window aspect
-// ratio of w/h, a near clipping plane at depth 1, and a far clipping
-// plane at depth 100. The viewport is the entire window.
-//
-//----------------------------------------------------------------------
 void changeSize(int w, int h) {
     float ratio = ((float) w) / ((float) h); // window aspect ratio
     glMatrixMode(GL_PROJECTION); // projection matrix is active
@@ -62,60 +29,13 @@ void changeSize(int w, int h) {
     glViewport(0, 0, w, h); // set viewport (drawing area) to entire window
 }
 
-int timer = 1;
-
-//----------------------------------------------------------------------
-// Update with each idle event
-//
-// This incrementally moves the camera and requests that the scene be
-// redrawn.
-//----------------------------------------------------------------------
 void update(void) {
-    if (keyboard::forward) { // update camera m_position
-        x += keyboard::forward * lx * 0.1;
-        y += keyboard::forward * ly * 0.1;
-    }
-    if (keyboard::strafe) {
-
-        vec3 strafe = cross(vec3(x, y, 1), vec3(x+lx,y+ly, 1));
-
-        x += keyboard::strafe * strafe.x * 0.1;
-        y += keyboard::strafe * strafe.y * 0.1;
-    }
-    if(keyboard::upward) {
-        z += keyboard::upward * 0.1;
-    }
-
-    //cout << timer << endl;
-
-    if (timer++ % 180 == 0) {
-//        actor_1->set_target(glm::vec3(20, 20, 0));
-//        actor2->set_target(glm::vec3(-20, 20, 0));
-//        actor3->set_target(glm::vec3(20, -20, 0));
-//        actor4->set_target(glm::vec3(-20, -20, 0));
-        //steering.seek(vec3(-5, -15, 0));
-    }
-//    if(timer % 100 == 0)
-//        steering.wander();
-//        actor_1->set_target(vec3(-5,-30,0));
-
-
-//    cout << glm::to_string(steering.m_position) << ' ' << glm::to_string(steering.m_velocity) << endl;
 
     steering.move();
 
-    scene->update();
-//    actor_1->update();
-
-    glutPostRedisplay(); // redisplay everything
+    glutPostRedisplay();
 }
 
-//----------------------------------------------------------------------
-// Draw the entire scene
-//
-// We first update the camera location based on its distance from the
-// origin and its direction.
-//----------------------------------------------------------------------
 void renderScene(void) {
 
     // Clear color and depth buffers
@@ -125,26 +45,9 @@ void renderScene(void) {
     // Reset transformations
     glLoadIdentity();
 
-    // Set the camera centered at (x,y,1) and looking along directional
-    // vector (lx, ly, 0), with the z-axis pointing up
-    gluLookAt(
-            x, y, z,
-            x + lx, y + ly, z + lz,
-            0.0, 0.0, 1.0);
+    render_camera();
 
-//    glEnable(GL_LIGHTING);
-//
-//    glEnable(GL_LIGHT0);
-//
-//    GLfloat lightpos[] = {.5f, 1.f, 1.f, 0.f};
-//    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-//
-//    glEnable(GL_LIGHT1);
-//
-//    GLfloat lightpos2[] = {.5f, 1.f, 1.f, 0.f};
-//    glLightfv(GL_LIGHT1, GL_POSITION, lightpos);
-//
-//    glEnable(GL_NORMALIZE);
+    glutWireTeapot(0.5f);
 
     // Somewhere in the initialization part of your program…
     glEnable(GL_LIGHTING);
@@ -168,166 +71,185 @@ void renderScene(void) {
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorBlue);
     glColor3f(0.1f,0.7f,0.2f);
     glBegin(GL_TRIANGLES);
-    glVertex3f(-100.0f, -100.0f, 0.0f);
-    glVertex3f(-100.0f, 100.0f, 0.0f);
-    glVertex3f(100.0f, 100.0f, 0.0f);
-    glVertex3f(100.0f, 100.0f, 0.0f);
-    glVertex3f(100.0f, -100.0f, 0.0f);
-    glVertex3f(-100.0f, -100.0f, 0.0f);
+    glVertex3f(-100.0f, -1.0f, -100.0f);
+    glVertex3f(-100.0f, -1.0f,  100.0f);
+    glVertex3f( 100.0f, -1.0f,  100.0f);
+    glVertex3f( 100.0f, -1.0f,  100.0f);
+    glVertex3f( 100.0f, -1.0f, -100.0f);
+    glVertex3f(-100.0f, -1.0f, -100.0f);
     glEnd();
-//    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 15.f);
-
-    // Draw ground - 200x200 square colored green
-//    glColor3f(0.1, 0.7, 0.2);
-//    glBegin(GL_QUADS);
-//    glVertex3f(-100.0, -100.0, 0.0);
-//    glVertex3f(-100.0, 100.0, 0.0);
-//    glVertex3f(100.0, 100.0, 0.0);
-//    glVertex3f(100.0, -100.0, 0.0);
-//    glEnd();
 
     render_snowmen(*dudes_position, *dudes_look);
-
-    //actor_1->render();
-    scene->render();
 
     glutSwapBuffers(); // Make it all visible
 }
 
-//----------------------------------------------------------------------
-// Process mouse drag events
-// 
-// This is called when dragging motion occurs. The variable
-// _angle stores the camera _angle at the instance when dragging
-// started, and deltaAngle is a additional _angle based on the
-// mouse movement since dragging started.
-//----------------------------------------------------------------------
-void mouseMove(int x, int y) {
-    if (isDragging) { // only when dragging
-        // update the change in _angle
-        deltaAngle = (x - xDragStart) * 0.005;
-        dyAngle = (y - yDragStart) * 0.005;
-
-        vec2 mid_point(glutGet(GLUT_WINDOW_WIDTH)/2, glutGet(GLUT_WINDOW_HEIGHT)/2);
-
-        // camera's direction is set to _angle + deltaAngle
-        lx = sin(_angle + deltaAngle);
-        ly = cos(_angle + deltaAngle);
-        lz = -sin(yAngle + dyAngle);
-        //glutWarpPointer(mid_point.x, mid_point.y);
-    }
-}
-
-void mouseButton(int button, int state, int x, int y) {
-    if (button == GLUT_LEFT_BUTTON) {
-        if (state == GLUT_DOWN) { // left mouse button pressed
-            isDragging = 1; // start dragging
-            xDragStart = x; // save x where button first pressed
-			yDragStart = y;
-        }
-        else { /* (state = GLUT_UP) */
-            _angle += deltaAngle; // update camera turning _angle
-			yAngle += dyAngle;
-            isDragging = 0; // no longer dragging
-        }
-    }
-}
-float test = 1.0f;
-mat4 Trx = mat4(
-        1, 0, 0 ,0,
-        0, cos(test), -cos(test), 0,
-        0, sin(test), cos(test), 0,
-        0,0,0,1
-);
-mat4 Try = mat4(
-        cos(test), 0, sin(test), 0,
-        0, 1, 0, 0,
-        -sin(test), 0, cos(test), 0,
-        0,0,0,1
-);
-mat4 Trz = mat4(
-        cos(test), -sin(test), 0, 0,
-        sin(test), cos(test), 0, 0,
-        0,0,1,0,
-        0,0,0,1
-);
-
-//----------------------------------------------------------------------
-// Main program  - standard GLUT initializations and callbacks
-//----------------------------------------------------------------------
 int main(int argc, char **argv) {
-    printf("\n\
------------------------------------------------------------------------\n\
-  OpenGL Sample Program:\n\
-  - Drag mouse left-right to rotate camera\n\
-  - Hold up-arrow/down-arrow to move camera forward/backward\n\
-  - q or ESC to quit\n\
------------------------------------------------------------------------\n");
-
-    scene = new Scene();
-
-    Faction *snow_faction = new Faction();
-    Faction *outlaw_faction = new Faction();
-    outlaw_faction->hostile_to(snow_faction);
-//    cout << outlaw_faction->enemies.size() << endl;
-    outlaw_faction->make_peace(snow_faction);
-//    cout << outlaw_faction->enemies.size() << endl;
-
-    Actor * snowmen = new Actor(3.0f, 0.35f, render_snowmen);
-    Actor * outlaw = new Actor(3.0f, 0.35f, render_outlaw);
-
-    steering.seek(vec3(4, 5, 0));
-
-    scene->add_stereotype("snowmen", snowmen);
-    scene->add_stereotype("outlaw", outlaw);
-
-
-    actor_1 = new Actor(FACTION_OUTLAW, vec3(0.5, 0.5, 0), vec3(0, 0, 45), *outlaw);
-    actor_1->set_target(glm::vec3(20, 0, 0));
-    actor2 = new Actor(FACTION_OUTLAW, vec3(0.5, 0.5, 0), vec3(0, 0, 45), *outlaw);
-    actor2->set_target(glm::vec3(-20, 0, 0));
-    actor3 = new Actor(FACTION_OUTLAW, vec3(0.5, 0.5, 0), vec3(0, 0, 45), *outlaw);
-    actor3->set_target(glm::vec3(0, -20, 0));
-    actor4 = new Actor(FACTION_OUTLAW, vec3(0.5, 0.5, 0), vec3(0, 0, 45), *outlaw);
-    actor4->set_target(glm::vec3(-20, -20, 0));
-
-//    scene->add_actor(actor_1);
-//    scene->add_actor(actor2);
-//    scene->add_actor(actor3);
-//    scene->add_actor(actor4);
-
-    // Draw 36 snow men
-//    for (int i = -3; i < 3; i++)
-//        for (int j = -3; j < 3; j++)
-//            scene->add_actor(new Actor(FACTION_SNOWMEN, vec3(i * 7.5f, j * 7.5f, 0), glm::vec3(0, 0, 45), *snowmen));
-
-
 
     // general initializations
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(1400, 820);
-    glutCreateWindow("OpenGL/GLUT Sampe Program");
+    glutCreateWindow("Some program...");
 
-    // register callbacks
-    glutReshapeFunc(changeSize); // window reshape callback
-    glutDisplayFunc(renderScene); // (re)display callback
-    glutIdleFunc(update); // incremental update
-    glutIgnoreKeyRepeat(1); // ignore key repeat when holding key down
-    glutMouseFunc(mouseButton); // process mouse button push/release
-    glutMotionFunc(mouseMove); // process mouse dragging motion
-    glutKeyboardFunc(keyboard::press_key); // process standard key clicks
-    glutKeyboardUpFunc(keyboard::release_key);
-    //glutSpecialFunc(pressSpecialKey); // process special key pressed
-    // Warning: Nonstandard function! Delete if desired.
-    //glutSpecialUpFunc(releaseSpecialKey); // process special key release
+    // registry
+    glutReshapeFunc(changeSize);
+    glutDisplayFunc(renderScene);
+    glutIdleFunc(update);
+    glutIgnoreKeyRepeat(1);
+    glutMouseFunc(mouse_click);
+    glutMotionFunc(mouse_move);
+    glutKeyboardFunc(press_key);
+    glutKeyboardUpFunc(release_key);
 
-    // OpenGL init
     glEnable(GL_DEPTH_TEST);
 
-    // enter GLUT event processing cycle
     glutMainLoop();
 
-    return 0; // this is just to keep the compiler happy
+    return 0;
 }
+
+int leftButton = 0;
+int middleButton = 0;
+int rightButton = 0;
+
+// variables to translating and rotating the objects in the scene
+float translate_x = 0.0f, translate_y = 0.0f, translate_z = 0.0f;
+float rot_x = 0.0f, rot_y = 0.0f, rot_z = 0.0f;
+float scale_x = 1.0f, scale_y = 1.0f, scale_z = 1.0f;
+float previousX = 0.0f, previousY = 0.0f, previousZ = 0.0f;
+
+//  Camera position, look at position, up vector
+double eyeX = 0, eyeY = 0, eyeZ = 0;
+double centerX = 0, centerY = 0, centerZ = -1;
+double upX = 0, upY = 1, upZ = 0;
+
+void mouse_move(int x, int y) {
+
+    //  Translate
+    if (rightButton)
+    {
+        translate_x += (x - previousX) * 0.005;
+        translate_y -= (y - previousY) * 0.005;
+    }
+
+    //  Scale
+    if (middleButton)
+    {
+        scale_x -= (y - previousZ) * 0.005;
+        scale_y -= (y - previousZ) * 0.005;
+        scale_z -= (y - previousZ) * 0.005;
+    }
+
+    //  Rotate
+    if (leftButton)
+    {
+
+        if ((y - previousY) >= 0)
+            rot_x += (y - previousY);
+        else
+            rot_x += (y - previousY);
+        if ((x - previousX) >= 0)
+            rot_y += (x - previousX);
+        else
+            rot_y += (x - previousX);
+    }
+
+    // reset the previousX, previousY, and previousZ to the current position of the mouse
+    previousX = (float)x;
+    previousY = (float)y;
+    previousZ = (float)y;
+
+    glutPostRedisplay();
+
+}
+
+void mouse_click(int button, int state, int x, int y) {
+    //  checks if the user presses the left button
+    if (button == GLUT_LEFT_BUTTON)
+    {
+        leftButton = state == GLUT_DOWN;
+    }
+        // this is used to move the object with relative to the Z axis
+    else if (button == GLUT_MIDDLE_BUTTON)
+    {
+        // if the mouse is pressed
+        middleButton = state == GLUT_DOWN;
+    }
+        // if the user presses the right button
+    else if (button == GLUT_RIGHT_BUTTON)
+    {
+        rightButton = state == GLUT_DOWN;
+    }
+
+    previousX = x;
+    previousY = y;
+    previousZ = y;
+}
+
+void press_key (unsigned char key, int xx, int yy) {
+
+    // constants are defined in camera
+    switch (key) {
+        case 'q':
+            exit(0);
+        case 'f':
+            glutFullScreen();
+            break;
+        case 'w':
+            _forward = 1.5f;
+            break;
+        case 's':
+            _forward = -1.5f;
+            break;
+        case 'a':
+            _strafe = 1.5f;
+            break;
+        case 'd':
+            _strafe = -1.5f;
+            break;
+        case 'z':
+            _upward = 1.5f;
+            break;
+        case 'x':
+            _upward = -1.5f;
+            break;
+    }
+}
+
+void release_key (unsigned char key, int xx, int yy) {
+    switch (key) {
+        case 'w':
+        case 's':
+            _forward = 0.0f;
+            break;
+        case 'a':
+        case 'd':
+            _strafe = 0.0f;
+            break;
+        case 'z':
+        case 'x':
+            _upward = 0.0f;
+            break;
+    }
+}
+
+void render_camera() {
+    glMatrixMode (GL_MODELVIEW);
+    gluLookAt (eyeX, eyeY, eyeZ,
+               centerX, centerY, centerZ,
+               upX, upY, upZ);
+
+    //  apply translation
+    glTranslatef (translate_x, translate_y, translate_z);
+
+    // apply rotation
+    glRotatef (rot_x, 1.0f, 0.0f, 0.0f);
+    glRotatef (rot_y, 0.0f, 1.0f, 0.0f);
+    glRotatef (rot_z, 0.0f, 0.0f, 1.0f);
+
+    //  Apply scaling
+    glScalef (scale_x, scale_y, scale_z);
+
+};
