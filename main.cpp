@@ -9,7 +9,6 @@ void resize(int w, int h);
 void render();
 void update();
 
-
 vec3 *dudes_position = new vec3(0,-1,0);
 vec3 *dudes_look = new vec3();
 

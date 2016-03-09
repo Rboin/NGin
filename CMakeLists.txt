@@ -37,7 +37,7 @@ endif(WIN32)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp camera.h camera.cpp render/render.h render/light.cpp render/ground.cpp render/snowmen.cpp engine.h)
+set(SOURCE_FILES main.cpp engine.h steering.cpp camera.h camera.cpp render/render.h render/light.cpp render/ground.cpp render/snowmen.cpp)
 add_executable(snowmens ${SOURCE_FILES})
 
 target_link_libraries(snowmens ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES})
