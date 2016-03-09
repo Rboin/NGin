@@ -5,13 +5,14 @@
 #ifndef SNOWMENS_RENDER_H
 #define SNOWMENS_RENDER_H
 
-#include <GL/glut.h>
-#include <glm/glm.hpp>
+#include "../engine.h"
 
-using namespace glm;
+void render_light();
 
 void render_snowmen(vec3,vec3);
 
 void render_outlaw(vec3, vec3);
+
+void render_ground();
 
 #endif //SNOWMENS_RENDER_H
