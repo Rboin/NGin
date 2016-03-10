@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "engine.h"
 #include "render/render.h"
 #include "camera.h"
 
@@ -8,6 +9,8 @@ using namespace std;
 void resize(int w, int h);
 void render();
 void update();
+
+Vehicle * v = new Vehicle();
 
 vec3 *dudes_position = new vec3(0,-1,0);
 vec3 *dudes_look = new vec3();
@@ -40,6 +43,7 @@ int main(int argc, char **argv) {
 
 void update() {
 
+    v->update(1);
     glutPostRedisplay();
 }
 
@@ -57,7 +61,9 @@ void render() {
 
     render_ground();
 
-    render_snowmen(*dudes_position, *dudes_look);
+    //render_snowmen(*dudes_position, *dudes_look);
+
+    v->render();
 
     glutSwapBuffers(); // Make it all visible
 }

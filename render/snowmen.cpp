@@ -22,7 +22,7 @@ void render_snowmen(vec3 pos, vec3 look) {
 
     // Draw the head (a sphere of radius 0.25 at height 1.75)
     glPushMatrix();
-    glTranslatef(0.0f, 1.75f, 0.0f); // position head
+    glTranslatef(0.0f, 1.7f, 0.0f); // position head
     glutSolidSphere(0.25f, 20, 20); // head sphere
 
     // Draw Eyes (two small black spheres)
