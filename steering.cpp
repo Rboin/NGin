@@ -60,7 +60,7 @@ vec4 SteeringBehaviours::arrive (vec4 &target, Deceleration deceleration) {
 
     if (distance > 0) {
 
-        const float decelerationTweaker = 0.3f;
+        const float decelerationTweaker = .0003f;
 
         float speed = distance / ((float) deceleration / decelerationTweaker);
 

@@ -23,7 +23,7 @@ Vehicle::Vehicle () {
     m_turn_rate = .3f;
     m_pSteering->m_panic_distance = 3.0f;
     m_pSteering->m_arrive_on = true;
-    m_pSteering->m_seek_on = true;
+    m_pSteering->m_seek_on = false;
     m_pSteering->m_flee_on = true;
 
     m_pSteering->set_target(vec4(0, -1.3f, -5, 1));
@@ -51,15 +51,12 @@ void Vehicle::update (int time_elapsed) {
 
         m_heading = normalize(m_velocity);
 
-        m_side.y = (atan2(m_heading.x, m_heading.z) * (180.0f / 3.1415926f)) - 90.0f;
+        m_side.y = (atan2(m_heading.x, m_heading.z) * (180.0f / 3.1415926f)) + 180.0f;
 
     }
 
 }
 
 void Vehicle::render () const {
-
-//    std::cout << "Side " << to_string(m_side) << std::endl;
-//    std::cout << "Vel " << to_string(m_velocity) << std::endl;
     render_snowmen(vec3(m_position), vec3(m_side));
 }
