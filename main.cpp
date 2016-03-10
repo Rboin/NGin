@@ -12,9 +12,6 @@ void update();
 
 Vehicle * v = new Vehicle();
 
-vec3 *dudes_position = new vec3(0,-1,0);
-vec3 *dudes_look = new vec3();
-
 int main(int argc, char **argv) {
 
     // general initializations
@@ -41,9 +38,15 @@ int main(int argc, char **argv) {
     return 0;
 }
 
+int elapsed_time = 0;
+
 void update() {
 
-    v->update(1);
+    int current_time = glutGet(GLUT_ELAPSED_TIME);
+    int delta = current_time - elapsed_time;
+    elapsed_time = current_time;
+
+    v->update(delta);
     glutPostRedisplay();
 }
 
@@ -60,8 +63,6 @@ void render() {
     render_light();
 
     render_ground();
-
-    //render_snowmen(*dudes_position, *dudes_look);
 
     v->render();
 

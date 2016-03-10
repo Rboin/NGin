@@ -16,17 +16,17 @@ void truncate(vec4& v, float m) {
 
 Vehicle::Vehicle () {
     m_pSteering = new SteeringBehaviours(*this);
-    m_position = vec4(5,-1.3,5,1);
-    m_speed = .001f;
-    m_mass = 1.0f;
-    m_force = .0001f;
+    m_position = vec4(5,-1.3,-5,1);
+    m_speed = .003f;
+    m_mass = 1.3f;
+    m_force = .1f;
     m_turn_rate = .3f;
     m_pSteering->m_panic_distance = 3.0f;
     m_pSteering->m_arrive_on = true;
     m_pSteering->m_seek_on = false;
     m_pSteering->m_flee_on = true;
 
-    m_pSteering->set_target(vec4(0, -1.3f, -5, 1));
+    m_pSteering->set_target(vec4(-5, -1.3f, -5, 1));
 }
 
 Vehicle::~Vehicle () {
