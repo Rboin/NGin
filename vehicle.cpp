@@ -37,11 +37,11 @@ void Vehicle::update (int time_elapsed) {
 
     vec4 acceleration = steeringForce / m_mass;
 
-    m_velocity += acceleration * time_elapsed;
+    m_velocity += acceleration * (float) time_elapsed;
 
     truncate(m_velocity, m_speed);
 
-    m_position += m_velocity * time_elapsed;
+    m_position += m_velocity * (float) time_elapsed;
 
     float dist = length(m_velocity);
 

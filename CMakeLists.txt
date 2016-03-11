@@ -37,7 +37,9 @@ endif(WIN32)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
+set(MAZE maze/maze.h maze/maze.cpp maze/disjoint.h maze/disjoint.cpp maze/formatter.h)
+
 set(SOURCE_FILES main.cpp engine.h world.cpp entity.cpp steering.cpp vehicle.cpp camera.h camera.cpp render/render.h render/light.cpp render/ground.cpp render/snowmen.cpp)
-add_executable(snowmens ${SOURCE_FILES})
+add_executable(snowmens ${MAZE} ${SOURCE_FILES})
 
 target_link_libraries(snowmens ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES})

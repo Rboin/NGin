@@ -5,6 +5,8 @@
 #ifndef SNOWMENS_ENGINE_H
 #define SNOWMENS_ENGINE_H
 
+#define GLM_FORCE_RADIANS
+
 #include <iostream>
 #include <vector>
 
