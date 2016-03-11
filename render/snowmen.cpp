@@ -14,45 +14,37 @@ void render_snowmen(vec3 pos, vec3 look) {
     if (look.z)
         glRotatef(look.z, 0, 0, 1);
 
-    glColor3f(1.0, 1.0, 1.0);
+    glColor3f(1.0f, 1.0f, 1.0f);
     glPushMatrix();
-    glTranslatef(0.0, 0.0, 0.75);
-    glutSolidSphere(0.75, 20, 20);
+    glTranslatef(0.0f, 0.75f, 0.0f);
+    glutSolidSphere(0.75f, 20, 20);
     glPopMatrix();
 
     // Draw the head (a sphere of radius 0.25 at height 1.75)
     glPushMatrix();
-    glTranslatef(0.0, 0.0, 1.75); // position head
-    glutSolidSphere(0.25, 20, 20); // head sphere
+    glTranslatef(0.0f, 1.7f, 0.0f); // position head
+    glutSolidSphere(0.25f, 20, 20); // head sphere
 
     // Draw Eyes (two small black spheres)
     glColor3f(0, 0, 0);
     glPushMatrix();
-    glTranslatef(0.0, -0.18, 0.10); // lift eyes to final position
+    glTranslatef(0.0f, 0.10f, -0.18f); // lift eyes to final position
     glPushMatrix();
-    glTranslatef(-0.05, 0.0, 0.0);
-    glutSolidSphere(0.05, 10, 10); // right eye
+    glTranslatef(-0.05f, 0.0f, 0.0f);
+    glutSolidSphere(0.05f, 10, 10); // right eye
     glPopMatrix();
     glPushMatrix();
-    glTranslatef(+0.05, 0.0, 0.0);
-    glutSolidSphere(0.05, 10, 10); // left eye
+    glTranslatef(+0.05f, 0.0f, 0.0f);
+    glutSolidSphere(0.05f, 10, 10); // left eye
     glPopMatrix();
     glPopMatrix();
 
     // Draw Nose (the nose is an orange cone)
-    glColor3f(1.0, 0.5, 0.5); // nose is orange
+    glColor3f(1.0f, 0.5f, 0.5f); // nose is orange
     glPushMatrix();
-    glRotatef(90.0, 1.0, 0.0, 0.0); // rotate to point along -y
-    glutSolidCone(0.08, 0.5, 10, 2); // draw cone
+    glRotatef(180.0f, 0.0f, 1.0f, 0.0f); // rotate to point along -y
+    glutSolidCone(0.08f, 0.5f, 10, 2); // draw cone
     glPopMatrix();
-    glPopMatrix();
-
-    // Draw a faux shadow beneath snow man (dark green circle)
-    glColor3f(0.0, 0.5, 0.0);
-    glPushMatrix();
-    glTranslatef(0.2, 0.2, 0.001);    // translate to just above ground
-    glScalef(1.0, 1.0, 0.0); // scale sphere into a flat pancake
-    glutSolidSphere(0.75, 20, 20); // shadow same size as body
     glPopMatrix();
 
     glPopMatrix();

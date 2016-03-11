@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.3)
-project(camera_glew)
+project(snowmens)
 
 #########################################################
 # FIND GLEW                                             #
@@ -37,7 +37,9 @@ endif(WIN32)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp actor/actor.h actor/actor.cpp scene/scene.cpp scene/scene.h faction/faction.h ability/ability.h ability/movement/movement.cpp ability/movement/movement.h render/render.h render/snowmen.cpp render/outlaw.cpp)
-add_executable(camera_glew ${SOURCE_FILES})
+set(MAZE maze/maze.h maze/maze.cpp maze/disjoint.h maze/disjoint.cpp maze/formatter.h)
 
-target_link_libraries(camera_glew ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES})
+set(SOURCE_FILES main.cpp engine.h world.cpp entity.cpp steering.cpp vehicle.cpp camera.h camera.cpp render/render.h render/light.cpp render/ground.cpp render/snowmen.cpp render/wall.cpp)
+add_executable(snowmens ${MAZE} ${SOURCE_FILES})
+
+target_link_libraries(snowmens ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES})
