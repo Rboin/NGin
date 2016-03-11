@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
     for (int j = 0; j < maze->get_width(); j++) {
         if(j == maze->get_width()/2)
             continue;
-        Obstacle * wall = new Obstacle(vec4(j*2, 0, -1, 0), vec4(), wall_scale);
+        Obstacle * wall = new Obstacle(vec4(j*2-maze->get_width(), 0, -1-maze->get_height(), 0), vec4(), wall_scale);
         world->add_obstacle(*wall);
     }
 
@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
     for (int j = 0; j < maze->get_height(); j++) {
         if(j == maze->get_height()/2)
             continue;
-        Obstacle * wall = new Obstacle(vec4(-1, 0, j*2, 0), vec4(0,90,0,0), wall_scale);
+        Obstacle * wall = new Obstacle(vec4(-1-maze->get_width(), 0, j*2-maze->get_height(), 0), vec4(0,90,0,0), wall_scale);
         world->add_obstacle(*wall);
     }
 
@@ -46,13 +46,13 @@ int main(int argc, char **argv) {
 
             // bottom is not open
             if(!maze->is_open(p, false) && !(j == maze->get_width() && i == maze->get_height()*2-2)) {
-                Obstacle * wall = new Obstacle(vec4(j, 0, i+1, 0), vec4(), wall_scale);
+                Obstacle * wall = new Obstacle(vec4(j-maze->get_width(), 0, i+1-maze->get_height(), 0), vec4(), wall_scale);
                 world->add_obstacle(*wall);
             }
 
             // right is not open
             if(!maze->is_open(p, true) && !(j == maze->get_width()*2-2 && i == maze->get_height())) {
-                Obstacle * wall = new Obstacle(vec4(j+1, 0, i, 0), vec4(0,90,0,0), wall_scale);
+                Obstacle * wall = new Obstacle(vec4(j+1-maze->get_width(), 0, i-maze->get_height(), 0), vec4(0,90,0,0), wall_scale);
                 world->add_obstacle(*wall);
             }
 
