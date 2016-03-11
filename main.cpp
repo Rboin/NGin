@@ -60,20 +60,21 @@ int main(int argc, char **argv) {
 
     }
 
-    Vehicle snowmen(1.3f,   // mass
+    Vehicle snowmen(3.3f,   // mass
                     .003f,  // speed
                     .1f,    // force
                     .3f,    // turn rate
-                    Deceleration::normal);
+                    Deceleration::slow);
 
-    Vehicle * v = new Vehicle(vec4(5,-1.3,-5,1), vec4(), vec4(), snowmen);
+    Vehicle * v = new Vehicle(vec4(0,-1.3f,0,1), vec4(), vec4(), snowmen);
 
     world->add_vehicle(*v);
 
     v->steer()->m_arrive_on = true;
     v->steer()->m_seek_on = false;
+    v->steer()->m_flee_on = true;
 
-    v->steer()->set_target(vec4(-5, -1.3f, -5, 1));
+    v->steer()->set_target(vec4(0, -1.3f, -12, 1));
 
     // general initializations
     glutInit(&argc, argv);

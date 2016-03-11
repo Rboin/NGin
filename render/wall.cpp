@@ -16,7 +16,7 @@ void render_wall(vec3 pos, vec3 look, vec3 scale) {
 
     glColor3f(.23921f, .6f, .69019f);
 
-    vec3 incr = scale / 2;
+    vec3 incr = scale / 2.0f;
 
     // front
     glPushMatrix();
