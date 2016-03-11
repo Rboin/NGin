@@ -14,7 +14,7 @@ void truncate (vec4 &v, float m) {
     if (v.z < -m) v.z = -m;
 }
 
-Vehicle::Vehicle (vec4 pos, vec4 rot, Vehicle &v) : MovingEntity(pos, rot, v) {
+Vehicle::Vehicle (vec4 pos, vec4 rot, vec4 scale, Vehicle &v) : MovingEntity(pos, rot, scale, v) {
     m_pSteering = new SteeringBehaviours(*this);
     m_deceleration = v.m_deceleration;
 }

@@ -66,10 +66,11 @@ private:
 protected:
     vec4 m_position;
     vec4 m_rotation;
+    vec4 m_scale;
 public:
     Entity () {}
 
-    Entity (vec4 pos, vec4 rot) : m_position(pos), m_rotation(rot) { }
+    Entity (vec4 pos, vec4 rot, vec4 scale) : m_position(pos), m_rotation(rot), m_scale(scale) { }
 
     virtual void update (int time_elapsed) = 0;
 
@@ -79,9 +80,17 @@ public:
 };
 
 
-class Obstacle : Entity {
+struct box {
+    vec4    a, b, c, d, e, f, g, h;
+    box(vec4 _a, vec4 _b, vec4 _c, vec4 _d, vec4 _e, vec4 _f, vec4 _g, vec4 _h) {
+        a = _a;b = _b;c = _c;d = _d;e = _e;f = _f;g = _g;h = _h;
+    }
+};
+
+
+class Obstacle : public Entity {
 public:
-    Obstacle (vec4 pos, vec4 rot) : Entity(pos, rot) { }
+    Obstacle (vec4 pos, vec4 rot, vec4 scale);
     void update (int time_elapsed);
     void render () const;
 };
@@ -103,7 +112,7 @@ public:
 
     MovingEntity (float, float, float, float);
 
-    MovingEntity (vec4 pos, vec4 rot, MovingEntity &stereotype) : Entity(pos, rot) {
+    MovingEntity (vec4 pos, vec4 rot, vec4 scale, MovingEntity &stereotype) : Entity(pos, rot, scale) {
         m_mass = stereotype.m_mass;
         m_speed = stereotype.m_speed;
         m_force = stereotype.m_force;
@@ -123,11 +132,10 @@ private:
     SteeringBehaviours *m_pSteering = NULL;
     Deceleration m_deceleration;
 public:
-    Vehicle ();
 
     Vehicle (float, float, float, float, Deceleration);
 
-    Vehicle (vec4 pos, vec4 rot, Vehicle &v);
+    Vehicle (vec4 pos, vec4 rot, vec4 scale, Vehicle &v);
 
     ~Vehicle ();
 

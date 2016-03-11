@@ -4,7 +4,7 @@
 
 #include "render.h"
 
-void render_wall(vec3 pos, vec3 look) {
+void render_wall(vec3 pos, vec3 look, vec3 scale) {
     glPushMatrix();
     glTranslatef(pos.x, pos.y, pos.z);
     if (look.x)
@@ -14,40 +14,42 @@ void render_wall(vec3 pos, vec3 look) {
     if (look.z)
         glRotatef(look.z, 0, 0, 1);
 
-    glColor3f(.8f, .8f, .8f);
+    glColor3f(.23921f, .6f, .69019f);
+
+    vec3 incr = scale / 2;
 
     // front
     glPushMatrix();
-    glTranslatef(.15f,0,.15f);
-    glRectf(0, 0, -2, -2);
+    glTranslatef(-incr.x,incr.y,-incr.z);
+    glRectf(0, 0, scale.x, -scale.y);
     glPopMatrix();
 
     // back
     glPushMatrix();
-    glTranslatef(.15f,0,-.15f);
-    glRectf(0, 0, -2, -2);
+    glTranslatef(-incr.x,incr.y,incr.z);
+    glRectf(0, 0, scale.x, -scale.y);
     glPopMatrix();
 
     // left side
     glPushMatrix();
-    glTranslatef(.15f,-2,.15f);
+    glTranslatef(-incr.x,incr.y,incr.z);
     glRotatef(90, 0, 1, 0);
-    glRectf(0,0,.3f,2);
+    glRectf(0,0,scale.z,-scale.y);
     glPopMatrix();
 
     // right side
     glPushMatrix();
-    glTranslatef(-1.85f,-2,.15f);
+    glTranslatef(incr.x,incr.y,incr.z);
     glRotatef(90, 0, 1, 0);
-    glRectf(0,0,.3f,2);
+    glRectf(0,0,scale.z,-scale.y);
     glPopMatrix();
 
     // top
     glPushMatrix();
-    glTranslatef(-1.85f,0,.15f);
-    glRotatef(90, 0, 1, 0);
+    glTranslatef(incr.x,incr.y,-incr.z);
+    glRotatef(-90, 0, 1, 0);
     glRotatef(90, 1, 0, 0);
-    glRectf(0,0,.3f,2);
+    glRectf(0,0,scale.z,scale.y);
     glPopMatrix();
 
     glPopMatrix();

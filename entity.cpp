@@ -12,10 +12,14 @@ MovingEntity::MovingEntity(float mass, float speed, float force, float turn_rate
     m_turn_rate = turn_rate;
 }
 
+Obstacle::Obstacle (vec4 pos, vec4 rot, vec4 scale) : Entity(pos, rot, scale)  {
+
+}
+
 void Obstacle::update(int time_elapsed) {
 
 };
 
 void Obstacle::render() const {
-    render_wall(vec3(m_position), vec3(m_rotation));
+    render_wall(vec3(m_position), vec3(m_rotation), vec3(m_scale));
 };

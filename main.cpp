@@ -20,15 +20,21 @@ int main(int argc, char **argv) {
 
     Maze * maze = new Maze(10, 10);
 
+    vec4 wall_scale(vec4(2, 2, .3f, 1));
+
     // top
     for (int j = 0; j < maze->get_width(); j++) {
-        Obstacle * wall = new Obstacle(vec4(j*2+1, 0, 0, 0), vec4());
+        if(j == maze->get_width()/2)
+            continue;
+        Obstacle * wall = new Obstacle(vec4(j*2, 0, -1, 0), vec4(), wall_scale);
         world->add_obstacle(*wall);
     }
 
-    // bottom
-    for (int j = 0; j < maze->get_width(); j++) {
-        Obstacle * wall = new Obstacle(vec4(j*2+1, 0, 21, 0), vec4());
+    // left
+    for (int j = 0; j < maze->get_height(); j++) {
+        if(j == maze->get_height()/2)
+            continue;
+        Obstacle * wall = new Obstacle(vec4(-1, 0, j*2, 0), vec4(0,90,0,0), wall_scale);
         world->add_obstacle(*wall);
     }
 
@@ -39,14 +45,14 @@ int main(int argc, char **argv) {
             int p = ((i/2) * maze->get_width()) + (j/2);
 
             // bottom is not open
-            if(!maze->is_open(p, false)) {
-                Obstacle * wall = new Obstacle(vec4(i+.15f, 0, j+1, 0), vec4());
+            if(!maze->is_open(p, false) && !(j == maze->get_width() && i == maze->get_height()*2-2)) {
+                Obstacle * wall = new Obstacle(vec4(j, 0, i+1, 0), vec4(), wall_scale);
                 world->add_obstacle(*wall);
             }
 
             // right is not open
-            if(!maze->is_open(p, true)) {
-                Obstacle * wall = new Obstacle(vec4(i+1, 0, j+.3f, 0), vec4(0,90,0,0));
+            if(!maze->is_open(p, true) && !(j == maze->get_width()*2-2 && i == maze->get_height())) {
+                Obstacle * wall = new Obstacle(vec4(j+1, 0, i, 0), vec4(0,90,0,0), wall_scale);
                 world->add_obstacle(*wall);
             }
 
@@ -60,7 +66,7 @@ int main(int argc, char **argv) {
                     .3f,    // turn rate
                     Deceleration::normal);
 
-    Vehicle * v = new Vehicle(vec4(5,-1.3,-5,1), vec4(), snowmen);
+    Vehicle * v = new Vehicle(vec4(5,-1.3,-5,1), vec4(), vec4(), snowmen);
 
     world->add_vehicle(*v);
 
