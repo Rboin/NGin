@@ -11,7 +11,7 @@ vec4 SteeringBehaviours::calc () {
         steeringForce += seek(m_cur_tar);
 
     if(m_arrive_on)
-        steeringForce += arrive(m_cur_tar, Deceleration::slow);
+        steeringForce += arrive(m_cur_tar, m_pVehicle->m_deceleration);
 
     return steeringForce;
 }
@@ -60,7 +60,7 @@ vec4 SteeringBehaviours::arrive (vec4 &target, Deceleration deceleration) {
 
     if (distance > 0) {
 
-        const float decelerationTweaker = .03f;
+        const float decelerationTweaker = .005f;
 
         float speed = distance / ((float) deceleration / decelerationTweaker);
 

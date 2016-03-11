@@ -10,9 +10,25 @@ void resize(int w, int h);
 void render();
 void update();
 
-Vehicle * v = new Vehicle();
+World * world;
 
 int main(int argc, char **argv) {
+
+    Vehicle snowmen(1.3f,   // mass
+                    .003f,  // speed
+                    .1f,    // force
+                    .3f,    // turn rate
+                    Deceleration::normal);
+
+    Vehicle * v = new Vehicle(vec4(5,-1.3,-5,1), vec4(), snowmen);
+
+    world = new World();
+    world->add_vehicle(*v);
+
+    v->steer()->m_arrive_on = true;
+    v->steer()->m_seek_on = false;
+
+    v->steer()->set_target(vec4(-5, -1.3f, -5, 1));
 
     // general initializations
     glutInit(&argc, argv);
@@ -46,7 +62,7 @@ void update() {
     int delta = current_time - elapsed_time;
     elapsed_time = current_time;
 
-    v->update(delta);
+    world->update(delta);
     glutPostRedisplay();
 }
 
@@ -64,7 +80,7 @@ void render() {
 
     render_ground();
 
-    v->render();
+    world->render();
 
     glutSwapBuffers(); // Make it all visible
 }

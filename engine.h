@@ -16,22 +16,42 @@
 
 using namespace glm;
 
-void truncate(vec4&, float);
+void truncate (vec4 &, float);
 
 class World;
+
 class Entity;
+
+class Obstacle;
+
 class MovingEntity;
+
 class Vehicle;
+
 class SteeringBehaviours;
 
+enum Deceleration {
+    slow = 3,
+    normal = 2,
+    fast = 1
+};
+
+
+typedef std::vector<Vehicle *>::iterator vit;
 
 class World {
 private:
-    std::vector<Entity*> m_entities;
+    vec2 m_ground;
+    std::vector<Vehicle *> m_vehicles;
 
 public:
-    void update(int time_elapsed);
-    void render() const;
+    void update (int time_elapsed);
+
+    void render ();
+
+    void reset ();
+
+    void add_vehicle (Vehicle &);
 };
 
 
@@ -42,9 +62,21 @@ protected:
     vec4 m_position;
     vec4 m_rotation;
 public:
-    void update(int time_elapsed);
-    void render() const;
+    Entity () {}
+
+    Entity (vec4 pos, vec4 rot) : m_position(pos), m_rotation(rot) { }
+
+    virtual void update (int time_elapsed) = 0;
+
+    virtual void render () const = 0;
+
     friend class SteeringBehaviours;
+};
+
+
+class Obstacle : Entity {
+public:
+    Obstacle (vec4 pos, vec4 rot) : Entity(pos, rot) { }
 };
 
 
@@ -60,30 +92,47 @@ protected:
     vec4 m_heading;
     vec4 m_side;
 public:
+    MovingEntity () {}
 
-    void update(int time_elapsed);
-    void render() const;
+    MovingEntity (float, float, float, float);
+
+    MovingEntity (vec4 pos, vec4 rot, MovingEntity &stereotype) : Entity(pos, rot) {
+        m_mass = stereotype.m_mass;
+        m_speed = stereotype.m_speed;
+        m_force = stereotype.m_force;
+        m_turn_rate = stereotype.m_turn_rate;
+    }
+
+    virtual void update (int time_elapsed) = 0;
+
+    virtual void render () const = 0;
+
     friend class SteeringBehaviours;
 };
 
 
 class Vehicle : public MovingEntity {
 private:
-    SteeringBehaviours * m_pSteering = NULL;
+    SteeringBehaviours *m_pSteering = NULL;
+    Deceleration m_deceleration;
 public:
-    Vehicle();
+    Vehicle ();
+
+    Vehicle (float, float, float, float, Deceleration);
+
+    Vehicle (vec4 pos, vec4 rot, Vehicle &v);
+
     ~Vehicle ();
 
-    void update(int time_elapsed);
-    void render() const;
+    void set_deceleration (Deceleration &d);
+
+    void update (int time_elapsed);
+
+    void render () const;
+
+    SteeringBehaviours *steer () { return m_pSteering; }
+
     friend class SteeringBehaviours;
-};
-
-
-enum Deceleration {
-    slow = 3,
-    normal = 2,
-    fast = 1
 };
 
 
@@ -97,20 +146,26 @@ public:
 
     vec4 m_cur_tar;
 private:
-    Vehicle * m_pVehicle;
+    Vehicle *m_pVehicle;
 
-    vec4 seek(vec4&);
-    vec4 flee(vec4&);
-    vec4 arrive(vec4&, Deceleration);
+    vec4 seek (vec4 &);
+
+    vec4 flee (vec4 &);
+
+    vec4 arrive (vec4 &, Deceleration);
+
 public:
-    SteeringBehaviours(Vehicle &v) : m_pVehicle(&v) {}
+    SteeringBehaviours (Vehicle &v) : m_pVehicle(&v) { }
 
-    vec4 calc();
-    vec4 forward_comp();
-    vec4 side_comp();
+    vec4 calc ();
 
-    void set_path();
-    void set_target(vec4);
+    vec4 forward_comp ();
+
+    vec4 side_comp ();
+
+    void set_path ();
+
+    void set_target (vec4);
 
 };
 
