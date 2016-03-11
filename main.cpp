@@ -4,6 +4,8 @@
 #include "render/render.h"
 #include "camera.h"
 
+#include "maze/maze.h"
+
 using namespace std;
 
 void resize(int w, int h);
@@ -14,6 +16,44 @@ World * world;
 
 int main(int argc, char **argv) {
 
+    world = new World();
+
+    Maze * maze = new Maze(10, 10);
+
+    // top
+    for (int j = 0; j < maze->get_width(); j++) {
+        Obstacle * wall = new Obstacle(vec4(j*2+1, 0, 0, 0), vec4());
+        world->add_obstacle(*wall);
+    }
+
+    // bottom
+    for (int j = 0; j < maze->get_width(); j++) {
+        Obstacle * wall = new Obstacle(vec4(j*2+1, 0, 21, 0), vec4());
+        world->add_obstacle(*wall);
+    }
+
+    for (int i = 0; i < maze->get_height()*2; i+=2) {
+
+        for (int j = 0; j < maze->get_width()*2; j+=2) {
+
+            int p = ((i/2) * maze->get_width()) + (j/2);
+
+            // bottom is not open
+            if(!maze->is_open(p, false)) {
+                Obstacle * wall = new Obstacle(vec4(i+.15f, 0, j+1, 0), vec4());
+                world->add_obstacle(*wall);
+            }
+
+            // right is not open
+            if(!maze->is_open(p, true)) {
+                Obstacle * wall = new Obstacle(vec4(i+1, 0, j+.3f, 0), vec4(0,90,0,0));
+                world->add_obstacle(*wall);
+            }
+
+        }
+
+    }
+
     Vehicle snowmen(1.3f,   // mass
                     .003f,  // speed
                     .1f,    // force
@@ -22,7 +62,6 @@ int main(int argc, char **argv) {
 
     Vehicle * v = new Vehicle(vec4(5,-1.3,-5,1), vec4(), snowmen);
 
-    world = new World();
     world->add_vehicle(*v);
 
     v->steer()->m_arrive_on = true;

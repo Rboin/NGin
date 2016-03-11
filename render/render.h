@@ -15,4 +15,6 @@ void render_outlaw(vec3, vec3);
 
 void render_ground();
 
+void render_wall(vec3,vec3);
+
 #endif //SNOWMENS_RENDER_H

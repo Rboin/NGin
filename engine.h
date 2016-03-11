@@ -40,11 +40,13 @@ enum Deceleration {
 
 
 typedef std::vector<Vehicle *>::iterator vit;
+typedef std::vector<Obstacle *>::iterator oit;
 
 class World {
 private:
     vec2 m_ground;
     std::vector<Vehicle *> m_vehicles;
+    std::vector<Obstacle *> m_obstacles;
 
 public:
     void update (int time_elapsed);
@@ -54,6 +56,7 @@ public:
     void reset ();
 
     void add_vehicle (Vehicle &);
+    void add_obstacle(Obstacle &);
 };
 
 
@@ -79,6 +82,8 @@ public:
 class Obstacle : Entity {
 public:
     Obstacle (vec4 pos, vec4 rot) : Entity(pos, rot) { }
+    void update (int time_elapsed);
+    void render () const;
 };
 
 
