@@ -66,8 +66,6 @@ vec4 SteeringBehaviours::arrive (vec4 &target, Deceleration deceleration) {
 
         speed = min(speed, m_pVehicle->m_speed);
 
-        std::cout << "min speed " << speed << std::endl;
-
         vec4 desired_velocity = toTarget * speed / distance;
 
         return desired_velocity - m_pVehicle->m_velocity;

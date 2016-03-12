@@ -9,14 +9,14 @@ int middleButton = 0;
 int rightButton = 0;
 
 // variables to translating and rotating the objects in the scene
-float translate_x = 0.0f, translate_y = -15.0f, translate_z = -15.0f;
+float translate_x = 0.0f, translate_y = -5.0f, translate_z = -10.0f;
 float rot_x = 0.0f, rot_y = 0.0f, rot_z = 0.0f;
-float scale_x = 1.0f, scale_y = 1.0f, scale_z = 1.0f;
+float scale_x = .6f, scale_y = .6f, scale_z = .6f;
 float previousX = 0.0f, previousY = 0.0f, previousZ = 0.0f;
 
 //  Camera position, look at position, up vector
 double eyeX = 0, eyeY = 0, eyeZ = 0;
-double centerX = 0, centerY = -1, centerZ = -1;
+double centerX = 0, centerY = -1, centerZ = -2;
 double upX = 0, upY = 1, upZ = 0;
 
 void mouse_move(int x, int y) {

@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
 
     world = new World();
 
-    Maze * maze = new Maze(10, 10);
+    Maze * maze = new Maze(50, 50);
 
     vec4 wall_scale(vec4(2, 2, .3f, 1));
 
@@ -60,21 +60,42 @@ int main(int argc, char **argv) {
 
     }
 
-    Vehicle snowmen(3.3f,   // mass
-                    .003f,  // speed
+    Vehicle snowmen(100.0f,   // mass
+                    .004f,  // speed
                     .1f,    // force
                     .3f,    // turn rate
                     Deceleration::slow);
 
     Vehicle * v = new Vehicle(vec4(0,-1.3f,0,1), vec4(), vec4(), snowmen);
+    Vehicle * v1 = new Vehicle(vec4(0,-1.3f,0,1), vec4(), vec4(), snowmen);
+    Vehicle * v2 = new Vehicle(vec4(0,-1.3f,0,1), vec4(), vec4(), snowmen);
+    Vehicle * v3 = new Vehicle(vec4(0,-1.3f,0,1), vec4(), vec4(), snowmen);
 
     world->add_vehicle(*v);
+    world->add_vehicle(*v1);
+    world->add_vehicle(*v2);
+    world->add_vehicle(*v3);
 
     v->steer()->m_arrive_on = true;
     v->steer()->m_seek_on = false;
     v->steer()->m_flee_on = true;
 
-    v->steer()->set_target(vec4(0, -1.3f, -12, 1));
+    v1->steer()->m_arrive_on = true;
+    v1->steer()->m_seek_on = false;
+    v1->steer()->m_flee_on = true;
+
+    v2->steer()->m_arrive_on = true;
+    v2->steer()->m_seek_on = false;
+    v2->steer()->m_flee_on = true;
+
+    v3->steer()->m_arrive_on = true;
+    v3->steer()->m_seek_on = false;
+    v3->steer()->m_flee_on = true;
+
+    v->steer()->set_target(vec4(0, -1.3f, -52, 1));
+    v1->steer()->set_target(vec4(0, -1.3f, 52, 1));
+    v2->steer()->set_target(vec4(-52, -1.3f, 0, 1));
+    v3->steer()->set_target(vec4(52, -1.3f, 0, 1));
 
     // general initializations
     glutInit(&argc, argv);
