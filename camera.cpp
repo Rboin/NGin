@@ -16,7 +16,7 @@ float previousX = 0.0f, previousY = 0.0f, previousZ = 0.0f;
 
 //  Camera position, look at position, up vector
 double eyeX = 0, eyeY = 0, eyeZ = 0;
-double centerX = 0, centerY = -1, centerZ = -2;
+double centerX = 0, centerY = 0, centerZ = -1;
 double upX = 0, upY = 1, upZ = 0;
 
 void mouse_move(int x, int y) {

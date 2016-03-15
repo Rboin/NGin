@@ -1,10 +1,7 @@
 #include <iostream>
 
-#include "engine.h"
-#include "render/render.h"
+#include "world.h"
 #include "camera.h"
-
-#include "maze/maze.h"
 
 using namespace std;
 
@@ -16,49 +13,7 @@ World * world;
 
 int main(int argc, char **argv) {
 
-    world = new World();
-
-    Maze * maze = new Maze(50, 50);
-
-    vec4 wall_scale(vec4(2, 2, .3f, 1));
-
-    // top
-    for (int j = 0; j < maze->get_width(); j++) {
-        if(j == maze->get_width()/2)
-            continue;
-        Obstacle * wall = new Obstacle(vec4(j*2-maze->get_width(), 0, -1-maze->get_height(), 0), vec4(), wall_scale);
-        world->add_obstacle(*wall);
-    }
-
-    // left
-    for (int j = 0; j < maze->get_height(); j++) {
-        if(j == maze->get_height()/2)
-            continue;
-        Obstacle * wall = new Obstacle(vec4(-1-maze->get_width(), 0, j*2-maze->get_height(), 0), vec4(0,90,0,0), wall_scale);
-        world->add_obstacle(*wall);
-    }
-
-    for (int i = 0; i < maze->get_height()*2; i+=2) {
-
-        for (int j = 0; j < maze->get_width()*2; j+=2) {
-
-            int p = ((i/2) * maze->get_width()) + (j/2);
-
-            // bottom is not open
-            if(!maze->is_open(p, false) && !(j == maze->get_width() && i == maze->get_height()*2-2)) {
-                Obstacle * wall = new Obstacle(vec4(j-maze->get_width(), 0, i+1-maze->get_height(), 0), vec4(), wall_scale);
-                world->add_obstacle(*wall);
-            }
-
-            // right is not open
-            if(!maze->is_open(p, true) && !(j == maze->get_width()*2-2 && i == maze->get_height())) {
-                Obstacle * wall = new Obstacle(vec4(j+1-maze->get_width(), 0, i-maze->get_height(), 0), vec4(0,90,0,0), wall_scale);
-                world->add_obstacle(*wall);
-            }
-
-        }
-
-    }
+    world = new MazeWorld();
 
     Vehicle snowmen(100.0f,   // mass
                     .004f,  // speed
@@ -71,10 +26,10 @@ int main(int argc, char **argv) {
     Vehicle * v2 = new Vehicle(vec4(0,-1.3f,0,1), vec4(), vec4(), snowmen);
     Vehicle * v3 = new Vehicle(vec4(0,-1.3f,0,1), vec4(), vec4(), snowmen);
 
-    world->add_vehicle(*v);
-    world->add_vehicle(*v1);
-    world->add_vehicle(*v2);
-    world->add_vehicle(*v3);
+    world->add_vehicle(v);
+    world->add_vehicle(v1);
+    world->add_vehicle(v2);
+    world->add_vehicle(v3);
 
     v->steer()->m_arrive_on = true;
     v->steer()->m_seek_on = false;

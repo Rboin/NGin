@@ -2,8 +2,7 @@
 // Created by Erik on 3/10/2016.
 //
 
-#include "engine.h"
-#include "render/render.h"
+#include "vehicle.h"
 
 void truncate (vec4 &v, float m) {
     if (v.x > m) v.x = m;
