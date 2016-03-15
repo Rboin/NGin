@@ -5,6 +5,10 @@
 #ifndef SNOWMENS_STEERING_H
 #define SNOWMENS_STEERING_H
 
+#define SEEK_ON     1
+#define FLEE_ON     2
+#define ARRIVE_ON   4
+
 #include "engine.h"
 
 enum Deceleration {
@@ -15,14 +19,12 @@ enum Deceleration {
 
 class SteeringBehaviours {
 public:
-    bool m_seek_on;
-    bool m_flee_on;
-    bool m_arrive_on;
 
     float m_panic_distance;
 
     vec4 m_cur_tar;
 private:
+    int m_status;
     Vehicle *m_pVehicle;
 
     vec4 seek (vec4 &);
@@ -43,6 +45,9 @@ public:
     void set_path ();
 
     void set_target (vec4);
+
+    void set_status(int s);
+    bool is_status(int s);
 
 };
 

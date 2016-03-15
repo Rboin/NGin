@@ -31,21 +31,10 @@ int main(int argc, char **argv) {
     world->add_vehicle(v2);
     world->add_vehicle(v3);
 
-    v->steer()->m_arrive_on = true;
-    v->steer()->m_seek_on = false;
-    v->steer()->m_flee_on = true;
-
-    v1->steer()->m_arrive_on = true;
-    v1->steer()->m_seek_on = false;
-    v1->steer()->m_flee_on = true;
-
-    v2->steer()->m_arrive_on = true;
-    v2->steer()->m_seek_on = false;
-    v2->steer()->m_flee_on = true;
-
-    v3->steer()->m_arrive_on = true;
-    v3->steer()->m_seek_on = false;
-    v3->steer()->m_flee_on = true;
+    v->steer()->set_status(ARRIVE_ON | FLEE_ON);
+    v1->steer()->set_status(ARRIVE_ON | FLEE_ON);
+    v2->steer()->set_status(ARRIVE_ON | FLEE_ON);
+    v3->steer()->set_status(ARRIVE_ON | FLEE_ON);
 
     v->steer()->set_target(vec4(0, -1.3f, -52, 1));
     v1->steer()->set_target(vec4(0, -1.3f, 52, 1));

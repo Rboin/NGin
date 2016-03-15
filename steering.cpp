@@ -7,10 +7,10 @@
 vec4 SteeringBehaviours::calc () {
     vec4 steeringForce;
 
-    if(m_seek_on)
+    if(is_status(SEEK_ON))
         steeringForce += seek(m_cur_tar);
 
-    if(m_arrive_on)
+    if(is_status(ARRIVE_ON))
         steeringForce += arrive(m_cur_tar, m_pVehicle->m_deceleration);
 
     return steeringForce;
@@ -72,4 +72,12 @@ vec4 SteeringBehaviours::arrive (vec4 &target, Deceleration deceleration) {
     }
 
     return vec4();
+}
+
+void SteeringBehaviours::set_status (int s) {
+    m_status = s;
+}
+
+bool SteeringBehaviours::is_status (int s) {
+    return (m_status & s) == 0;
 }
