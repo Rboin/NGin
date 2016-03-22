@@ -15,6 +15,8 @@
 #define BACKWARD 16
 #define LEFT     32
 #define RIGHT    64
+#define UPWARD   128
+#define DOWNWARD 256
 
 int state;
 
@@ -24,40 +26,36 @@ vec2 prevMouseMovement;
 
 bool btnLeft, btnRight, btnScroll;
 
-void key_press(unsigned char key, Camera &camera) {
+void keyPress(unsigned char key) {
     switch(key) {
         case ESC:
+        case 'q':
             exit(0);
         case 'f':
             glutFullScreen();
             break;
-        case 'q':
-            camera.rot.y -= .1f;
-            break;
-        case 'e':
-            camera.rot.y += .1f;
-            break;
         case 'w':
-            camera.trans.z += .1f;
+            state ^= FORWARD;
             break;
         case 's':
-            camera.trans.z -= .1f;
+            state ^= BACKWARD;
             break;
         case 'a':
-            camera.trans.x += .1f;
+            state ^= LEFT;
             break;
         case 'd':
-            camera.trans.x -= .1f;
+            state ^= RIGHT;
             break;
         case 'x':
-            camera.trans.y += .1f;
+            state ^= UPWARD;
             break;
         case 'z':
-            camera.trans.y -= .1f;
+            state ^= DOWNWARD;
+            break;
     }
 }
 
-void mouse_click(int btn, int btnState, int x, int y) {
+void mouseClick(int btn, int btnState, int x, int y) {
 
     if (btn == GLUT_LEFT_BUTTON) {
         state ^= BUTTON_LEFT;
@@ -75,21 +73,60 @@ void mouse_click(int btn, int btnState, int x, int y) {
 
 }
 
-void mouse_move(int x, int y, Camera &camera) {
+void mouseMove(int x, int y, Camera &camera) {
 
-    if ((state & BUTTON_LEFT) == state) {
-        camera.rot.y += radians(prevMouseMovement.x - x);
+    if ((state & BUTTON_LEFT) == BUTTON_LEFT) {
+        camera.rot.y += radians(prevMouseMovement.x - x) * 4.2f;
+//        float xrad = prevMouseMovement.y - y;
+//
+//        if (xrad > 0) {
+//            xrad = radians(xrad);
+//            camera.rot.x += cos(xrad);
+//            camera.rot.z += sin(xrad);
+//        } else {
+//            xrad = radians(xrad);
+//            camera.rot.x -= cos(xrad);
+//            camera.rot.z -= sin(xrad);
+//        }
         prevMouseMovement = vec2(x,y);
     }
 
-    if ((state & BUTTON_RIGHT) == state) {
+    if ((state & BUTTON_RIGHT) == BUTTON_RIGHT) {
         camera.trans.y -= (prevMouseMovement.y - y) * .2f;
         prevMouseMovement = vec2(x,y);
     }
 
-    if ((state & BUTTON_SCROLL) == state) {
+    if ((state & BUTTON_SCROLL) == BUTTON_SCROLL) {
         camera.scale -= (prevMouseMovement.y - y) * .2f;
         prevMouseMovement = vec2(x,y);
+    }
+
+}
+
+void updateCamera(Camera &c) {
+
+    if ((state & FORWARD) == FORWARD) {
+        c.trans.z += .1f;
+    }
+
+    if ((state & BACKWARD) == BACKWARD) {
+        c.trans.z -= .1f;
+    }
+
+    if ((state & LEFT) == LEFT) {
+        c.trans.x += .1f;
+    }
+
+    if ((state & RIGHT) == RIGHT) {
+        c.trans.x -= .1f;
+    }
+
+    if ((state & UPWARD) == UPWARD) {
+        c.trans.y += .1f;
+    }
+
+    if ((state & DOWNWARD) == DOWNWARD) {
+        c.trans.y -= .1f;
     }
 
 }

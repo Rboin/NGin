@@ -1,3 +1,4 @@
+#version 120
 
 uniform vec3 ambient;
 uniform vec3 diffuse;
@@ -7,13 +8,13 @@ uniform float power;
 
 //uniform sampler2D sampler;
 
-varying vec4 color;
+//varying vec4 color;
 
-attribute vec2 tex_cor;
+varying vec2 tex_cor;
 
-attribute vec3 N;
-attribute vec3 L;
-attribute vec3 V;
+varying vec3 N;
+varying vec3 L;
+varying vec3 V;
 
 void main() {
 
@@ -23,6 +24,6 @@ void main() {
 
     vec3 specularation = pow(max(dot(V, R), 0.0f), power) * specular;
 
-    color = vec4(ambient + diffusion + specularation, 1.0f);
+    gl_FragColor = vec4(ambient + diffusion + specularation, 1.0f);
 
 }

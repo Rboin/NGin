@@ -1,21 +1,20 @@
-#version 430 core
-
+#version 120
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
 uniform vec3 light;
 
-in vec3 position;
-in vec3 normal;
-in vec2 texture_coordinate;
+attribute vec3 position;
+attribute vec3 normal;
+attribute vec2 texture_coordinate;
 
 // pass the texture coordinate straight to the fragment shader
-out vec2 tex_cor;
+varying vec2 tex_cor;
 
-out vec3 N;
-out vec3 L;
-out vec3 V;
+varying vec3 N;
+varying vec3 L;
+varying vec3 V;
 
 void main() {
 

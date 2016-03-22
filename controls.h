@@ -24,11 +24,12 @@ struct Camera {
     vec3 posDelta;
 };
 
+void updateCamera(Camera &);
 mat4 getViewMatrix(const Camera &);
 mat4 getProjectionMatrix(const Camera &);
 
-void mouse_click(int btn, int btnState, int x, int y);
-void mouse_move(int x, int y, Camera &camera);
-void key_press(unsigned char key, Camera&);
+void mouseClick(int btn, int btnState, int x, int y);
+void mouseMove(int x, int y, Camera &);
+void keyPress(unsigned char key);
 
 #endif //GAME_ENGINE_CONTROLS_H

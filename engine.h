@@ -6,6 +6,7 @@
 #define GAME_ENGINE_ENGINE_H
 
 #include <GL/glew.h>
+#include <GL/gl.h>
 #include <GL/glut.h>
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
