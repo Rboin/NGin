@@ -10,7 +10,6 @@ in vec3 position;
 in vec3 normal;
 in vec2 texture_coordinate;
 
-// pass the texture coordinate straight to the fragment shader
 out vec2 tex_cor;
 
 out vec3 N;
