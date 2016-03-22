@@ -1,4 +1,3 @@
-#version 430 core
 
 uniform vec3 ambient;
 uniform vec3 diffuse;
@@ -8,13 +7,13 @@ uniform float power;
 
 //uniform sampler2D sampler;
 
-out vec4 color;
+varying vec4 color;
 
-in vec2 tex_cor;
+attribute vec2 tex_cor;
 
-in vec3 N;
-in vec3 L;
-in vec3 V;
+attribute vec3 N;
+attribute vec3 L;
+attribute vec3 V;
 
 void main() {
 
