@@ -16,12 +16,9 @@ struct Camera {
 
     vec3 trans;
     vec3 scale;
-    vec3 rot;
 
     vec3 pos;
-    vec3 tar;
-
-    vec3 posDelta;
+    quat rot;
 };
 
 mat4 getViewMatrix(const Camera &);

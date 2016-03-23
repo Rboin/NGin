@@ -32,28 +32,29 @@ void key_press(unsigned char key, Camera &camera) {
             glutFullScreen();
             break;
         case 'q':
-            camera.rot.y -= .1f;
+            //camera.rot.y -= .1f;
             break;
         case 'e':
-            camera.rot.y += .1f;
+            //camera.rot.y += .1f;
             break;
         case 'w':
-            camera.trans.z += .1f;
+            //camera.trans.z += .1f;
             break;
         case 's':
-            camera.trans.z -= .1f;
+            //camera.trans.z -= .1f;
             break;
         case 'a':
-            camera.trans.x += .1f;
+            //camera.trans.x += .1f;
             break;
         case 'd':
-            camera.trans.x -= .1f;
+            //camera.trans.x -= .1f;
             break;
         case 'x':
-            camera.trans.y += .1f;
+            //camera.trans.y += .1f;
             break;
         case 'z':
-            camera.trans.y -= .1f;
+            //camera.trans.y -= .1f;
+            break;
     }
 }
 
@@ -78,25 +79,28 @@ void mouse_click(int btn, int btnState, int x, int y) {
 void mouse_move(int x, int y, Camera &camera) {
 
     if ((state & BUTTON_LEFT) == state) {
-        camera.rot.y += radians(prevMouseMovement.x - x);
+        //quat xrot(1,0,0, (prevMouseMovement.x - x) * 0.002f);
+        //quat yrot(0,1,0, (prevMouseMovement.y - y) * 0.002f);
+        //camera.rot = yrot * (camera.rot * xrot);
+        //std::cout << to_string(camera.rot) << std::endl;
+        //camera.rot.y += radians(prevMouseMovement.x - x);
         prevMouseMovement = vec2(x,y);
     }
 
     if ((state & BUTTON_RIGHT) == state) {
-        camera.trans.y -= (prevMouseMovement.y - y) * .2f;
+        //camera.trans.y -= (prevMouseMovement.y - y) * .2f;
         prevMouseMovement = vec2(x,y);
     }
 
     if ((state & BUTTON_SCROLL) == state) {
-        camera.scale -= (prevMouseMovement.y - y) * .2f;
+        //camera.scale -= (prevMouseMovement.y - y) * .2f;
         prevMouseMovement = vec2(x,y);
     }
 
 }
 
 mat4 getViewMatrix(const Camera & c) {
-    return  translate(c.trans)* lookAt(c.pos * c.scale, c.tar, UP) *
-            (rotate(c.rot.z, vec3(0,0,1)) * rotate(c.rot.y, vec3(0,1,0)) * rotate(c.rot.x, vec3(1,0,0)));
+    return  toMat4(c.rot) * translate(c.pos);
 }
 
 mat4 getProjectionMatrix(const Camera & c) {

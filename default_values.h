@@ -21,9 +21,8 @@ namespace defaults {
             100.0f, // far plane
             vec3(), // translation
             vec3(4.0f),// scale
-            vec3(0,0,0), // rotation
-            vec3(0, 0, -1), // position
-            vec3(), // target
+            vec3(0, 0, -5), // position
+            quat(-1, 0, 0, 0), // rotation lookat -x thus left
     };
 
     Material solidRed {
