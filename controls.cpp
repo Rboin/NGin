@@ -34,7 +34,7 @@
 
 int state;
 
-const vec3 UP(0,1,0), SCALE(.01f);
+const vec3 UP(0,1,0), SCALE(.001f);
 
 vec2 prevMouseMovement;
 
@@ -102,7 +102,7 @@ void mouseMove(int x, int y, Camera &camera) {
     } else if ((state & BUTTON_RIGHT) == BUTTON_RIGHT) {
 
     } else if ((state & BUTTON_SCROLL) == BUTTON_SCROLL) {
-
+        camera.dist = max(camera.dist + (prevMouseMovement.y - y) * .1f, 0.0f);
     }
 
     prevMouseMovement = vec2(x,y);
@@ -138,7 +138,7 @@ void updateCamera(Camera &c) {
 }
 
 mat4 getViewMatrix(const Camera & c) {
-    return  lookAt(c.pos, c.pos + c.dir * SCALE, UP);//translate(c.pos) * toMat4(c.rot);
+    return lookAt(c.pos - c.dist * c.dir, c.pos + c.dir, UP);//translate(c.pos) * toMat4(c.rot);
 }
 
 mat4 getProjectionMatrix(const Camera & c) {

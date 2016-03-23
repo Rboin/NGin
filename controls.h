@@ -30,6 +30,7 @@ struct Camera {
 
     vec3 pos;
     vec3 dir;
+    vec3 dist;
 };
 
 void updateCamera(Camera &);

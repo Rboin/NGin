@@ -58,7 +58,16 @@ void draw () {
     mat4 view = getViewMatrix(camera);
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "view"), 1, GL_FALSE, value_ptr(view));
 
-    mat4 trans = translate(vec3(-4.0f,0,4.0f));
+    mat4 trans;
+
+    if (length2(camera.dist) > 1.0f) {
+        trans = translate(camera.pos);
+        glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
+        drawMaterial(defaults::solidRed, shader_program);
+        drawMesh(pyramid, GL_TRIANGLES);
+    }
+
+    trans = translate(vec3(-4.0f,0,4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
     drawMaterial(defaults::solidRed, shader_program);
     drawMesh(cube, GL_TRIANGLES);
