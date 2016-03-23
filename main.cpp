@@ -34,10 +34,11 @@ vec3 lightPosition(0, 1, -4);
 void construct_shader();
 void construct_meshes();
 
-void update() {
+void update(int delta) {
     updateCamera(camera);
 
     glutPostRedisplay();
+    glutTimerFunc(20, update, delta+1);
 };
 
 void resize (int w, int h) {
@@ -96,6 +97,7 @@ void keyPress(unsigned char key, int, int) {
 
 void mouseMove(int x, int y) {
     mouseMove(x, y, camera);
+    glutPostRedisplay();
 }
 
 void special_key(int i, int x, int y) {
@@ -113,8 +115,8 @@ int main (int argc, char **argv) {
 
     glutReshapeFunc(resize);
     glutDisplayFunc(draw);
-    glutIdleFunc(update);
-    glutIgnoreKeyRepeat(GLUT_KEY_REPEAT_OFF);
+    glutIgnoreKeyRepeat(1);
+    glutTimerFunc(200, update, 0);
     glutKeyboardFunc(keyPress);
     glutKeyboardUpFunc(keyPress);
     glutMotionFunc(mouseMove);

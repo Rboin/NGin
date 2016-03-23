@@ -34,7 +34,7 @@
 
 int state;
 
-const vec3 UP(0,1,0), SCALE(.001f);
+const vec3 UP(0,1,0), SCALE(.1f);
 
 vec2 prevMouseMovement;
 
@@ -102,7 +102,7 @@ void mouseMove(int x, int y, Camera &camera) {
     } else if ((state & BUTTON_RIGHT) == BUTTON_RIGHT) {
 
     } else if ((state & BUTTON_SCROLL) == BUTTON_SCROLL) {
-        camera.dist = max(camera.dist + (prevMouseMovement.y - y) * .1f, 0.0f);
+        camera.dist = max(camera.dist - (prevMouseMovement.y - y) * .1f, 0.0f);
     }
 
     prevMouseMovement = vec2(x,y);
