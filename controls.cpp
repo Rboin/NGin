@@ -120,11 +120,11 @@ void updateCamera(Camera &c) {
     }
 
     if ((state & LEFT) == LEFT) {
-        c.pos.x += .01f;
+        c.pos -= cross(c.dir, UP) * SCALE;
     }
 
     if ((state & RIGHT) == RIGHT) {
-        c.pos.x -= .01f;
+        c.pos += cross(c.dir, UP) * SCALE;
     }
 
     if ((state & UPWARD) == UPWARD) {
