@@ -33,10 +33,11 @@ namespace defaults {
             600.0f, // viewing height
             0.1f,   // near plane
             100.0f, // far plane
-            vec3(), // translation
-            vec3(4.0f),// scale
-            vec3(0, 0, -5), // position
-            quat(-1, 0, 0, 0), // rotation lookat -x thus left
+            //vec3(), // translation
+            //vec3(4.0f),// scale
+            vec3(0, 0, 0), // position
+            vec3(0, 0, 1), // direction
+            //quat(0, 0, 1, 0), // rotation lookat -x thus left
     };
 
     Material solidRed {

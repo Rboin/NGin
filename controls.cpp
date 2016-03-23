@@ -34,11 +34,9 @@
 
 int state;
 
-const vec3 UP(0,1,0);
+const vec3 UP(0,1,0), SCALE(.01f);
 
 vec2 prevMouseMovement;
-
-bool btnLeft, btnRight, btnScroll;
 
 void keyPress(unsigned char key) {
     switch(key) {
@@ -89,54 +87,58 @@ void mouseClick(int btn, int btnState, int x, int y) {
 
 void mouseMove(int x, int y, Camera &camera) {
 
+    // http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-17-quaternions/
+
     if ((state & BUTTON_LEFT) == BUTTON_LEFT) {
-        //camera.rot.y -= radians((prevMouseMovement.x - x) * 10);
-        //camera.tar.y += radians(prevMouseMovement.y - y);
-        prevMouseMovement = vec2(x,y);
+
+        vec3 axis = cross(camera.dir, UP);
+        quat pitch = angleAxis(radians(prevMouseMovement.y - y), axis);
+        quat yaw = angleAxis(radians(prevMouseMovement.x - x), UP);
+
+        quat dir = normalize(cross(pitch, yaw));
+
+        camera.dir = rotate(dir, camera.dir);
+
+    } else if ((state & BUTTON_RIGHT) == BUTTON_RIGHT) {
+
+    } else if ((state & BUTTON_SCROLL) == BUTTON_SCROLL) {
+
     }
 
-    if ((state & BUTTON_RIGHT) == BUTTON_RIGHT) {
-        //camera.trans.y -= (prevMouseMovement.y - y) * .2f;
-        prevMouseMovement = vec2(x,y);
-    }
-
-    if ((state & BUTTON_SCROLL) == BUTTON_SCROLL) {
-        //camera.scale -= (prevMouseMovement.y - y) * .2f;
-        prevMouseMovement = vec2(x,y);
-    }
+    prevMouseMovement = vec2(x,y);
 
 }
 
 void updateCamera(Camera &c) {
 
     if ((state & FORWARD) == FORWARD) {
-        c.trans.z += .1f;
+        c.pos += c.dir * SCALE;
     }
 
     if ((state & BACKWARD) == BACKWARD) {
-        c.trans.z -= .1f;
+        c.pos -= c.dir * SCALE;
     }
 
     if ((state & LEFT) == LEFT) {
-        c.trans.x += .1f;
+        c.pos.x += .01f;
     }
 
     if ((state & RIGHT) == RIGHT) {
-        c.trans.x -= .1f;
+        c.pos.x -= .01f;
     }
 
     if ((state & UPWARD) == UPWARD) {
-        c.trans.y += .1f;
+        c.pos += UP * SCALE;
     }
 
     if ((state & DOWNWARD) == DOWNWARD) {
-        c.trans.y -= .1f;
+        c.pos -= UP * SCALE;
     }
 
 }
 
 mat4 getViewMatrix(const Camera & c) {
-    return  toMat4(c.rot) * translate(c.pos);
+    return  lookAt(c.pos, c.pos + c.dir * SCALE, UP);//translate(c.pos) * toMat4(c.rot);
 }
 
 mat4 getProjectionMatrix(const Camera & c) {

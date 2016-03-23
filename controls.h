@@ -28,11 +28,8 @@ struct Camera {
     float viewNearPlane;
     float viewFarPlane;
 
-    vec3 trans;
-    vec3 scale;
-
     vec3 pos;
-    quat rot;
+    vec3 dir;
 };
 
 void updateCamera(Camera &);
