@@ -1,3 +1,21 @@
+/*
+ *  Modern OpenGL Game Engine C/C++
+ *  Copyright (C) 2016  Erik Nijenhuis
+
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <iostream>
 
 #include "mesh.h"
@@ -17,7 +35,7 @@ void construct_shader();
 void construct_meshes();
 
 void update() {
-    //camera.rot.y -= .0001f;
+    updateCamera(camera);
 
     glutPostRedisplay();
 };
@@ -32,8 +50,9 @@ void resize (int w, int h) {
 }
 
 void draw () {
-    glClearBufferfv(GL_COLOR, 0, value_ptr(defaults::color_black));
-    glClear(GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.0f,0.0f,0.0f,1.0f);
+    //glClearBufferfv(GL_COLOR, 0, value_ptr(defaults::color_black));
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glUseProgram(shader_program);
 
     mat4 view = getViewMatrix(camera);
@@ -62,12 +81,12 @@ void draw () {
     glutSwapBuffers();
 }
 
-void key_press(unsigned char key, int x, int y) {
-    key_press(key, camera);
+void keyPress(unsigned char key, int, int) {
+    keyPress(key);
 }
 
 void mouseMove(int x, int y) {
-    mouse_move(x, y, camera);
+    mouseMove(x, y, camera);
 }
 
 void special_key(int i, int x, int y) {
@@ -78,7 +97,7 @@ void special_key(int i, int x, int y) {
 int main (int argc, char **argv) {
 
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGBA);
+    glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(800, 600);
     glutCreateWindow("Some program...");
@@ -86,14 +105,14 @@ int main (int argc, char **argv) {
     glutReshapeFunc(resize);
     glutDisplayFunc(draw);
     glutIdleFunc(update);
-    glutKeyboardFunc(key_press);
+    glutIgnoreKeyRepeat(GLUT_KEY_REPEAT_OFF);
+    glutKeyboardFunc(keyPress);
+    glutKeyboardUpFunc(keyPress);
     glutMotionFunc(mouseMove);
-    glutMouseFunc(mouse_click);
+    glutMouseFunc(mouseClick);
     glutSpecialFunc(special_key);
 
     glewInit();
-
-    glEnable(GL_DEPTH_TEST);
 
     construct_shader();
     construct_meshes();
@@ -101,6 +120,8 @@ int main (int argc, char **argv) {
     glUseProgram(shader_program);
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "projection"), 1, GL_FALSE, value_ptr(projection));
     glUniform3fv(glGetUniformLocation(shader_program, "light"), 1, value_ptr(lightPosition));
+
+    glEnable(GL_DEPTH_TEST);
 
     glutMainLoop();
 

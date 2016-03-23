@@ -1,6 +1,20 @@
-//
-// Created by Erik on 3/21/2016.
-//
+/*
+ *  Modern OpenGL Game Engine C/C++
+ *  Copyright (C) 2016  Erik Nijenhuis
+
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #ifndef GAME_ENGINE_CONTROLS_H
 #define GAME_ENGINE_CONTROLS_H
@@ -21,11 +35,12 @@ struct Camera {
     quat rot;
 };
 
+void updateCamera(Camera &);
 mat4 getViewMatrix(const Camera &);
 mat4 getProjectionMatrix(const Camera &);
 
-void mouse_click(int btn, int btnState, int x, int y);
-void mouse_move(int x, int y, Camera &camera);
-void key_press(unsigned char key, Camera&);
+void mouseClick(int btn, int btnState, int x, int y);
+void mouseMove(int x, int y, Camera &);
+void keyPress(unsigned char key);
 
 #endif //GAME_ENGINE_CONTROLS_H
