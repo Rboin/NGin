@@ -21,16 +21,19 @@
 
 #define ESC 27
 
+ //Mouse controls
 #define BUTTON_LEFT     1
 #define BUTTON_RIGHT    2
-#define BUTTON_SCROLL   4
+#define BUTTON_SCROLL_UP   4
+#define BUTTON_SCROLL_DOWN   8
 
-#define FORWARD  8
-#define BACKWARD 16
-#define LEFT     32
-#define RIGHT    64
-#define UPWARD   128
-#define DOWNWARD 256
+ //Keyboard controls
+#define FORWARD  16
+#define BACKWARD 32
+#define LEFT     64
+#define RIGHT    128
+#define UPWARD   256
+#define DOWNWARD 512
 
 int state;
 
@@ -77,12 +80,19 @@ void mouseClick(int btn, int btnState, int x, int y) {
         state ^= BUTTON_RIGHT;
     }
 
-    if (btn == GLUT_MIDDLE_BUTTON) {
-        state ^= BUTTON_SCROLL;
-    }
-
     prevMouseMovement = vec2(x,y);
 
+}
+
+void mouseWheel(int btn, int dir, int x, int y, Camera & camera)
+{
+	if (dir > 0)
+	{
+		camera.distance -= 0.2f;
+	}
+	else {
+		camera.distance += 0.2f;
+	}
 }
 
 void mouseMove(int x, int y, Camera &camera) {
@@ -101,38 +111,38 @@ void mouseMove(int x, int y, Camera &camera) {
 
     } else if ((state & BUTTON_RIGHT) == BUTTON_RIGHT) {
 
-    } else if ((state & BUTTON_SCROLL) == BUTTON_SCROLL) {
-        camera.distance = max(camera.distance - (prevMouseMovement.y - y) * .1f, 0.0f);
-    }
+    } //else if ((state & BUTTON_SCROLL) == BUTTON_SCROLL) {
+    //    camera.distance = max(camera.distance - (prevMouseMovement.y - y) * .1f, 0.0f);
+    //}
 
     prevMouseMovement = vec2(x,y);
 
 }
 
-void updateCamera(Camera &c) {
+void updateCamera(Camera & camera) {
 
     if ((state & FORWARD) == FORWARD) {
-        c.position += c.direction * SCALE;
+		camera.position += camera.direction * SCALE;
     }
 
     if ((state & BACKWARD) == BACKWARD) {
-        c.position -= c.direction * SCALE;
+		camera.position -= camera.direction * SCALE;
     }
 
     if ((state & LEFT) == LEFT) {
-        c.position -= cross(c.direction, UP) * SCALE;
+		camera.position -= cross(camera.direction, UP) * SCALE;
     }
 
     if ((state & RIGHT) == RIGHT) {
-        c.position += cross(c.direction, UP) * SCALE;
+		camera.position += cross(camera.direction, UP) * SCALE;
     }
 
     if ((state & UPWARD) == UPWARD) {
-        c.position += UP * SCALE;
+		camera.position += UP * SCALE;
     }
 
     if ((state & DOWNWARD) == DOWNWARD) {
-        c.position -= UP * SCALE;
+		camera.position -= UP * SCALE;
     }
 
 }

@@ -97,7 +97,11 @@ void keyPress(unsigned char key, int, int) {
 
 void mouseMove(int x, int y) {
     mouseMove(x, y, camera);
-    glutPostRedisplay();
+}
+
+void mouseWheel(int btn, int dir, int x, int y)
+{
+	mouseWheel(btn, dir, x, y, camera);
 }
 
 void special_key(int i, int x, int y) {
@@ -122,6 +126,7 @@ int main (int argc, char **argv) {
     glutMotionFunc(mouseMove);
     glutMouseFunc(mouseClick);
     glutSpecialFunc(special_key);
+	glutMouseWheelFunc(mouseWheel);
 
     glewInit();
 

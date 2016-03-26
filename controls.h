@@ -33,7 +33,7 @@ struct Camera {
 
     vec3 position;
     vec3 direction;
-    vec3 distance;
+    float distance;
 
 	CameraType type;
 	CameraPerspective perspective;
@@ -46,5 +46,5 @@ mat4 getProjectionMatrix(const Camera &);
 void mouseClick(int btn, int btnState, int x, int y);
 void mouseMove(int x, int y, Camera &);
 void keyPress(unsigned char key);
-
+void mouseWheel(int btn, int dir, int x, int y, Camera &);
 #endif //GAME_ENGINE_CONTROLS_H
