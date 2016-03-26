@@ -39,6 +39,8 @@ namespace defaults {
             vec3(0, 0, 1), // direction
             vec3(4),// distance of target
             //quat(0, 0, 1, 0), // rotation lookat -x thus left
+			CameraType::freemovable,
+			CameraPerspective::thirdperson
     };
 
     Material solidRed {

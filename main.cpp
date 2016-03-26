@@ -61,31 +61,31 @@ void draw () {
 
     mat4 trans;
 
-    if (length2(camera.dist) > 1.0f) {
-        trans = translate(camera.pos);
+    if (length2(camera.distance) > 1.0f) {
+        trans = translate(camera.position);
         glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-        drawMaterial(defaults::solidRed, shader_program);
+        setMaterial(defaults::solidRed, shader_program);
         drawMesh(pyramid, GL_TRIANGLES);
     }
 
     trans = translate(vec3(-4.0f,0,4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-    drawMaterial(defaults::solidRed, shader_program);
+	setMaterial(defaults::solidRed, shader_program);
     drawMesh(cube, GL_TRIANGLES);
 
     trans = translate(vec3(4.0f,0,4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-    drawMaterial(defaults::softBlue, shader_program);
+	setMaterial(defaults::softBlue, shader_program);
     drawMesh(pyramid, GL_TRIANGLES);
 
     trans = translate(vec3(-4.0f,0,-4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-    drawMaterial(defaults::solidGreen, shader_program);
+	setMaterial(defaults::solidGreen, shader_program);
     drawMesh(pyramid, GL_TRIANGLES);
 
     trans = translate(vec3(4.0f,0,-4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-    drawMaterial(defaults::softOrange, shader_program);
+	setMaterial(defaults::softOrange, shader_program);
     drawMesh(cube, GL_TRIANGLES);
 
     glutSwapBuffers();

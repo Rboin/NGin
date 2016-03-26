@@ -91,18 +91,18 @@ void mouseMove(int x, int y, Camera &camera) {
 
     if ((state & BUTTON_LEFT) == BUTTON_LEFT) {
 
-        vec3 axis = cross(camera.dir, UP);
+        vec3 axis = cross(camera.direction, UP);
         quat pitch = angleAxis(radians(prevMouseMovement.y - y), axis);
         quat yaw = angleAxis(radians(prevMouseMovement.x - x), UP);
 
         quat dir = normalize(cross(pitch, yaw));
 
-        camera.dir = rotate(dir, camera.dir);
+        camera.direction = rotate(dir, camera.direction);
 
     } else if ((state & BUTTON_RIGHT) == BUTTON_RIGHT) {
 
     } else if ((state & BUTTON_SCROLL) == BUTTON_SCROLL) {
-        camera.dist = max(camera.dist - (prevMouseMovement.y - y) * .1f, 0.0f);
+        camera.distance = max(camera.distance - (prevMouseMovement.y - y) * .1f, 0.0f);
     }
 
     prevMouseMovement = vec2(x,y);
@@ -112,33 +112,33 @@ void mouseMove(int x, int y, Camera &camera) {
 void updateCamera(Camera &c) {
 
     if ((state & FORWARD) == FORWARD) {
-        c.pos += c.dir * SCALE;
+        c.position += c.direction * SCALE;
     }
 
     if ((state & BACKWARD) == BACKWARD) {
-        c.pos -= c.dir * SCALE;
+        c.position -= c.direction * SCALE;
     }
 
     if ((state & LEFT) == LEFT) {
-        c.pos -= cross(c.dir, UP) * SCALE;
+        c.position -= cross(c.direction, UP) * SCALE;
     }
 
     if ((state & RIGHT) == RIGHT) {
-        c.pos += cross(c.dir, UP) * SCALE;
+        c.position += cross(c.direction, UP) * SCALE;
     }
 
     if ((state & UPWARD) == UPWARD) {
-        c.pos += UP * SCALE;
+        c.position += UP * SCALE;
     }
 
     if ((state & DOWNWARD) == DOWNWARD) {
-        c.pos -= UP * SCALE;
+        c.position -= UP * SCALE;
     }
 
 }
 
 mat4 getViewMatrix(const Camera & c) {
-    return lookAt(c.pos - c.dist * c.dir, c.pos + c.dir, UP);//translate(c.pos) * toMat4(c.rot);
+    return lookAt(c.position - c.distance * c.direction, c.position + c.direction, UP);//translate(c.pos) * toMat4(c.rot);
 }
 
 mat4 getProjectionMatrix(const Camera & c) {

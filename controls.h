@@ -21,6 +21,9 @@
 
 #include "engine.h"
 
+enum CameraType { trackball, freemovable };
+enum CameraPerspective { firstperson, thirdperson };
+
 struct Camera {
     float viewAngle;
     float viewWidth;
@@ -28,9 +31,12 @@ struct Camera {
     float viewNearPlane;
     float viewFarPlane;
 
-    vec3 pos;
-    vec3 dir;
-    vec3 dist;
+    vec3 position;
+    vec3 direction;
+    vec3 distance;
+
+	CameraType type;
+	CameraPerspective perspective;
 };
 
 void updateCamera(Camera &);
