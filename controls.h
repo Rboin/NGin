@@ -40,18 +40,46 @@
 class Controls
 {
 private:
-	int state;
-	vec2 prevMouseMovement;
+	int _state = 0;
+	vec2 _lastClickCoordinates;
+	double _mouseWheelTravel = 0;
+	vec2 _mouseMoveCoordinates;
 public:
 	Controls();
 	void mouseClick(int btn, int btnState, int x, int y);
-	//void mouseMove(int x, int y, Camera &);
+	void mouseMove(int x, int y);
 	void keyPress(unsigned char key);
-	//void mouseWheel(int btn, int dir, int x, int y, Camera &);
+	void mouseWheel(int btn, int dir, int x, int y);
 	int getState()
 	{
-		return state;
+		return _state;
 	}
+
+	double getMouseWheelTravel()
+	{
+		return _mouseWheelTravel;
+	}
+
+	void resetMouseWheelTravel()
+	{
+		_mouseWheelTravel = 0;
+	}
+
+	vec2 getLastMouseClickCoordinates()
+	{
+		return _lastClickCoordinates;
+	}
+
+	vec2 getMouseMoveCoordinates()
+	{
+		return _mouseMoveCoordinates;
+	}
+
+	void setLastClickCoordinates(vec2 val)
+	{
+		_lastClickCoordinates = val;
+	}
+
 };
 
 #endif

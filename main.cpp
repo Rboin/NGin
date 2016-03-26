@@ -93,16 +93,21 @@ void draw () {
 }
 
 void keyPress(unsigned char key, int, int) {
-    //keyPress(key);
+    controls->keyPress(key);
 }
 
 void mouseMove(int x, int y) {
-    //mouseMove(x, y, camera);
+    controls->mouseMove(x, y);
 }
 
 void mouseWheel(int btn, int dir, int x, int y)
 {
-	//mouseWheel(btn, dir, x, y, camera);
+	controls->mouseWheel(btn, dir, x, y);
+}
+
+void mouseClick(int btn, int btnState, int x, int y)
+{
+	controls->mouseClick(btn, btnState, x, y);
 }
 
 void special_key(int i, int x, int y) {
@@ -111,8 +116,8 @@ void special_key(int i, int x, int y) {
 }
 
 int main (int argc, char **argv) {
-	controls = new Controls();
-	camera = new Camera(*controls);
+	controls = new Controls;
+	camera = new Camera(controls);
 	
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
@@ -127,7 +132,7 @@ int main (int argc, char **argv) {
     glutKeyboardFunc(keyPress);
     glutKeyboardUpFunc(keyPress);
     glutMotionFunc(mouseMove);
-    //glutMouseFunc(mouseClick);
+    glutMouseFunc(mouseClick);
     glutSpecialFunc(special_key);
 	glutMouseWheelFunc(mouseWheel);
 

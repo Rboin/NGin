@@ -19,6 +19,8 @@
 #include <iostream>
 #include "controls.h"
 
+using namespace std;
+
 Controls::Controls()
 {
 
@@ -33,77 +35,56 @@ void Controls::keyPress(unsigned char key) {
             glutFullScreen();
             break;
         case 'w':
-            state ^= FORWARD;
+            _state ^= FORWARD;
             break;
         case 's':
-            state ^= BACKWARD;
+            _state ^= BACKWARD;
             break;
         case 'a':
-            state ^= LEFT;
+            _state ^= LEFT;
             break;
         case 'd':
-            state ^= RIGHT;
+            _state ^= RIGHT;
             break;
         case 'x':
-            state ^= UPWARD;
+            _state ^= UPWARD;
             break;
         case 'z':
-            state ^= DOWNWARD;
+            _state ^= DOWNWARD;
             break;
     }
 }
 
 void Controls::mouseClick(int btn, int btnState, int x, int y) {
-
     if (btn == GLUT_LEFT_BUTTON) {
-        state ^= BUTTON_LEFT;
+        _state ^= BUTTON_LEFT;
     }
 
     if (btn == GLUT_RIGHT_BUTTON) {
-        state ^= BUTTON_RIGHT;
+        _state ^= BUTTON_RIGHT;
     }
 
-    prevMouseMovement = vec2(x,y);
-
+    _lastClickCoordinates = vec2(x,y);
+	
 }
-/*
-void mouseWheel(int btn, int dir, int x, int y, Camera & camera)
+
+
+void Controls::mouseWheel(int btn, int dir, int x, int y)
 {
 	if (dir > 0)
 	{
-		camera.distance -= 0.2f;
-	}
-	else {
-		camera.distance += 0.2f;
+		_mouseWheelTravel -= 0.2;
+	} else {
+		_mouseWheelTravel += 0.2;
 	}
 }
-*/
 
-/*
-void mouseMove(int x, int y, Camera &camera) {
-
-    // http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-17-quaternions/
-
-    if ((state & BUTTON_LEFT) == BUTTON_LEFT) {
-
-        vec3 axis = cross(camera.direction, UP);
-        quat pitch = angleAxis(radians(prevMouseMovement.y - y), axis);
-        quat yaw = angleAxis(radians(prevMouseMovement.x - x), UP);
-
-        quat dir = normalize(cross(pitch, yaw));
-
-        camera.direction = rotate(dir, camera.direction);
-
-    } else if ((state & BUTTON_RIGHT) == BUTTON_RIGHT) {
-
-    } //else if ((state & BUTTON_SCROLL) == BUTTON_SCROLL) {
-    //    camera.distance = max(camera.distance - (prevMouseMovement.y - y) * .1f, 0.0f);
-    //}
-
-    prevMouseMovement = vec2(x,y);
-
+void Controls::mouseMove(int x, int y)
+{
+	cout << x << "|" << y << endl;
+	_mouseMoveCoordinates = vec2(x, y);
 }
-*/
+
 
 
 

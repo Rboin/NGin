@@ -26,44 +26,44 @@ enum CameraType { trackball, freemovable };
 enum CameraPerspective { firstperson, thirdperson };
 
 class Camera {
-	float viewAngle;
-	float viewWidth;
-	float viewHeight;
-	float viewNearPlane;
-	float viewFarPlane;
+	float _viewAngle;
+	float _viewWidth;
+	float _viewHeight;
+	float _viewNearPlane;
+	float _viewFarPlane;
 
-	vec3 position;
-	vec3 direction;
-	float distance;
+	vec3 _position;
+	vec3 _direction;
+	float _distance;
 
-	CameraType type;
-	CameraPerspective perspective;
-	Controls controls;
+	CameraType _type;
+	CameraPerspective _perspective;
+	Controls *_controls;
 
 public:
-	Camera(Controls & c);
+	Camera(Controls *c);
 	void updateCamera();
 	mat4 getViewMatrix();
 	mat4 getProjectionMatrix();
 
 	float getDistance()
 	{
-		return distance;
+		return _distance;
 	}
 
 	vec3 getPosition()
 	{
-		return position;
+		return _position;
 	}
 
 	void setViewWidth(float w)
 	{
-		viewWidth = w;
+		_viewWidth = w;
 	}
 
 	void setViewHeight(float h)
 	{
-		viewHeight = h;
+		_viewHeight = h;
 	}
 };
 
