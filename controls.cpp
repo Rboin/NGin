@@ -21,9 +21,9 @@
 
 using namespace std;
 
-Controls::Controls()
+void Controls::update()
 {
-
+	
 }
 
 void Controls::keyPress(unsigned char key) {
@@ -65,7 +65,6 @@ void Controls::mouseClick(int btn, int btnState, int x, int y) {
     }
 
     _lastClickCoordinates = vec2(x,y);
-	
 }
 
 
@@ -79,10 +78,15 @@ void Controls::mouseWheel(int btn, int dir, int x, int y)
 	}
 }
 
-void Controls::mouseMove(int x, int y)
+void Controls::mouseDrag(int x, int y)
 {
-	cout << x << "|" << y << endl;
-	_mouseMoveCoordinates = vec2(x, y);
+	_lastDragCoordinates = _mouseDragCoordinates;
+	_mouseDragCoordinates = vec2(x, y);
+}
+
+void Controls::mouseLocation(int x, int y)
+{
+	_mouseCoordinates = vec2(x, y);
 }
 
 

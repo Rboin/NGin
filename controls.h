@@ -34,6 +34,7 @@
 #define RIGHT    128
 #define UPWARD   256
 #define DOWNWARD 512
+#define BUTTON_LEFT_UP 1024
 
 #include "engine.h"
 
@@ -41,13 +42,17 @@ class Controls
 {
 private:
 	int _state = 0;
-	vec2 _lastClickCoordinates;
+	vec2 _lastClickCoordinates = vec2();
+	vec2 _lastDragCoordinates = vec2();
 	double _mouseWheelTravel = 0;
-	vec2 _mouseMoveCoordinates;
+	vec2 _mouseDragCoordinates;
+	vec2 _mouseCoordinates;
 public:
-	Controls();
+	Controls() { };
+	void update();
 	void mouseClick(int btn, int btnState, int x, int y);
-	void mouseMove(int x, int y);
+	void mouseDrag(int x, int y);
+	void mouseLocation(int x, int y);
 	void keyPress(unsigned char key);
 	void mouseWheel(int btn, int dir, int x, int y);
 	int getState()
@@ -70,9 +75,19 @@ public:
 		return _lastClickCoordinates;
 	}
 
-	vec2 getMouseMoveCoordinates()
+	vec2 getLastMouseDragCoordinates()
 	{
-		return _mouseMoveCoordinates;
+		return _lastDragCoordinates;
+	}
+
+	vec2 getMouseDragCoordinates()
+	{
+		return _mouseDragCoordinates;
+	}
+
+	vec2 getMouseCoordinates()
+	{
+		return _mouseCoordinates;
 	}
 
 	void setLastClickCoordinates(vec2 val)

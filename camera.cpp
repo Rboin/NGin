@@ -13,14 +13,45 @@ Camera::Camera(Controls *c)
 	_viewNearPlane = 0.1f;
 	_viewFarPlane = 100.0f;
 	_position = vec3(0, 0, 0);
-	_direction = vec3(0, 0, 1);
-	_distance = 4.0f;
-	_type = CameraType::freemovable;
+	_direction = vec3(1, -1, 1);
+	_distance = 2.0f;
+	_type = CameraType::trackball;
 	_perspective = CameraPerspective::thirdperson;
 	_controls = c;
 }
 
-void Camera::updateCamera() {
+void Camera::setCameraType(CameraType type)
+{
+	switch (type)
+	{
+	case CameraType::trackball:
+		//Set trackball defaults
+
+		_distance = 2.0f;
+		_direction = vec3(1, -1, 1);
+		break;
+	case CameraType::freemovable:
+		//Set trackball defaults
+
+		break;
+	}
+
+	_type = type;
+}
+
+void Camera::update() {
+	if (_type == CameraType::freemovable)
+	{
+		updateFreeMovable();
+	}
+	else {
+		updateTrackBall();
+	}
+}
+
+vec2 lastMouseLocation;
+void Camera::updateFreeMovable()
+{
 	if ((_controls->getState() & FORWARD) == FORWARD) {
 		_position += _direction * SCALE;
 	}
@@ -44,19 +75,31 @@ void Camera::updateCamera() {
 	if ((_controls->getState() & DOWNWARD) == DOWNWARD) {
 		_position -= UP * SCALE;
 	}
-	
+
 	if (_controls->getMouseWheelTravel() != 0)
 	{
 		_distance += _controls->getMouseWheelTravel();
 		_controls->resetMouseWheelTravel();
 	}
 
-	// http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-17-quaternions/
-	//^ Awesome link indeed :D
+	vec2 mouseState = _controls->getMouseCoordinates();
+
+	vec3 axis = cross(_direction, UP);
+	quat pitch = angleAxis(radians(lastMouseLocation.y - mouseState.y), axis);
+	quat yaw = angleAxis(radians(lastMouseLocation.x - mouseState.x), UP);
+	quat dir = normalize(cross(pitch, yaw));
+	_direction = rotate(dir, _direction);
+
+	lastMouseLocation = mouseState;
+}
+
+void Camera::updateTrackBall()
+{
 	if ((_controls->getState() & BUTTON_LEFT) == BUTTON_LEFT)
 	{
-		vec2 mouseState = _controls->getMouseMoveCoordinates();
-		vec2 lastClicked = _controls->getLastMouseClickCoordinates();
+		
+		vec2 mouseState = _controls->getMouseDragCoordinates();
+		vec2 lastClicked = _controls->getLastMouseDragCoordinates();
 
 		vec3 axis = cross(_direction, UP);
 		quat pitch = angleAxis(radians(lastClicked.y - mouseState.y), axis);

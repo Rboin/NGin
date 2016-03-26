@@ -40,9 +40,12 @@ class Camera {
 	CameraPerspective _perspective;
 	Controls *_controls;
 
+	void updateFreeMovable();
+	void updateTrackBall();
+
 public:
 	Camera(Controls *c);
-	void updateCamera();
+	void update();
 	mat4 getViewMatrix();
 	mat4 getProjectionMatrix();
 
@@ -65,6 +68,9 @@ public:
 	{
 		_viewHeight = h;
 	}
+
+	void setCameraType(CameraType type);
+	void setCameraPerspective(CameraPerspective perspective);
 };
 
 

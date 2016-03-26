@@ -36,8 +36,8 @@ void construct_shader();
 void construct_meshes();
 
 void update(int delta) {
-	camera->updateCamera();
-
+	camera->update();
+	controls->update();
     glutPostRedisplay();
     glutTimerFunc(20, update, delta+1);
 };
@@ -62,32 +62,10 @@ void draw () {
 
     mat4 trans;
 
-    if (length2(camera->getDistance()) > 1.0f) {
-        trans = translate(camera->getPosition());
-        glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-        setMaterial(defaults::solidRed, shader_program);
-        drawMesh(pyramid, GL_TRIANGLES);
-    }
 
-    trans = translate(vec3(-4.0f,0,4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
 	setMaterial(defaults::solidRed, shader_program);
-    drawMesh(cube, GL_TRIANGLES);
-
-    trans = translate(vec3(4.0f,0,4.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-	setMaterial(defaults::softBlue, shader_program);
-    drawMesh(pyramid, GL_TRIANGLES);
-
-    trans = translate(vec3(-4.0f,0,-4.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-	setMaterial(defaults::solidGreen, shader_program);
-    drawMesh(pyramid, GL_TRIANGLES);
-
-    trans = translate(vec3(4.0f,0,-4.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-	setMaterial(defaults::softOrange, shader_program);
-    drawMesh(cube, GL_TRIANGLES);
+    drawMesh(plane, GL_TRIANGLES);
 
     glutSwapBuffers();
 }
@@ -96,10 +74,14 @@ void keyPress(unsigned char key, int, int) {
     controls->keyPress(key);
 }
 
-void mouseMove(int x, int y) {
-    controls->mouseMove(x, y);
+void mouseDrag(int x, int y) {
+    controls->mouseDrag(x, y);
 }
 
+void mouseLocation(int x, int y)
+{
+	controls->mouseLocation(x, y);
+}
 void mouseWheel(int btn, int dir, int x, int y)
 {
 	controls->mouseWheel(btn, dir, x, y);
@@ -131,10 +113,11 @@ int main (int argc, char **argv) {
     glutTimerFunc(200, update, 0);
     glutKeyboardFunc(keyPress);
     glutKeyboardUpFunc(keyPress);
-    glutMotionFunc(mouseMove);
+    glutMotionFunc(mouseDrag);
     glutMouseFunc(mouseClick);
     glutSpecialFunc(special_key);
 	glutMouseWheelFunc(mouseWheel);
+	glutPassiveMotionFunc(mouseLocation);
 
     glewInit();
 
