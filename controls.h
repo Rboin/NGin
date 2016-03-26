@@ -19,32 +19,39 @@
 #ifndef GAME_ENGINE_CONTROLS_H
 #define GAME_ENGINE_CONTROLS_H
 
+#define ESC 27
+
+ //Mouse controls
+#define BUTTON_LEFT     1
+#define BUTTON_RIGHT    2
+#define BUTTON_SCROLL_UP   4
+#define BUTTON_SCROLL_DOWN   8
+
+ //Keyboard controls
+#define FORWARD  16
+#define BACKWARD 32
+#define LEFT     64
+#define RIGHT    128
+#define UPWARD   256
+#define DOWNWARD 512
+
 #include "engine.h"
 
-enum CameraType { trackball, freemovable };
-enum CameraPerspective { firstperson, thirdperson };
-
-struct Camera {
-    float viewAngle;
-    float viewWidth;
-    float viewHeight;
-    float viewNearPlane;
-    float viewFarPlane;
-
-    vec3 position;
-    vec3 direction;
-    float distance;
-
-	CameraType type;
-	CameraPerspective perspective;
+class Controls
+{
+private:
+	int state;
+	vec2 prevMouseMovement;
+public:
+	Controls();
+	void mouseClick(int btn, int btnState, int x, int y);
+	//void mouseMove(int x, int y, Camera &);
+	void keyPress(unsigned char key);
+	//void mouseWheel(int btn, int dir, int x, int y, Camera &);
+	int getState()
+	{
+		return state;
+	}
 };
 
-void updateCamera(Camera &);
-mat4 getViewMatrix(const Camera &);
-mat4 getProjectionMatrix(const Camera &);
-
-void mouseClick(int btn, int btnState, int x, int y);
-void mouseMove(int x, int y, Camera &);
-void keyPress(unsigned char key);
-void mouseWheel(int btn, int dir, int x, int y, Camera &);
-#endif //GAME_ENGINE_CONTROLS_H
+#endif

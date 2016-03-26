@@ -19,29 +19,12 @@
 #include <iostream>
 #include "controls.h"
 
-#define ESC 27
+Controls::Controls()
+{
 
- //Mouse controls
-#define BUTTON_LEFT     1
-#define BUTTON_RIGHT    2
-#define BUTTON_SCROLL_UP   4
-#define BUTTON_SCROLL_DOWN   8
+}
 
- //Keyboard controls
-#define FORWARD  16
-#define BACKWARD 32
-#define LEFT     64
-#define RIGHT    128
-#define UPWARD   256
-#define DOWNWARD 512
-
-int state;
-
-const vec3 UP(0,1,0), SCALE(.1f);
-
-vec2 prevMouseMovement;
-
-void keyPress(unsigned char key) {
+void Controls::keyPress(unsigned char key) {
     switch(key) {
         case ESC:
         case 'q':
@@ -70,7 +53,7 @@ void keyPress(unsigned char key) {
     }
 }
 
-void mouseClick(int btn, int btnState, int x, int y) {
+void Controls::mouseClick(int btn, int btnState, int x, int y) {
 
     if (btn == GLUT_LEFT_BUTTON) {
         state ^= BUTTON_LEFT;
@@ -83,7 +66,7 @@ void mouseClick(int btn, int btnState, int x, int y) {
     prevMouseMovement = vec2(x,y);
 
 }
-
+/*
 void mouseWheel(int btn, int dir, int x, int y, Camera & camera)
 {
 	if (dir > 0)
@@ -94,7 +77,9 @@ void mouseWheel(int btn, int dir, int x, int y, Camera & camera)
 		camera.distance += 0.2f;
 	}
 }
+*/
 
+/*
 void mouseMove(int x, int y, Camera &camera) {
 
     // http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-17-quaternions/
@@ -118,43 +103,7 @@ void mouseMove(int x, int y, Camera &camera) {
     prevMouseMovement = vec2(x,y);
 
 }
+*/
 
-void updateCamera(Camera & camera) {
 
-    if ((state & FORWARD) == FORWARD) {
-		camera.position += camera.direction * SCALE;
-    }
 
-    if ((state & BACKWARD) == BACKWARD) {
-		camera.position -= camera.direction * SCALE;
-    }
-
-    if ((state & LEFT) == LEFT) {
-		camera.position -= cross(camera.direction, UP) * SCALE;
-    }
-
-    if ((state & RIGHT) == RIGHT) {
-		camera.position += cross(camera.direction, UP) * SCALE;
-    }
-
-    if ((state & UPWARD) == UPWARD) {
-		camera.position += UP * SCALE;
-    }
-
-    if ((state & DOWNWARD) == DOWNWARD) {
-		camera.position -= UP * SCALE;
-    }
-
-}
-
-mat4 getViewMatrix(const Camera & c) {
-    return lookAt(c.position - c.distance * c.direction, c.position + c.direction, UP);//translate(c.pos) * toMat4(c.rot);
-}
-
-mat4 getProjectionMatrix(const Camera & c) {
-    return perspectiveFov(c.viewAngle,
-                          c.viewWidth,
-                          c.viewHeight,
-                          c.viewNearPlane,
-                          c.viewFarPlane);
-}

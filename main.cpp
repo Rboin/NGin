@@ -21,12 +21,13 @@
 #include "mesh.h"
 #include "controls.h"
 #include "default_values.h"
-
+#include "camera.h"
 using namespace std;
 
 GLuint shader_program;
 
-Camera camera = defaults::camera;
+Camera *camera;
+Controls *controls;
 
 Mesh cone, cube, star, plane, pyramid;
 vec3 lightPosition(0, 1, -4);
@@ -35,16 +36,16 @@ void construct_shader();
 void construct_meshes();
 
 void update(int delta) {
-    updateCamera(camera);
+	camera->updateCamera();
 
     glutPostRedisplay();
     glutTimerFunc(20, update, delta+1);
 };
 
 void resize (int w, int h) {
-    camera.viewWidth = w;
-    camera.viewHeight = h;
-    mat4 projection = getProjectionMatrix(camera);
+	camera->setViewWidth(w);
+	camera->setViewHeight(h);
+	mat4 projection = camera->getProjectionMatrix();
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "projection"), 1, GL_FALSE, value_ptr(projection));
     glViewport(0, 0, w, h);
     glutPostRedisplay();
@@ -56,13 +57,13 @@ void draw () {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glUseProgram(shader_program);
 
-    mat4 view = getViewMatrix(camera);
+	mat4 view = camera->getViewMatrix();
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "view"), 1, GL_FALSE, value_ptr(view));
 
     mat4 trans;
 
-    if (length2(camera.distance) > 1.0f) {
-        trans = translate(camera.position);
+    if (length2(camera->getDistance()) > 1.0f) {
+        trans = translate(camera->getPosition());
         glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
         setMaterial(defaults::solidRed, shader_program);
         drawMesh(pyramid, GL_TRIANGLES);
@@ -92,16 +93,16 @@ void draw () {
 }
 
 void keyPress(unsigned char key, int, int) {
-    keyPress(key);
+    //keyPress(key);
 }
 
 void mouseMove(int x, int y) {
-    mouseMove(x, y, camera);
+    //mouseMove(x, y, camera);
 }
 
 void mouseWheel(int btn, int dir, int x, int y)
 {
-	mouseWheel(btn, dir, x, y, camera);
+	//mouseWheel(btn, dir, x, y, camera);
 }
 
 void special_key(int i, int x, int y) {
@@ -110,7 +111,9 @@ void special_key(int i, int x, int y) {
 }
 
 int main (int argc, char **argv) {
-
+	controls = new Controls();
+	camera = new Camera(*controls);
+	
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(0, 0);
@@ -124,7 +127,7 @@ int main (int argc, char **argv) {
     glutKeyboardFunc(keyPress);
     glutKeyboardUpFunc(keyPress);
     glutMotionFunc(mouseMove);
-    glutMouseFunc(mouseClick);
+    //glutMouseFunc(mouseClick);
     glutSpecialFunc(special_key);
 	glutMouseWheelFunc(mouseWheel);
 
@@ -132,7 +135,7 @@ int main (int argc, char **argv) {
 
     construct_shader();
     construct_meshes();
-    mat4 projection = getProjectionMatrix(camera);
+	mat4 projection = camera->getProjectionMatrix();
     glUseProgram(shader_program);
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "projection"), 1, GL_FALSE, value_ptr(projection));
     glUniform3fv(glGetUniformLocation(shader_program, "light"), 1, value_ptr(lightPosition));

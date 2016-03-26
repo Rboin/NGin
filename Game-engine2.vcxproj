@@ -109,6 +109,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="controls.cpp" />
     <ClCompile Include="loader.cpp" />
     <ClCompile Include="main.cpp" />
@@ -116,6 +117,7 @@
     <ClCompile Include="mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="camera.h" />
     <ClInclude Include="controls.h" />
     <ClInclude Include="default_values.h" />
     <ClInclude Include="engine.h" />

@@ -20,56 +20,42 @@
 #define GAME_ENGINE_DEFAULTS_HPP
 
 #include "material.h"
-#include "controls.h"
 #include "mesh.h"
 
 namespace defaults {
 
-    vec4 color_black(0,0,0,1);
+	const vec4 color_black(0,0,0,1);
 
-    Camera camera = {
-            45.0f,  // viewing angle
-            800.0f, // viewing width
-            600.0f, // viewing height
-            0.1f,   // near plane
-            100.0f, // far plane
-            //vec3(), // translation
-            //vec3(4.0f),// scale
-            vec3(0, 0, 0), // position
-            vec3(0, 0, 1), // direction
-            4.0f,// distance of target
-            //quat(0, 0, 1, 0), // rotation lookat -x thus left
-			CameraType::freemovable,
-			CameraPerspective::thirdperson
-    };
-
-    Material solidRed {
+    const Material solidRed {
             vec3(1,.2f,.2f),
             vec3(.2f,.2f,.2f),
             vec3(.7f),
             100.0f
     };
 
-    Material softBlue {
+	const Material softBlue {
             vec3(.2f,.2f,1),
             vec3(.0f,.2f,.0f),
             vec3(.7f),
             10.0f
     };
 
-    Material solidGreen {
+	const Material solidGreen {
             vec3(.2f,1,.2f),
             vec3(.9f,.9f,.9f),
             vec3(.9f),
             100.0f
     };
 
-    Material softOrange {
+	const Material softOrange {
             vec3(.8f,.5f,.2f),
             vec3(.2f,.2f,.2f),
             vec3(.7f),
             10.0f
     };
+
+	const vec3 UP = vec3(0, 1, 0);
+	const vec3 SCALE = vec3(.1f);
 
 };
 
