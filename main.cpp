@@ -21,12 +21,13 @@
 #include "mesh.h"
 #include "controls.h"
 #include "default_values.h"
-
+#include "camera.h"
 using namespace std;
 
 GLuint shader_program;
 
-Camera camera = defaults::camera;
+Camera *camera;
+Controls *controls;
 
 Mesh cone, cube, star, plane, pyramid;
 vec3 lightPosition(0, 1, -4);
@@ -35,16 +36,16 @@ void construct_shader();
 void construct_meshes();
 
 void update(int delta) {
-    updateCamera(camera);
-
+	camera->update();
+	controls->update();
     glutPostRedisplay();
-    glutTimerFunc(20, update, delta+1);
+    glutTimerFunc(5, update, delta+1);
 };
 
 void resize (int w, int h) {
-    camera.viewWidth = w;
-    camera.viewHeight = h;
-    mat4 projection = getProjectionMatrix(camera);
+	camera->setViewWidth(w);
+	camera->setViewHeight(h);
+	mat4 projection = camera->getProjectionMatrix();
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "projection"), 1, GL_FALSE, value_ptr(projection));
     glViewport(0, 0, w, h);
     glutPostRedisplay();
@@ -56,48 +57,39 @@ void draw () {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glUseProgram(shader_program);
 
-    mat4 view = getViewMatrix(camera);
+	mat4 view = camera->getViewMatrix();
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "view"), 1, GL_FALSE, value_ptr(view));
 
     mat4 trans;
 
-    if (length2(camera.dist) > 1.0f) {
-        trans = translate(camera.pos);
-        glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-        drawMaterial(defaults::solidRed, shader_program);
-        drawMesh(pyramid, GL_TRIANGLES);
-    }
 
-    trans = translate(vec3(-4.0f,0,4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-    drawMaterial(defaults::solidRed, shader_program);
-    drawMesh(cube, GL_TRIANGLES);
-
-    trans = translate(vec3(4.0f,0,4.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-    drawMaterial(defaults::softBlue, shader_program);
-    drawMesh(pyramid, GL_TRIANGLES);
-
-    trans = translate(vec3(-4.0f,0,-4.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-    drawMaterial(defaults::solidGreen, shader_program);
-    drawMesh(pyramid, GL_TRIANGLES);
-
-    trans = translate(vec3(4.0f,0,-4.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-    drawMaterial(defaults::softOrange, shader_program);
-    drawMesh(cube, GL_TRIANGLES);
+	setMaterial(defaults::solidRed, shader_program);
+    drawMesh(plane, GL_TRIANGLES);
 
     glutSwapBuffers();
 }
 
 void keyPress(unsigned char key, int, int) {
-    keyPress(key);
+    controls->keyPress(key);
 }
 
-void mouseMove(int x, int y) {
-    mouseMove(x, y, camera);
-    glutPostRedisplay();
+void mouseDrag(int x, int y) {
+    controls->mouseDrag(x, y);
+}
+
+void mouseLocation(int x, int y)
+{
+	controls->mouseLocation(x, y);
+}
+void mouseWheel(int btn, int dir, int x, int y)
+{
+	controls->mouseWheel(btn, dir, x, y);
+}
+
+void mouseClick(int btn, int btnState, int x, int y)
+{
+	controls->mouseClick(btn, btnState, x, y);
 }
 
 void special_key(int i, int x, int y) {
@@ -106,7 +98,9 @@ void special_key(int i, int x, int y) {
 }
 
 int main (int argc, char **argv) {
-
+	controls = new Controls;
+	camera = new Camera(controls);
+	
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(0, 0);
@@ -119,15 +113,17 @@ int main (int argc, char **argv) {
     glutTimerFunc(200, update, 0);
     glutKeyboardFunc(keyPress);
     glutKeyboardUpFunc(keyPress);
-    glutMotionFunc(mouseMove);
+    glutMotionFunc(mouseDrag);
     glutMouseFunc(mouseClick);
     glutSpecialFunc(special_key);
+	glutMouseWheelFunc(mouseWheel);
+	glutPassiveMotionFunc(mouseLocation);
 
     glewInit();
 
     construct_shader();
     construct_meshes();
-    mat4 projection = getProjectionMatrix(camera);
+	mat4 projection = camera->getProjectionMatrix();
     glUseProgram(shader_program);
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "projection"), 1, GL_FALSE, value_ptr(projection));
     glUniform3fv(glGetUniformLocation(shader_program, "light"), 1, value_ptr(lightPosition));

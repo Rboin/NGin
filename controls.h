@@ -19,26 +19,82 @@
 #ifndef GAME_ENGINE_CONTROLS_H
 #define GAME_ENGINE_CONTROLS_H
 
+#define ESC 27
+
+ //Mouse controls
+#define BUTTON_LEFT     1
+#define BUTTON_RIGHT    2
+#define BUTTON_SCROLL_UP   4
+#define BUTTON_SCROLL_DOWN   8
+
+ //Keyboard controls
+#define FORWARD  16
+#define BACKWARD 32
+#define LEFT     64
+#define RIGHT    128
+#define UPWARD   256
+#define DOWNWARD 512
+#define BUTTON_LEFT_UP 1024
+
 #include "engine.h"
 
-struct Camera {
-    float viewAngle;
-    float viewWidth;
-    float viewHeight;
-    float viewNearPlane;
-    float viewFarPlane;
+class Controls
+{
+private:
+	int _state = 0;
+	vec2 _lastClickCoordinates = vec2();
+	vec2 _lastDragCoordinates = vec2();
+	double _mouseWheelTravel = 0;
+	vec2 _mouseDragCoordinates;
+	vec2 _mouseCoordinates;
+public:
+	Controls() { };
+	void update();
+	void mouseClick(int btn, int btnState, int x, int y);
+	void mouseDrag(int x, int y);
+	void mouseLocation(int x, int y);
+	void keyPress(unsigned char key);
+	void mouseWheel(int btn, int dir, int x, int y);
+	int getState()
+	{
+		return _state;
+	}
 
-    vec3 pos;
-    vec3 dir;
-    vec3 dist;
+	double getMouseWheelTravel()
+	{
+		return _mouseWheelTravel;
+	}
+
+	void resetMouseWheelTravel()
+	{
+		_mouseWheelTravel = 0;
+	}
+
+	vec2 getLastMouseClickCoordinates()
+	{
+		return _lastClickCoordinates;
+	}
+
+	vec2 getLastMouseDragCoordinates()
+	{
+		return _lastDragCoordinates;
+	}
+
+	vec2 getMouseDragCoordinates()
+	{
+		return _mouseDragCoordinates;
+	}
+
+	vec2 getMouseCoordinates()
+	{
+		return _mouseCoordinates;
+	}
+
+	void setLastClickCoordinates(vec2 val)
+	{
+		_lastClickCoordinates = val;
+	}
+
 };
 
-void updateCamera(Camera &);
-mat4 getViewMatrix(const Camera &);
-mat4 getProjectionMatrix(const Camera &);
-
-void mouseClick(int btn, int btnState, int x, int y);
-void mouseMove(int x, int y, Camera &);
-void keyPress(unsigned char key);
-
-#endif //GAME_ENGINE_CONTROLS_H
+#endif

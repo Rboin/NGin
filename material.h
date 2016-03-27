@@ -28,6 +28,6 @@ struct Material {
     float power;
 };
 
-void drawMaterial(const Material&, const GLuint);
+void setMaterial(const Material&, const GLuint);
 
 #endif //GAME_ENGINE_MATERIAL_H

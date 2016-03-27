@@ -19,26 +19,14 @@
 #include <iostream>
 #include "controls.h"
 
-#define ESC 27
+using namespace std;
 
-#define BUTTON_LEFT     1
-#define BUTTON_RIGHT    2
-#define BUTTON_SCROLL   4
+void Controls::update()
+{
+	
+}
 
-#define FORWARD  8
-#define BACKWARD 16
-#define LEFT     32
-#define RIGHT    64
-#define UPWARD   128
-#define DOWNWARD 256
-
-int state;
-
-const vec3 UP(0,1,0), SCALE(.1f);
-
-vec2 prevMouseMovement;
-
-void keyPress(unsigned char key) {
+void Controls::keyPress(unsigned char key) {
     switch(key) {
         case ESC:
         case 'q':
@@ -47,104 +35,60 @@ void keyPress(unsigned char key) {
             glutFullScreen();
             break;
         case 'w':
-            state ^= FORWARD;
+            _state ^= FORWARD;
             break;
         case 's':
-            state ^= BACKWARD;
+            _state ^= BACKWARD;
             break;
         case 'a':
-            state ^= LEFT;
+            _state ^= LEFT;
             break;
         case 'd':
-            state ^= RIGHT;
+            _state ^= RIGHT;
             break;
         case 'x':
-            state ^= UPWARD;
+            _state ^= UPWARD;
             break;
         case 'z':
-            state ^= DOWNWARD;
+            _state ^= DOWNWARD;
             break;
     }
 }
 
-void mouseClick(int btn, int btnState, int x, int y) {
-
+void Controls::mouseClick(int btn, int btnState, int x, int y) {
     if (btn == GLUT_LEFT_BUTTON) {
-        state ^= BUTTON_LEFT;
+        _state ^= BUTTON_LEFT;
     }
 
     if (btn == GLUT_RIGHT_BUTTON) {
-        state ^= BUTTON_RIGHT;
+        _state ^= BUTTON_RIGHT;
     }
 
-    if (btn == GLUT_MIDDLE_BUTTON) {
-        state ^= BUTTON_SCROLL;
-    }
-
-    prevMouseMovement = vec2(x,y);
-
+    _lastClickCoordinates = vec2(x,y);
 }
 
-void mouseMove(int x, int y, Camera &camera) {
 
-    // http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-17-quaternions/
-
-    if ((state & BUTTON_LEFT) == BUTTON_LEFT) {
-
-        vec3 axis = cross(camera.dir, UP);
-        quat pitch = angleAxis(radians(prevMouseMovement.y - y), axis);
-        quat yaw = angleAxis(radians(prevMouseMovement.x - x), UP);
-
-        quat dir = normalize(cross(pitch, yaw));
-
-        camera.dir = rotate(dir, camera.dir);
-
-    } else if ((state & BUTTON_RIGHT) == BUTTON_RIGHT) {
-
-    } else if ((state & BUTTON_SCROLL) == BUTTON_SCROLL) {
-        camera.dist = max(camera.dist - (prevMouseMovement.y - y) * .1f, 0.0f);
-    }
-
-    prevMouseMovement = vec2(x,y);
-
+void Controls::mouseWheel(int btn, int dir, int x, int y)
+{
+	if (dir > 0)
+	{
+		_mouseWheelTravel -= 0.2;
+	} else {
+		_mouseWheelTravel += 0.2;
+	}
 }
 
-void updateCamera(Camera &c) {
-
-    if ((state & FORWARD) == FORWARD) {
-        c.pos += c.dir * SCALE;
-    }
-
-    if ((state & BACKWARD) == BACKWARD) {
-        c.pos -= c.dir * SCALE;
-    }
-
-    if ((state & LEFT) == LEFT) {
-        c.pos -= cross(c.dir, UP) * SCALE;
-    }
-
-    if ((state & RIGHT) == RIGHT) {
-        c.pos += cross(c.dir, UP) * SCALE;
-    }
-
-    if ((state & UPWARD) == UPWARD) {
-        c.pos += UP * SCALE;
-    }
-
-    if ((state & DOWNWARD) == DOWNWARD) {
-        c.pos -= UP * SCALE;
-    }
-
+void Controls::mouseDrag(int x, int y)
+{
+	_lastDragCoordinates = _mouseDragCoordinates;
+	_mouseDragCoordinates = vec2(x, y);
 }
 
-mat4 getViewMatrix(const Camera & c) {
-    return lookAt(c.pos - c.dist * c.dir, c.pos + c.dir, UP);//translate(c.pos) * toMat4(c.rot);
+void Controls::mouseLocation(int x, int y)
+{
+	_mouseCoordinates = vec2(x, y);
 }
 
-mat4 getProjectionMatrix(const Camera & c) {
-    return perspectiveFov(c.viewAngle,
-                          c.viewWidth,
-                          c.viewHeight,
-                          c.viewNearPlane,
-                          c.viewFarPlane);
-}
+
+
+
