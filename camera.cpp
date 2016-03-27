@@ -112,7 +112,9 @@ void Camera::updateTrackBall()
 }
 
 mat4 Camera::getViewMatrix() {
-	return lookAt(_position - _distance * _direction, _position + _direction, UP);//translate(c.pos) * toMat4(c.rot);
+	vec3 pos = _position - _distance * _direction;
+	vec3 look = _position + _direction;
+	return lookAt(pos, look, UP);//translate(c.pos) * toMat4(c.rot);
 }
 
 mat4 Camera::getProjectionMatrix() {
