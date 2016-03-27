@@ -23,7 +23,7 @@ else(WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -lGL")
 endif(WIN32)
 
-set(SOURCE_FILES main.cpp engine.h loader.h loader.cpp mesh.h mesh.cpp material.h material.cpp controls.h controls.cpp default_values.h)
+set(SOURCE_FILES main.cpp engine.h loader.h loader.cpp mesh.h mesh.cpp material.h material.cpp controls.h controls.cpp camera.h camera.cpp default_values.h)
 add_executable(game_engine ${SOURCE_FILES})
 
 target_link_libraries(game_engine ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES})

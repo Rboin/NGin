@@ -39,7 +39,7 @@ void update(int delta) {
 	camera->update();
 	controls->update();
     glutPostRedisplay();
-    glutTimerFunc(20, update, delta+1);
+    glutTimerFunc(5, update, delta+1);
 };
 
 void resize (int w, int h) {
