@@ -28,11 +28,10 @@ void Camera::setCameraType(CameraType type)
 		//Set trackball defaults
 
 		_distance = 2.0f;
-		_direction = vec3(1, -1, 1);
 		break;
 	case CameraType::freemovable:
 		//Set trackball defaults
-
+		_distance = 0.0f;
 		break;
 	}
 
@@ -101,10 +100,12 @@ void Camera::updateTrackBall()
 		vec2 mouseState = _controls->getMouseDragCoordinates();
 		vec2 lastClicked = _controls->getLastMouseDragCoordinates();
 
+		cout << to_string(mouseState) << to_string(lastClicked) << endl;
+
 		vec3 axis = cross(_direction, UP);
-		quat pitch = angleAxis(radians(lastClicked.y - mouseState.y), axis);
-		quat yaw = angleAxis(radians(lastClicked.x - mouseState.x), UP);
-		quat dir = normalize(cross(pitch, yaw));
+		quat pitch = angleAxis((lastClicked.y - mouseState.y) * 0.001f, axis);
+		quat yaw   = angleAxis((lastClicked.x - mouseState.x) * 0.001f, UP);
+		quat dir   = normalize(cross(pitch, yaw));
 		_direction = rotate(dir, _direction);
 
 		_controls->setLastClickCoordinates(mouseState);

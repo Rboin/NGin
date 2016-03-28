@@ -34,7 +34,6 @@
 #define RIGHT    128
 #define UPWARD   256
 #define DOWNWARD 512
-#define BUTTON_LEFT_UP 1024
 
 #include "engine.h"
 
@@ -92,7 +91,7 @@ public:
 
 	void setLastClickCoordinates(vec2 val)
 	{
-		_lastClickCoordinates = val;
+		_lastDragCoordinates = val;
 	}
 
 };

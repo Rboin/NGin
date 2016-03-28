@@ -64,7 +64,7 @@ void Controls::mouseClick(int btn, int btnState, int x, int y) {
         _state ^= BUTTON_RIGHT;
     }
 
-    _lastClickCoordinates = vec2(x,y);
+    _lastDragCoordinates = vec2(x,y);
 }
 
 
@@ -80,7 +80,7 @@ void Controls::mouseWheel(int btn, int dir, int x, int y)
 
 void Controls::mouseDrag(int x, int y)
 {
-	_lastDragCoordinates = _mouseDragCoordinates;
+	//_lastDragCoordinates = _mouseDragCoordinates;
 	_mouseDragCoordinates = vec2(x, y);
 }
 
