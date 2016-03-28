@@ -63,24 +63,38 @@ void draw () {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     setMaterial(defaults::solidRed, shader_program);
-    for (int i = -1; i < 2; i++) {
-        for (int j = -1; j < 2; j++) {
+    for (int i = -3; i < 4; i++) {
+        for (int j = -3; j < 4; j++) {
             mat4 trans = translate(vec3(i, 0, j));
             glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
             drawMesh(plane, GL_TRIANGLES);
         }
     }
 
-    glPolygonMode(GL_FRONT, GL_FILL);
-    mat4 trans = translate(camera->getPosition());
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-    drawMesh(cone, GL_TRIANGLES);
+    if (camera->getDistance() > 0) {
+        glPolygonMode(GL_FRONT, GL_FILL);
+        mat4 trans = translate(camera->getPosition());
+        glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
+        drawMesh(cone, GL_TRIANGLES);
+    }
 
 
     glutSwapBuffers();
 }
 
 void keyPress(unsigned char key, int, int) {
+    switch(key) {
+        case ' ':
+            if(camera->getType() == CameraType::trackball) {
+                camera->setType(CameraType::freemovable);
+            } else {
+                camera->setType(CameraType::trackball);
+            }
+        default:
+            controls->keyPress(key);
+    }
+}
+void keyRelease(unsigned char key, int, int) {
     controls->keyPress(key);
 }
 
@@ -110,7 +124,7 @@ void special_key(int i, int x, int y) {
 int main (int argc, char **argv) {
 	controls = new Controls;
 	camera = new Camera(controls);
-    camera->setCameraType(CameraType::freemovable);
+    //camera->setCameraType(CameraType::freemovable);
 	
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
@@ -123,7 +137,7 @@ int main (int argc, char **argv) {
     glutIgnoreKeyRepeat(1);
     glutTimerFunc(200, update, 0);
     glutKeyboardFunc(keyPress);
-    glutKeyboardUpFunc(keyPress);
+    glutKeyboardUpFunc(keyRelease);
     glutMotionFunc(mouseDrag);
     glutMouseFunc(mouseClick);
     glutSpecialFunc(special_key);

@@ -12,9 +12,9 @@ Camera::Camera(Controls *c)
 	_viewHeight = 600.0f;
 	_viewNearPlane = 0.1f;
 	_viewFarPlane = 100.0f;
-	_position = vec3(0, 2, -5);
+	_position = vec3();
 	_direction = vec3(0,0,1);
-	_distance = 2.0f;
+	_distance = 5.0f;
 	_type = CameraType::trackball;
 	_perspective = CameraPerspective::thirdperson;
 	_controls = c;
@@ -27,7 +27,7 @@ void Camera::setCameraType(CameraType type)
 	case CameraType::trackball:
 		//Set trackball defaults
 
-		_distance = 2.0f;
+		_distance = 5.0f;
 		break;
 	case CameraType::freemovable:
 		//Set trackball defaults
@@ -100,13 +100,14 @@ void Camera::updateTrackBall()
 	{
 		
 		vec2 mouseState = _controls->getMouseDragCoordinates();
+		if(mouseState == vec2()) return;
 		vec2 lastClicked = _controls->getLastMouseDragCoordinates();
 
 		cout << to_string(mouseState) << to_string(lastClicked) << endl;
 
 		vec3 axis = cross(_direction, UP);
-		quat pitch = angleAxis((lastClicked.y - mouseState.y) * 0.001f, axis);
-		quat yaw   = angleAxis((lastClicked.x - mouseState.x) * 0.001f, UP);
+		quat pitch = angleAxis(radians(lastClicked.y - mouseState.y), axis);
+		quat yaw   = angleAxis(radians(lastClicked.x - mouseState.x), UP);
 		quat dir   = normalize(cross(pitch, yaw));
 		_direction = rotate(dir, _direction);
 
