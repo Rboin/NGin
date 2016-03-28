@@ -43,7 +43,7 @@ private:
 	int _state = 0;
 	vec2 _lastClickCoordinates = vec2();
 	vec2 _lastDragCoordinates = vec2();
-	double _mouseWheelTravel = 0;
+	float _mouseWheelTravel = 0;
 	vec2 _mouseDragCoordinates;
 	vec2 _mouseCoordinates;
 public:
@@ -59,7 +59,7 @@ public:
 		return _state;
 	}
 
-	double getMouseWheelTravel()
+	float getMouseWheelTravel()
 	{
 		return _mouseWheelTravel;
 	}

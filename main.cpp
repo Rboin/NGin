@@ -60,12 +60,16 @@ void draw () {
 	mat4 view = camera->getViewMatrix();
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "view"), 1, GL_FALSE, value_ptr(view));
 
-    mat4 trans;
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
-	setMaterial(defaults::solidRed, shader_program);
-    drawMesh(plane, GL_TRIANGLES);
+    setMaterial(defaults::solidRed, shader_program);
+    for (int i = -1; i < 2; i++) {
+        for (int j = -1; j < 2; j++) {
+            mat4 trans = translate(vec3(i, 0, j));
+            glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
+            drawMesh(plane, GL_TRIANGLES);
+        }
+    }
 
     glutSwapBuffers();
 }
@@ -100,6 +104,7 @@ void special_key(int i, int x, int y) {
 int main (int argc, char **argv) {
 	controls = new Controls;
 	camera = new Camera(controls);
+    camera->setCameraType(CameraType::freemovable);
 	
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);

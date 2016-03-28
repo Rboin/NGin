@@ -72,9 +72,9 @@ void Controls::mouseWheel(int btn, int dir, int x, int y)
 {
 	if (dir > 0)
 	{
-		_mouseWheelTravel -= 0.2;
+		_mouseWheelTravel -= 0.2f;
 	} else {
-		_mouseWheelTravel += 0.2;
+		_mouseWheelTravel += 0.2f;
 	}
 }
 

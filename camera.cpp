@@ -12,8 +12,8 @@ Camera::Camera(Controls *c)
 	_viewHeight = 600.0f;
 	_viewNearPlane = 0.1f;
 	_viewFarPlane = 100.0f;
-	_position = vec3(0, 0, 0);
-	_direction = vec3(1, -1, 1);
+	_position = vec3(0, 2, -5);
+	_direction = vec3(0,0,1);
 	_distance = 2.0f;
 	_type = CameraType::trackball;
 	_perspective = CameraPerspective::thirdperson;
@@ -78,6 +78,8 @@ void Camera::updateFreeMovable()
 	if (_controls->getMouseWheelTravel() != 0)
 	{
 		_distance += _controls->getMouseWheelTravel();
+		if (_distance < 0.0f)
+			_distance = 0.0f;
 		_controls->resetMouseWheelTravel();
 	}
 
