@@ -64,11 +64,6 @@ public:
 		return _type;
 	}
 
-	void setType(CameraType type)
-	{
-		_type = type;
-	}
-
 	void setViewWidth(float w)
 	{
 		_viewWidth = w;

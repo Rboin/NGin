@@ -86,9 +86,9 @@ void keyPress(unsigned char key, int, int) {
     switch(key) {
         case ' ':
             if(camera->getType() == CameraType::trackball) {
-                camera->setType(CameraType::freemovable);
+                camera->setCameraType(CameraType::freemovable);
             } else {
-                camera->setType(CameraType::trackball);
+                camera->setCameraType(CameraType::trackball);
             }
         default:
             controls->keyPress(key);

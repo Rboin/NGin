@@ -13,8 +13,8 @@ Camera::Camera(Controls *c)
 	_viewNearPlane = 0.1f;
 	_viewFarPlane = 100.0f;
 	_position = vec3();
-	_direction = vec3(0,0,1);
-	_distance = 5.0f;
+	_direction = normalize(vec3(0, -1, 1));
+	_distance = 10.0f;
 	_type = CameraType::trackball;
 	_perspective = CameraPerspective::thirdperson;
 	_controls = c;
@@ -26,12 +26,15 @@ void Camera::setCameraType(CameraType type)
 	{
 	case CameraType::trackball:
 		//Set trackball defaults
-
-		_distance = 5.0f;
+		_position = vec3();
+		_distance = 10.0f;
+		_direction = normalize(vec3(0, -1, 1));
 		break;
 	case CameraType::freemovable:
 		//Set trackball defaults
 		_distance = 0.0f;
+		_position = vec3(4.6f, 2.9f, 4.9f);
+		_direction = normalize(vec3(-0.6f, -0.47f, -0.61f));
 		break;
 	}
 
@@ -51,6 +54,8 @@ void Camera::update() {
 vec2 lastMouseLocation;
 void Camera::updateFreeMovable()
 {
+	cout << "dir X: " << _direction.x << " Y: " << _direction.y << " Z:" << _direction.z << endl;
+	cout << "post X: " << _position.x << " Y: " << _position.y << " Z:" << _position.z << endl;
 	if ((_controls->getState() & FORWARD) == FORWARD) {
 		_position += _direction * SCALE;
 	}
