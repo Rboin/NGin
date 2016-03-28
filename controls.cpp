@@ -58,6 +58,9 @@ void Controls::keyPress(unsigned char key) {
 void Controls::mouseClick(int btn, int btnState, int x, int y) {
     if (btn == GLUT_LEFT_BUTTON) {
         _state ^= BUTTON_LEFT;
+        if ((_state & BUTTON_LEFT) != BUTTON_LEFT) {
+            _mouseDragCoordinates = vec2();
+        }
     }
 
     if (btn == GLUT_RIGHT_BUTTON) {
