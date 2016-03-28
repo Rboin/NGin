@@ -71,6 +71,12 @@ void draw () {
         }
     }
 
+    glPolygonMode(GL_FRONT, GL_FILL);
+    mat4 trans = translate(camera->getPosition());
+    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
+    drawMesh(cone, GL_TRIANGLES);
+
+
     glutSwapBuffers();
 }
 
