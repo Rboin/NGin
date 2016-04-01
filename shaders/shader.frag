@@ -6,10 +6,6 @@ uniform vec3 specular;
 
 uniform float power;
 
-//uniform sampler2D sampler;
-
-//varying vec4 color;
-
 varying vec2 tex_cor;
 
 varying vec3 N;

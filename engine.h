@@ -18,6 +18,7 @@
 
 #ifndef GAME_ENGINE_ENGINE_H
 #define GAME_ENGINE_ENGINE_H
+#define GLM_FORCE_RADIANS
 
 #include <GL/glew.h>
 #include <GL/gl.h>

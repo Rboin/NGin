@@ -33,7 +33,7 @@ struct Camera {
     vec3 dist;
 };
 
-void updateCamera(Camera &);
+void updateCamera(Camera &, float);
 mat4 getViewMatrix(const Camera &);
 mat4 getProjectionMatrix(const Camera &);
 

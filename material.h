@@ -28,6 +28,9 @@ struct Material {
     float power;
 };
 
-void drawMaterial(const Material&, const GLuint);
+/**
+ * Pass uniform variables to shader program
+ */
+void useMaterial(const Material&, const GLuint);
 
 #endif //GAME_ENGINE_MATERIAL_H

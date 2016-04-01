@@ -32,7 +32,7 @@
 #define UPWARD   128
 #define DOWNWARD 256
 
-int state;
+unsigned short state;
 
 const vec3 UP(0,1,0), SCALE(.1f);
 
@@ -109,36 +109,36 @@ void mouseMove(int x, int y, Camera &camera) {
 
 }
 
-void updateCamera(Camera &c) {
+void updateCamera(Camera &c, float delta) {
 
     if ((state & FORWARD) == FORWARD) {
-        c.pos += c.dir * SCALE;
+        c.pos += c.dir * SCALE * delta;
     }
 
     if ((state & BACKWARD) == BACKWARD) {
-        c.pos -= c.dir * SCALE;
+        c.pos -= c.dir * SCALE * delta;
     }
 
     if ((state & LEFT) == LEFT) {
-        c.pos -= cross(c.dir, UP) * SCALE;
+        c.pos -= cross(c.dir, UP) * SCALE * delta;
     }
 
     if ((state & RIGHT) == RIGHT) {
-        c.pos += cross(c.dir, UP) * SCALE;
+        c.pos += cross(c.dir, UP) * SCALE * delta;
     }
 
     if ((state & UPWARD) == UPWARD) {
-        c.pos += UP * SCALE;
+        c.pos += UP * SCALE * delta;
     }
 
     if ((state & DOWNWARD) == DOWNWARD) {
-        c.pos -= UP * SCALE;
+        c.pos -= UP * SCALE * delta;
     }
 
 }
 
 mat4 getViewMatrix(const Camera & c) {
-    return lookAt(c.pos - c.dist * c.dir, c.pos + c.dir, UP);//translate(c.pos) * toMat4(c.rot);
+    return lookAt(c.pos - c.dist * c.dir, c.pos + c.dir, UP);
 }
 
 mat4 getProjectionMatrix(const Camera & c) {
