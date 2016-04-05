@@ -37,7 +37,7 @@ struct Mesh {
 void meshFromFile(const char *, Mesh&);
 void meshFromFile(const char *, Mesh&);
 void bindMesh(Mesh &, GLuint);
+void drawMesh(const Mesh &m);
 void drawMesh(const Mesh &, GLuint);
-//void drawMesh(const Mesh &m) {drawMesh(m, GL_TRIANGLES);};
 
 #endif //GAME_ENGINE_MESH_H

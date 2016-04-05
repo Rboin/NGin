@@ -67,3 +67,7 @@ void drawMesh (const Mesh &mesh, GLuint bufferStrategy) {
     glDrawArrays(bufferStrategy, 0, mesh.pos_buf.size());
     glBindVertexArray(0);
 }
+
+void drawMesh(const Mesh &m) {
+    drawMesh(m, GL_TRIANGLES);
+}

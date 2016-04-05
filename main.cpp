@@ -73,9 +73,9 @@ void draw () {
     if (length2(camera.dist) > 1.0f) {
         // rotate by a quarter
         vec3 angles = cross(camera.dir, vec3(0,1,0));
-        quat pitch = angleAxis(-90.0f, vec3(0,1,0));
+        quat pitch = angleAxis(radians(90.0f), angles);
 
-        model = translate(camera.pos);// * toMat4(normalize(pitch));// * toMat4(pitch);
+        model = lookAt(camera.pos, camera.pos + rotate(pitch, camera.dir), vec3(0,1,0));//translate(camera.pos);// * toMat4(normalize(pitch));// * toMat4(pitch);
         glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(model));
         useMaterial(defaults::solidRed, shader_program);
         drawMesh(pyramid, GL_TRIANGLES);
@@ -91,7 +91,7 @@ void draw () {
     model = translate(vec3(4.0f,0,4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(model));
     useMaterial(defaults::softBlue, shader_program);
-    drawMesh(pyramid, GL_TRIANGLES);
+    drawMesh(pyramid);
 
     model = translate(vec3(-4.0f,0,-4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(model));
