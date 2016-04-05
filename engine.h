@@ -35,4 +35,6 @@
 
 using namespace glm;
 
+class Vehicle;
+
 #endif //GAME_ENGINE_ENGINE_H

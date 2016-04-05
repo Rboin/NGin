@@ -27,7 +27,8 @@ void World::render () {
 }
 
 void World::reset() {
-    m_vehicles.clear();
+//    m_vehiclesobstacles.clear();
+//    m_vehicles.clear();
 }
 
 void World::add_vehicle (Vehicle *vehicle) {
@@ -39,5 +40,4 @@ void World::add_obstacle(Obstacle *obstacle) {
 }
 
 World::World () {
-    m_obstacles = vector<Obstacle *>();
 }

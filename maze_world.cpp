@@ -2,7 +2,7 @@
 // Created by Erik on 3/15/2016.
 //
 
-#include "world.h"
+#include "maze_world.h"
 
 MazeWorld::MazeWorld () : MazeWorld(10,10) {}
 

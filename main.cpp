@@ -21,6 +21,7 @@
 #include "mesh.h"
 #include "controls.h"
 #include "default_values.h"
+#include "world.h"
 
 using namespace std;
 
@@ -31,8 +32,11 @@ Camera camera = defaults::camera;
 Mesh cone, cube, star, plane, pyramid;
 vec3 lightPosition(0, 1, -4);
 
+World * world;
+
 void construct_shader();
 void construct_meshes();
+void construct_world();
 
 int timeElapsed = 0;
 
@@ -69,13 +73,11 @@ void draw () {
 
     mat4 model;
 
+    world->render();
+
     // if the camera is close up to the target; the model does not get rendered.
     if (length2(camera.dist) > 1.0f) {
-        // rotate by a quarter
-        vec3 angles = cross(camera.dir, vec3(0,1,0));
-        quat pitch = angleAxis(radians(90.0f), angles);
-
-        model = lookAt(camera.pos, camera.pos + rotate(pitch, camera.dir), vec3(0,1,0));//translate(camera.pos);// * toMat4(normalize(pitch));// * toMat4(pitch);
+        model = translate(camera.pos);
         glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(model));
         useMaterial(defaults::solidRed, shader_program);
         drawMesh(pyramid, GL_TRIANGLES);
@@ -147,6 +149,8 @@ int main (int argc, char **argv) {
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "projection"), 1, GL_FALSE, value_ptr(projection));
     glUniform3fv(glGetUniformLocation(shader_program, "light"), 1, value_ptr(lightPosition));
 
+    construct_world();
+
     glEnable(GL_DEPTH_TEST);
 
     glutMainLoop();
@@ -175,3 +179,20 @@ void construct_meshes() {
     bindMesh(plane, shader_program);
     bindMesh(pyramid, shader_program);
 }
+
+void construct_world() {
+    world = new World();
+
+    RenderPart orangeCube = {
+            shader_program,
+            cube,
+            defaults::softOrange
+    };
+
+    for(int i = 0; i < 2000; i++) {
+        vec3 pos = vec3(rotate((float)i, vec3(0,1,0)) * translate(vec3(0,0,100)) * vec4(0,i/50,0,1));
+        world->add_obstacle(new Obstacle(pos, vec3(0, radians((float) i), 0), vec3(5, 1, .5f), orangeCube));
+    }
+
+    //test_entity = new Entity(vec3(), vec3(), vec3(1), rp);
+};

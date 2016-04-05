@@ -2,10 +2,8 @@
 // Created by Erik on 3/15/2016.
 //
 
-#ifndef SNOWMENS_WORLD_H
-#define SNOWMENS_WORLD_H
-
-#include "maze/maze.h"
+#ifndef GAME_ENGINE_WORLD_H
+#define GAME_ENGINE_WORLD_H
 
 #include "engine.h"
 #include "vehicle.h"
@@ -32,14 +30,4 @@ public:
     void add_obstacle(Obstacle *);
 };
 
-
-class MazeWorld : public World {
-private:
-    Maze * m_pMaze;
-public:
-    MazeWorld();
-    MazeWorld(int,int);
-    ~MazeWorld ();
-};
-
-#endif //SNOWMENS_WORLD_H
+#endif //GAME_ENGINE_WORLD_H

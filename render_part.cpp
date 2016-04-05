@@ -3,3 +3,8 @@
 //
 
 #include "render_part.h"
+
+void renderPart(const RenderPart &part) {
+    useMaterial(part.material, part.shaderId);
+    drawMesh(part.mesh);
+}

@@ -4,14 +4,10 @@
 
 #include "obstacle.h"
 
-Obstacle::Obstacle (vec4 pos, vec4 rot, vec4 scale) : Entity(pos, rot, scale)  {
+Obstacle::Obstacle (vec3 pos, vec3 rot, vec3 scale, RenderPart r) : Entity(pos, rot, scale, r)  {
 
 }
 
 void Obstacle::update(int time_elapsed) {
 
-};
-
-void Obstacle::render() const {
-    render_wall(vec3(m_position), vec3(m_rotation), vec3(m_scale));
 };

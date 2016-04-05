@@ -2,12 +2,11 @@
 // Created by Erik on 3/15/2016.
 //
 
-#ifndef SNOWMENS_VEHICLE_H
-#define SNOWMENS_VEHICLE_H
+#ifndef GAME_ENGINE_VEHICLE_H
+#define GAME_ENGINE_VEHICLE_H
 
 #include "steering.h"
 #include "moving_entity.h"
-#include "render/render.h"
 
 class Vehicle : public MovingEntity {
 private:
@@ -17,7 +16,7 @@ public:
 
     Vehicle (float, float, float, float, Deceleration);
 
-    Vehicle (vec4 pos, vec4 rot, vec4 scale, Vehicle &v);
+    Vehicle (vec3, vec3, vec3, Vehicle &, RenderPart);
 
     ~Vehicle ();
 
@@ -25,11 +24,9 @@ public:
 
     void update (int time_elapsed);
 
-    void render () const;
-
     SteeringBehaviours *steer () { return m_pSteering; }
 
     friend class SteeringBehaviours;
 };
 
-#endif //SNOWMENS_VEHICLE_H
+#endif //GAME_ENGINE_VEHICLE_H

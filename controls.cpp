@@ -34,7 +34,7 @@
 
 unsigned short state;
 
-const vec3 UP(0,1,0), SCALE(.1f);
+const vec3 UP(0,1,0), SCALE(.4f);
 
 vec2 prevMouseMovement;
 

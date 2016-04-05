@@ -22,6 +22,7 @@
 #include "material.h"
 #include "controls.h"
 #include "mesh.h"
+#include "entity.h"
 
 namespace defaults {
 
@@ -32,12 +33,12 @@ namespace defaults {
             800.0f, // viewing width
             600.0f, // viewing height
             0.1f,   // near plane
-            100.0f, // far plane
+            1000.0f, // far plane
             //vec3(), // translation
             //vec3(4.0f),// scale
             vec3(0, 0, 0), // position
             vec3(0, 0, 1), // direction
-            vec3(4),// distance of target
+            vec3(0),// distance of target
             //quat(0, 0, 1, 0), // rotation lookat -z thus forward
     };
 

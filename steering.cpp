@@ -4,8 +4,8 @@
 
 #include "vehicle.h"
 
-vec4 SteeringBehaviours::calc () {
-    vec4 steeringForce;
+vec3 SteeringBehaviours::calc () {
+    vec3 steeringForce;
 
     if(is_status(SEEK_ON))
         steeringForce += seek(m_cur_tar);
@@ -16,45 +16,45 @@ vec4 SteeringBehaviours::calc () {
     return steeringForce;
 }
 
-vec4 SteeringBehaviours::forward_comp () {
-    return vec4();
+vec3 SteeringBehaviours::forward_comp () {
+    return vec3();
 }
 
-vec4 SteeringBehaviours::side_comp () {
-    return vec4();
+vec3 SteeringBehaviours::side_comp () {
+    return vec3();
 }
 
 void SteeringBehaviours::set_path () {
 
 }
 
-void SteeringBehaviours::set_target (vec4 t) {
+void SteeringBehaviours::set_target (vec3 t) {
     m_cur_tar = t;
 }
 
-vec4 SteeringBehaviours::seek (vec4 &target) {
-    vec4 desired_velocity = normalize(target - m_pVehicle->m_position)
+vec3 SteeringBehaviours::seek (vec3 &target) {
+    vec3 desired_velocity = normalize(target - m_pVehicle->m_position)
                             * m_pVehicle->m_speed;
 
     return desired_velocity - m_pVehicle->m_velocity;
 }
 
-vec4 SteeringBehaviours::flee (vec4 &target) {
+vec3 SteeringBehaviours::flee (vec3 &target) {
 
     float dist = distance(m_pVehicle->m_position, target);
 
     if(dist > m_panic_distance)
-        return vec4();
+        return vec3();
 
-    vec4 desired_velocity = normalize(m_pVehicle->m_position - target)
+    vec3 desired_velocity = normalize(m_pVehicle->m_position - target)
                             * m_pVehicle->m_speed;
 
     return desired_velocity - m_pVehicle->m_velocity;
 }
 
-vec4 SteeringBehaviours::arrive (vec4 &target, Deceleration deceleration) {
+vec3 SteeringBehaviours::arrive (vec3 &target, Deceleration deceleration) {
 
-    vec4 toTarget = target - m_pVehicle->m_position;
+    vec3 toTarget = target - m_pVehicle->m_position;
 
     float distance = length(toTarget);
 
@@ -64,14 +64,14 @@ vec4 SteeringBehaviours::arrive (vec4 &target, Deceleration deceleration) {
 
         float speed = distance / ((float) deceleration / decelerationTweaker);
 
-        speed = min(speed, m_pVehicle->m_speed);
+        speed = glm::min(speed, m_pVehicle->m_speed);
 
-        vec4 desired_velocity = toTarget * speed / distance;
+        vec3 desired_velocity = toTarget * speed / distance;
 
         return desired_velocity - m_pVehicle->m_velocity;
     }
 
-    return vec4();
+    return vec3();
 }
 
 void SteeringBehaviours::set_status (int s) {

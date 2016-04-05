@@ -23,8 +23,9 @@ else(WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -lGL")
 endif(WIN32)
 
-set(SOURCE_FILES main.cpp engine.h loader.h loader.cpp mesh.h mesh.cpp material.h material.cpp controls.h controls.cpp default_values.h)
-add_executable(game_engine ${SOURCE_FILES})
+set(ENGINE main.cpp engine.h loader.h loader.cpp mesh.h mesh.cpp material.h material.cpp controls.h controls.cpp render_part.cpp render_part.h)
+set(WORLD world.h world.cpp entity.h entity.cpp obstacle.h obstacle.cpp moving_entity.h moving_entity.cpp vehicle.h vehicle.cpp steering.h steering.cpp default_values.h)
+add_executable(game_engine ${ENGINE} ${WORLD})
 
 target_link_libraries(game_engine ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES})
 

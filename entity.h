@@ -2,26 +2,28 @@
 // Created by Erik on 3/15/2016.
 //
 
-#ifndef SNOWMENS_ENTITY_H
-#define SNOWMENS_ENTITY_H
+#ifndef GAME_ENGINE_ENTITY_H
+#define GAME_ENGINE_ENTITY_H
 
 #include "engine.h"
+#include "render_part.h"
 
 class Entity {
-public:
-    vec4 m_position;
-    vec4 m_rotation;
-    vec4 m_scale;
+protected:
+    vec3 m_position;
+    vec3 m_rotation;
+    vec3 m_scale;
+    RenderPart m_renderPart;
 public:
     Entity () {}
 
-    Entity (vec4 pos, vec4 rot, vec4 scale) : m_position(pos), m_rotation(rot), m_scale(scale) { }
+    Entity (vec3 pos, vec3 rot, vec3 scale, RenderPart r) : m_position(pos), m_rotation(rot), m_scale(scale), m_renderPart(r) { }
 
-    virtual void update (int time_elapsed) = 0;
+    virtual void update (int time_elapsed) {}
 
-    virtual void render () const = 0;
+    void render () const;
 
     friend class SteeringBehaviours;
 };
 
-#endif //SNOWMENS_ENTITY_H
+#endif //GAME_ENGINE_ENTITY_H

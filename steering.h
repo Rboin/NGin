@@ -22,29 +22,29 @@ public:
 
     float m_panic_distance;
 
-    vec4 m_cur_tar;
+    vec3 m_cur_tar;
 private:
     int m_status;
     Vehicle *m_pVehicle;
 
-    vec4 seek (vec4 &);
+    vec3 seek (vec3 &);
 
-    vec4 flee (vec4 &);
+    vec3 flee (vec3 &);
 
-    vec4 arrive (vec4 &, Deceleration);
+    vec3 arrive (vec3 &, Deceleration);
 
 public:
     SteeringBehaviours (Vehicle &v) : m_pVehicle(&v) { }
 
-    vec4 calc ();
+    vec3 calc ();
 
-    vec4 forward_comp ();
+    vec3 forward_comp ();
 
-    vec4 side_comp ();
+    vec3 side_comp ();
 
     void set_path ();
 
-    void set_target (vec4);
+    void set_target (vec3);
 
     void set_status(int s);
     bool is_status(int s);
