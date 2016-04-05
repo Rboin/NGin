@@ -37,6 +37,7 @@ World * world;
 void construct_shader();
 void construct_meshes();
 void construct_world();
+void construct_world2();
 
 int timeElapsed = 0;
 
@@ -84,28 +85,6 @@ void draw () {
         drawMesh(pyramid, GL_TRIANGLES);
     }
 
-    // show other objects
-
-    model = translate(vec3(-4.0f,0,4.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(model));
-    useMaterial(defaults::solidRed, shader_program);
-    drawMesh(cube, GL_TRIANGLES);
-
-    model = translate(vec3(4.0f,0,4.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(model));
-    useMaterial(defaults::softBlue, shader_program);
-    drawMesh(pyramid);
-
-    model = translate(vec3(-4.0f,0,-4.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(model));
-    useMaterial(defaults::solidGreen, shader_program);
-    drawMesh(pyramid, GL_TRIANGLES);
-
-    model = translate(vec3(4.0f,0,-4.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(model));
-    useMaterial(defaults::softOrange, shader_program);
-    drawMesh(cube, GL_TRIANGLES);
-
     glutSwapBuffers();
 }
 
@@ -150,7 +129,7 @@ int main (int argc, char **argv) {
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "projection"), 1, GL_FALSE, value_ptr(projection));
     glUniform3fv(glGetUniformLocation(shader_program, "light"), 1, value_ptr(lightPosition));
 
-    construct_world();
+    construct_world2();
 
     glEnable(GL_DEPTH_TEST);
 
@@ -196,16 +175,87 @@ void construct_world() {
             defaults::softBlue
     };
 
+    int dist = 0;
     for(int i = 0; i < 2000; i++) {
-        vec3 pos = vec3(rotate((float)i, vec3(0,1,0)) * translate(vec3(0,0,100)) * vec4(0,i/50,0,1));
+        vec3 pos = vec3(rotate((float)i, vec3(0,1,0)) * translate(vec3(0,-20,dist)) * vec4(0,i/50,0,1));
         world->add_obstacle(new Obstacle(pos, vec3(0, radians((float) i), 0), vec3(5, 1, .5f), orangeCube));
+        if(i%5==0) {
+            if(i < 1000)
+                dist++;
+            else
+                dist--;
+        }
     }
 
     Vehicle * v = new Vehicle(vec3(), vec3(0,0,0), vec3(3), defaults::defaultVehicle, bluePyramid);
     v->steer()->set_status(ARRIVE_ON | FLEE_ON);
-    v->steer()->set_target(vec3(0,0,-5));
-
+    v->steer()->set_target(vec3(-5,0,-50));
     world->add_vehicle(v);
+
+    Vehicle * v2 = new Vehicle(vec3(4,0,0), vec3(0,0,0), vec3(3), defaults::defaultVehicle, bluePyramid);
+    v2->steer()->set_status(ARRIVE_ON | SEEK_ON);
+    v2->steer()->set_target(vec3(9,0,-50));
+    world->add_vehicle(v2);
 
     //test_entity = new Entity(vec3(), vec3(), vec3(1), rp);
 };
+
+void construct_world2() {
+    world = new World();
+
+    RenderPart cosCube = {
+            shader_program,
+            cube,
+            defaults::solidRed
+    };
+
+    RenderPart sinCube = {
+            shader_program,
+            cube,
+            defaults::softBlue
+    };
+
+    RenderPart tanCube = {
+            shader_program,
+            cube,
+            defaults::softOrange
+    };
+
+    RenderPart atanCube = {
+            shader_program,
+            cube,
+            defaults::solidGreen
+    };
+
+    RenderPart vehiclePart = {
+            shader_program,
+            star,
+            defaults::vehicleColor
+    };
+
+    Vehicle * v = new Vehicle(vec3(),vec3(),vec3(.2f), defaults::defaultVehicle, vehiclePart);
+    v->steer()->set_status(ARRIVE_ON);
+    v->steer()->set_target(vec3(0,50,-50));
+    world->add_vehicle(v);
+
+
+    for (int i = 0; i < 50; ++i) {
+        vec3 pos = vec3(rotate(.0f, vec3(0,1,0)) * translate(vec3(0, cos((float)i), -i)) * vec4(0, 0, 0, 1));
+        world->add_obstacle(new Obstacle(pos, vec3(), vec3(.5f), cosCube));
+    }
+
+    for (int i = 0; i < 50; ++i) {
+        vec3 pos = vec3(rotate(.0f, vec3(0,1,0)) * translate(vec3(0, 5+sin((float)i), -i)) * vec4(0, 0, 0, 1));
+        world->add_obstacle(new Obstacle(pos, vec3(), vec3(.5f), sinCube));
+    }
+
+    for (float i = 0; i < 50; i+=.1f) {
+        vec3 pos = vec3(rotate(.0f, vec3(0,1,0)) * translate(vec3(0, -5-tan((float)i), -i)) * vec4(0, 0, 0, 1));
+        world->add_obstacle(new Obstacle(pos, vec3(), vec3(.5f), tanCube));
+    }
+
+    for (float i = 0; i < 50; i+=.1f) {
+        vec3 pos = vec3(rotate(.0f, vec3(0,1,0)) * translate(vec3(0, -10-cot((float)i), -i)) * vec4(0, 0, 0, 1));
+        world->add_obstacle(new Obstacle(pos, vec3(), vec3(.5f), atanCube));
+    }
+}

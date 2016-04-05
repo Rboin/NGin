@@ -38,8 +38,8 @@ namespace defaults {
             1000.0f, // far plane
             //vec3(), // translation
             //vec3(4.0f),// scale
-            vec3(0, 0, 10), // position
-            vec3(0, 0, -1), // direction
+            vec3(-50, 0, -20), // position
+            vec3(1, 0, 0), // direction
             vec3(0),// distance of target
             //quat(0, 0, 1, 0), // rotation lookat -z thus forward
     };
@@ -70,6 +70,13 @@ namespace defaults {
             vec3(.2f,.2f,.2f),
             vec3(.7f),
             10.0f
+    };
+
+    Material vehicleColor {
+            vec3(1,0,1),
+            vec3(0,1,0),
+            vec3(.9f),
+            100.0f
     };
 
     Vehicle defaultVehicle(100.0f, .004f, .1f, .3f, Deceleration::slow);
