@@ -58,7 +58,7 @@ vec3 SteeringBehaviours::arrive (vec3 &target, Deceleration deceleration) {
 
     float distance = length(toTarget);
 
-    if (distance > 0) {
+    if (distance > 0.0001f) {
 
         const float decelerationTweaker = .005f;
 
@@ -79,5 +79,5 @@ void SteeringBehaviours::set_status (int s) {
 }
 
 bool SteeringBehaviours::is_status (int s) {
-    return (m_status & s) == 0;
+    return (m_status & s) == s;
 }

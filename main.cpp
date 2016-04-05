@@ -47,6 +47,7 @@ void update(int tick) {
     timeElapsed = currentTimeElapsed;
 
     updateCamera(camera, (float)delta / 10);
+    world->update(delta);
 
     glutPostRedisplay();
     glutTimerFunc(1, update, tick++);
@@ -189,10 +190,22 @@ void construct_world() {
             defaults::softOrange
     };
 
+    RenderPart bluePyramid = {
+            shader_program,
+            pyramid,
+            defaults::softBlue
+    };
+
     for(int i = 0; i < 2000; i++) {
         vec3 pos = vec3(rotate((float)i, vec3(0,1,0)) * translate(vec3(0,0,100)) * vec4(0,i/50,0,1));
         world->add_obstacle(new Obstacle(pos, vec3(0, radians((float) i), 0), vec3(5, 1, .5f), orangeCube));
     }
+
+    Vehicle * v = new Vehicle(vec3(), vec3(0,0,0), vec3(3), defaults::defaultVehicle, bluePyramid);
+    v->steer()->set_status(ARRIVE_ON | FLEE_ON);
+    v->steer()->set_target(vec3(0,0,-5));
+
+    world->add_vehicle(v);
 
     //test_entity = new Entity(vec3(), vec3(), vec3(1), rp);
 };
