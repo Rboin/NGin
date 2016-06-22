@@ -19,25 +19,21 @@
 #ifndef GAME_ENGINE_MESH_H
 #define GAME_ENGINE_MESH_H
 
-#include <iostream>
-#include <string>
+#include <glm/glm.hpp>
+#include <GL/glew.h>
 #include <vector>
-#include "loader.h"
 
 struct Mesh {
     GLuint vao;
     GLuint pos_vbo;
     GLuint nor_vbo;
     GLuint uv_vbo;
-    std::vector<vec3> pos_buf;
-    std::vector<vec3> nor_buf;
-    std::vector<vec2> uv_buf;
+    std::vector<glm::vec3> pos_buf;
+    std::vector<glm::vec3> nor_buf;
+    std::vector<glm::vec2> uv_buf;
 };
 
-void meshFromFile(const char *, Mesh&);
-void meshFromFile(const char *, Mesh&);
 void bindMesh(Mesh &, GLuint);
-void drawMesh(const Mesh &, GLuint);
-//void drawMesh(const Mesh &m) {drawMesh(m, GL_TRIANGLES);};
+void drawMesh(const Mesh &, GLuint type = GL_TRIANGLES);
 
 #endif //GAME_ENGINE_MESH_H

@@ -19,7 +19,9 @@
 #ifndef GAME_ENGINE_CONTROLS_H
 #define GAME_ENGINE_CONTROLS_H
 
-#include "engine.h"
+#include <GL/freeglut.h>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 struct Camera {
     float viewAngle;
@@ -28,14 +30,14 @@ struct Camera {
     float viewNearPlane;
     float viewFarPlane;
 
-    vec3 pos;
-    vec3 dir;
-    vec3 dist;
+    glm::vec3 pos;
+    glm::vec3 dir;
+    glm::vec3 dist;
 };
 
 void updateCamera(Camera &);
-mat4 getViewMatrix(const Camera &);
-mat4 getProjectionMatrix(const Camera &);
+glm::mat4 getViewMatrix(const Camera &);
+glm::mat4 getProjectionMatrix(const Camera &);
 
 void mouseClick(int btn, int btnState, int x, int y);
 void mouseMove(int x, int y, Camera &);

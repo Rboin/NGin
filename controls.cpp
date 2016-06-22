@@ -16,7 +16,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <iostream>
 #include "controls.h"
 
 #define ESC 27
@@ -34,9 +33,9 @@
 
 int state;
 
-const vec3 UP(0,1,0), SCALE(.1f);
+const glm::vec3 UP(0,1,0), SCALE(.1f);
 
-vec2 prevMouseMovement;
+glm::vec2 prevMouseMovement;
 
 void keyPress(unsigned char key) {
     switch(key) {
@@ -81,7 +80,7 @@ void mouseClick(int btn, int btnState, int x, int y) {
         state ^= BUTTON_SCROLL;
     }
 
-    prevMouseMovement = vec2(x,y);
+    prevMouseMovement = glm::vec2(x,y);
 
 }
 
@@ -91,13 +90,13 @@ void mouseMove(int x, int y, Camera &camera) {
 
     if ((state & BUTTON_LEFT) == BUTTON_LEFT) {
 
-        vec3 axis = cross(camera.dir, UP);
-        quat pitch = angleAxis(radians(prevMouseMovement.y - y), axis);
-        quat yaw = angleAxis(radians(prevMouseMovement.x - x), UP);
+        glm::vec3 axis = cross(camera.dir, UP);
+        glm::quat pitch = glm::angleAxis(glm::radians(prevMouseMovement.y - y), axis);
+        glm::quat yaw = glm::angleAxis(glm::radians(prevMouseMovement.x - x), UP);
 
-        quat dir = normalize(cross(pitch, yaw));
+        glm::quat dir = normalize(cross(pitch, yaw));
 
-        camera.dir = rotate(dir, camera.dir);
+        camera.dir = glm::rotate(dir, camera.dir);
 
     } else if ((state & BUTTON_RIGHT) == BUTTON_RIGHT) {
 
@@ -105,7 +104,7 @@ void mouseMove(int x, int y, Camera &camera) {
         camera.dist = max(camera.dist - (prevMouseMovement.y - y) * .1f, 0.0f);
     }
 
-    prevMouseMovement = vec2(x,y);
+    prevMouseMovement = glm::vec2(x,y);
 
 }
 
@@ -137,14 +136,14 @@ void updateCamera(Camera &c) {
 
 }
 
-mat4 getViewMatrix(const Camera & c) {
-    return lookAt(c.pos - c.dist * c.dir, c.pos + c.dir, UP);//translate(c.pos) * toMat4(c.rot);
+glm::mat4 getViewMatrix(const Camera & c) {
+    return glm::lookAt(c.pos - c.dist * c.dir, c.pos + c.dir, UP);
 }
 
-mat4 getProjectionMatrix(const Camera & c) {
-    return perspectiveFov(c.viewAngle,
-                          c.viewWidth,
-                          c.viewHeight,
-                          c.viewNearPlane,
-                          c.viewFarPlane);
+glm::mat4 getProjectionMatrix(const Camera & c) {
+    return glm::perspectiveFov(c.viewAngle,
+                               c.viewWidth,
+                               c.viewHeight,
+                               c.viewNearPlane,
+                               c.viewFarPlane);
 }

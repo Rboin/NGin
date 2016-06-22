@@ -19,12 +19,13 @@
 #ifndef GAME_ENGINE_MATERIAL_H
 #define GAME_ENGINE_MATERIAL_H
 
-#include "engine.h"
+#include <glm/ext.hpp>
+#include <GL/glew.h>
 
 struct Material {
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
+    glm::vec3 ambient;
+    glm::vec3 diffuse;
+    glm::vec3 specular;
     float power;
 };
 

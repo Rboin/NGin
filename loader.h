@@ -19,6 +19,9 @@
 #ifndef GAME_ENGINE_LOADER_H
 #define GAME_ENGINE_LOADER_H
 
+#include "mesh.h"
+#include <glm/glm.hpp>
+#include <GL/glew.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
@@ -26,30 +29,13 @@
 #include <fstream>
 #include <vector>
 
-#include "engine.h"
+char* readFile(const char* filename);
+bool compiledStatus(GLint shaderID);
+GLuint makeVertexShader(const char* shaderSource);
+GLuint makeFragmentShader(const char* shaderSource);
+GLuint makeShaderProgram(GLuint vertexShaderID, GLuint fragmentShaderID);
 
-using namespace std;
-
-class glsl
-{
-private:
-    static char* contents;
-public:
-    glsl();
-    ~glsl();
-    static char* readFile(const char* filename);
-    static bool compiledStatus(GLint shaderID);
-    static GLuint makeVertexShader(const char* shaderSource);
-    static GLuint makeFragmentShader(const char* shaderSource);
-    static GLuint makeShaderProgram(GLuint vertexShaderID, GLuint fragmentShaderID);
-};
-
-bool loadOBJ(
-        const char * path,
-        vector<vec3> & out_vertices,
-        vector<vec2> & out_uvs,
-        vector<vec3> & out_normals
-);
+void meshFromFile(const char *filename, Mesh &m);
 
 
 #endif //GAME_ENGINE_LOADER_H

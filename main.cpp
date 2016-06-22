@@ -16,10 +16,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <iostream>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+#include "loader.h"
 
-#include "mesh.h"
-#include "controls.h"
 #include "default_values.h"
 
 using namespace std;
@@ -29,7 +29,7 @@ GLuint shader_program;
 Camera camera = defaults::camera;
 
 Mesh cone, cube, star, plane, pyramid;
-vec3 lightPosition(0, 1, -4);
+glm::vec3 lightPosition(0, 1, -4);
 
 void construct_shader();
 void construct_meshes();
@@ -44,8 +44,8 @@ void update(int delta) {
 void resize (int w, int h) {
     camera.viewWidth = w;
     camera.viewHeight = h;
-    mat4 projection = getProjectionMatrix(camera);
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "projection"), 1, GL_FALSE, value_ptr(projection));
+    glm::mat4 projection = getProjectionMatrix(camera);
+    glUniformMatrix4fv(glGetUniformLocation(shader_program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glViewport(0, 0, w, h);
     glutPostRedisplay();
 }
@@ -56,34 +56,34 @@ void draw () {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glUseProgram(shader_program);
 
-    mat4 view = getViewMatrix(camera);
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "view"), 1, GL_FALSE, value_ptr(view));
+    glm::mat4 view = getViewMatrix(camera);
+    glUniformMatrix4fv(glGetUniformLocation(shader_program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
-    mat4 trans;
+    glm::mat4 trans;
 
     if (length2(camera.dist) > 1.0f) {
         trans = translate(camera.pos);
-        glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
+        glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, glm::value_ptr(trans));
         drawMaterial(defaults::solidRed, shader_program);
         drawMesh(pyramid, GL_TRIANGLES);
     }
 
-    trans = translate(vec3(-4.0f,0,4.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
+    trans = glm::translate(glm::vec3(-4.0f,0,4.0f));
+    glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, glm::value_ptr(trans));
     drawMaterial(defaults::solidRed, shader_program);
     drawMesh(cube, GL_TRIANGLES);
 
-    trans = translate(vec3(4.0f,0,4.0f));
+    trans = glm::translate(glm::vec3(4.0f,0,4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
     drawMaterial(defaults::softBlue, shader_program);
     drawMesh(pyramid, GL_TRIANGLES);
 
-    trans = translate(vec3(-4.0f,0,-4.0f));
+    trans = glm::translate(glm::vec3(-4.0f,0,-4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
     drawMaterial(defaults::solidGreen, shader_program);
     drawMesh(pyramid, GL_TRIANGLES);
 
-    trans = translate(vec3(4.0f,0,-4.0f));
+    trans = glm::translate(glm::vec3(4.0f,0,-4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, value_ptr(trans));
     drawMaterial(defaults::softOrange, shader_program);
     drawMesh(cube, GL_TRIANGLES);
@@ -127,9 +127,9 @@ int main (int argc, char **argv) {
 
     construct_shader();
     construct_meshes();
-    mat4 projection = getProjectionMatrix(camera);
+    glm::mat4 projection = getProjectionMatrix(camera);
     glUseProgram(shader_program);
-    glUniformMatrix4fv(glGetUniformLocation(shader_program, "projection"), 1, GL_FALSE, value_ptr(projection));
+    glUniformMatrix4fv(glGetUniformLocation(shader_program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glUniform3fv(glGetUniformLocation(shader_program, "light"), 1, value_ptr(lightPosition));
 
     glEnable(GL_DEPTH_TEST);
@@ -140,9 +140,9 @@ int main (int argc, char **argv) {
 }
 
 void construct_shader() {
-    GLuint vertShader = glsl::makeVertexShader(glsl::readFile("shaders/shader.vert"));
-    GLuint fragShader = glsl::makeFragmentShader(glsl::readFile("shaders/shader.frag"));
-    shader_program = glsl::makeShaderProgram(
+    GLuint vertShader = makeVertexShader(readFile("shaders/shader.vert"));
+    GLuint fragShader = makeFragmentShader(readFile("shaders/shader.frag"));
+    shader_program = makeShaderProgram(
             vertShader,
             fragShader
     );

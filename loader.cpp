@@ -18,9 +18,9 @@
 
 #include "loader.h"
 
-char* glsl::contents;
+char* contents;
 
-char* glsl::readFile(const char* filename)
+char* readFile(const char* filename)
 {
     // Open the file
     FILE* fp = fopen(filename, "r");
@@ -42,7 +42,7 @@ char* glsl::readFile(const char* filename)
     return contents;
 }
 
-bool glsl::compiledStatus(GLint shaderID)
+bool compiledStatus(GLint shaderID)
 {
     GLint compiled = 0;
     glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compiled);
@@ -60,7 +60,7 @@ bool glsl::compiledStatus(GLint shaderID)
     }
 }
 
-GLuint glsl::makeVertexShader(const char* shaderSource)
+GLuint makeVertexShader(const char* shaderSource)
 {
     GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShaderID, 1, (const GLchar**)&shaderSource, NULL);
@@ -73,7 +73,7 @@ GLuint glsl::makeVertexShader(const char* shaderSource)
     return -1;
 }
 
-GLuint glsl::makeFragmentShader(const char* shaderSource)
+GLuint makeFragmentShader(const char* shaderSource)
 {
     GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShaderID, 1, (const GLchar**)&shaderSource, NULL);
@@ -86,7 +86,7 @@ GLuint glsl::makeFragmentShader(const char* shaderSource)
     return -1;
 }
 
-GLuint glsl::makeShaderProgram(GLuint vertexShaderID, GLuint fragmentShaderID)
+GLuint makeShaderProgram(GLuint vertexShaderID, GLuint fragmentShaderID)
 {
     GLuint shaderID = glCreateProgram();
     glAttachShader(shaderID, vertexShaderID);
@@ -198,4 +198,8 @@ bool loadOBJ(
     }
 
     return true;
+}
+
+void meshFromFile(const char *filename, Mesh &m) {
+    loadOBJ(filename, m.pos_buf, m.uv_buf, m.nor_buf);
 }

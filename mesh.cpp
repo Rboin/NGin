@@ -18,9 +18,7 @@
 
 #include "mesh.h"
 
-void meshFromFile(const char *filename, Mesh &m) {
-    loadOBJ(filename, m.pos_buf, m.uv_buf, m.nor_buf);
-}
+using namespace glm;
 
 void bindMesh(Mesh &m, GLuint s) {
     glGenBuffers(1, &m.pos_vbo);
