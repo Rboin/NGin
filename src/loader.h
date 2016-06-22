@@ -20,14 +20,12 @@
 #define GAME_ENGINE_LOADER_H
 
 #include "mesh.h"
+
 #include <glm/glm.hpp>
 #include <GL/glew.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
+
 #include <string.h>
 #include <fstream>
-#include <vector>
 
 char* readFile(const char* filename);
 bool compiledStatus(GLint shaderID);
