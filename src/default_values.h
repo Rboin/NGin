@@ -19,9 +19,8 @@
 #ifndef GAME_ENGINE_DEFAULTS_HPP
 #define GAME_ENGINE_DEFAULTS_HPP
 
-#include "material.h"
+#include "ngin.h"
 #include "controls.h"
-#include "mesh.h"
 
 namespace defaults {
 
@@ -38,28 +37,28 @@ namespace defaults {
             glm::vec3(4),// distance of target
     };
 
-    Material solidRed {
+    NGin::Material solidRed {
             glm::vec3(1,.2f,.2f),
             glm::vec3(.2f,.2f,.2f),
             glm::vec3(.7f),
-            100.0f
+            10.0f
     };
 
-    Material softBlue {
+    NGin::Material softBlue {
             glm::vec3(.2f,.2f,1),
             glm::vec3(.0f,.2f,.0f),
             glm::vec3(.7f),
             10.0f
     };
 
-    Material solidGreen {
+    NGin::Material solidGreen {
             glm::vec3(.2f,1,.2f),
-            glm::vec3(.9f,.9f,.9f),
+            glm::vec3(.2f,.2f,.2f),
             glm::vec3(.9f),
-            100.0f
+            10.0f
     };
 
-    Material softOrange {
+    NGin::Material softOrange {
             glm::vec3(.8f,.5f,.2f),
             glm::vec3(.2f,.2f,.2f),
             glm::vec3(.7f),

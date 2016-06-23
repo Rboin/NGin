@@ -8,8 +8,6 @@ uniform float power;
 
 //uniform sampler2D sampler;
 
-//varying vec4 color;
-
 varying vec2 tex_cor;
 
 varying vec3 N;
@@ -20,7 +18,7 @@ void main() {
 
     vec3 R = reflect(-L, N);
 
-    vec3 diffusion = max(dot(V, R), 0.0f) * diffuse;//texture2D(sampler, tex_cor).rgb;
+    vec3 diffusion = max(dot(V, R), 0.0f) * diffuse;//*/ * texture2D(sampler, tex_cor).rgb;
 
     vec3 specularation = pow(max(dot(V, R), 0.0f), power) * specular;
 

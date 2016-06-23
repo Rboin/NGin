@@ -16,9 +16,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "material.h"
+#include "ngin.h"
 
-void drawMaterial (const Material &material, const GLuint shader) {
+void NGin::setMaterial (const NGin::Material &material, const GLuint shader) {
     glUniform3fv(glGetUniformLocation(shader, "ambient"), 1, glm::value_ptr(material.ambient));
     glUniform3fv(glGetUniformLocation(shader, "diffuse"), 1, glm::value_ptr(material.diffuse));
     glUniform3fv(glGetUniformLocation(shader, "specular"), 1, glm::value_ptr(material.specular));

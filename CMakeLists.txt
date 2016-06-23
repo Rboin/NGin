@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(NGin)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -lfreeimage")
 
 # export with UNIX dir structure
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
@@ -24,11 +24,10 @@ link_directories(${GLEW_LIBRARY_DIRS})
 add_definitions(${GLEW_DEFINITIONS})
 
 set(ENGINE_SRC
-        src/loader.cpp
         src/mesh.cpp
         src/material.cpp
         src/controls.cpp
-        src/ngin.h)
+        src/shader.cpp)
 
 add_library(ngin ${ENGINE_SRC})
 add_executable(preview src/preview.cpp ${ENGINE_SRC})
