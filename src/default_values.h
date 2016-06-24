@@ -37,28 +37,28 @@ namespace defaults {
             glm::vec3(4),// distance of target
     };
 
-    NGin::Material solidRed {
+    NGin::Model::Material solidRed {
             glm::vec3(1,.2f,.2f),
             glm::vec3(.2f,.2f,.2f),
             glm::vec3(.7f),
             10.0f
     };
 
-    NGin::Material softBlue {
+    NGin::Model::Material softBlue {
             glm::vec3(.2f,.2f,1),
             glm::vec3(.0f,.2f,.0f),
             glm::vec3(.7f),
             10.0f
     };
 
-    NGin::Material solidGreen {
+    NGin::Model::Material solidGreen {
             glm::vec3(.2f,1,.2f),
             glm::vec3(.2f,.2f,.2f),
             glm::vec3(.9f),
             10.0f
     };
 
-    NGin::Material softOrange {
+    NGin::Model::Material softOrange {
             glm::vec3(.8f,.5f,.2f),
             glm::vec3(.2f,.2f,.2f),
             glm::vec3(.7f),

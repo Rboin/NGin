@@ -122,7 +122,7 @@ bool _parse_mesh_file(const char* path) {
 
 }
 
-void _bind_mesh(NGin::Mesh& m, GLuint s) {
+void _bind_mesh(NGin::Model::Mesh& m, GLuint s) {
     glGenBuffers(1, &m.pos_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m.pos_vbo);
     glBufferData(GL_ARRAY_BUFFER, vertices_buffer->size() * sizeof(glm::vec3), &(*vertices_buffer)[0], GL_STATIC_DRAW);
@@ -162,12 +162,12 @@ void _bind_mesh(NGin::Mesh& m, GLuint s) {
     glBindVertexArray(0);
 }
 
-NGin::Mesh* NGin::meshFromFile(const char* filename, GLuint shader, GLuint bufferStrategy) {
+NGin::Model::Mesh* NGin::Model::meshFromFile(const char* filename, GLuint shader, GLuint bufferStrategy) {
 
-    Mesh* m = nullptr;
+    NGin::Model::Mesh* m = nullptr;
 
     if (_parse_mesh_file(filename)) {
-        m = new Mesh();
+        m = new NGin::Model::Mesh();
         m->buffer_strategy = bufferStrategy;
         m->ver_size = (GLsizei) vertices_buffer->size();
         _bind_mesh(*m, shader);
@@ -183,7 +183,7 @@ NGin::Mesh* NGin::meshFromFile(const char* filename, GLuint shader, GLuint buffe
     return m;
 }
 
-void NGin::render(const NGin::Mesh& mesh) {
+void NGin::Model::render(const NGin::Model::Mesh& mesh) {
     glBindVertexArray(mesh.vao);
     glDrawArrays(mesh.buffer_strategy, 0, mesh.ver_size);
     glBindVertexArray(0);

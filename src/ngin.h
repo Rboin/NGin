@@ -16,45 +16,66 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NGIN_NGIN_H
-#define NGIN_NGIN_H
+#ifndef NGIN_H
+#define NGIN_H
 
+#include <map>
 #include <vector>
 #include <GL/glew.h>
+#include <GL/gl.h>
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
 namespace NGin {
 
-    struct Mesh {
-        GLuint buffer_strategy;
-        GLuint vao;
-        GLuint pos_vbo;
-        GLuint nor_vbo;
-        GLuint uv_vbo;
-        GLsizei ver_size;
-    };
+    namespace Model {
 
-    Mesh* meshFromFile(const char* filename, GLuint shader_program, GLuint type = GL_TRIANGLES);
-    void render(const Mesh &);
+        struct Mesh {
+            GLuint buffer_strategy;
+            GLuint vao;
+            GLuint pos_vbo;
+            GLuint nor_vbo;
+            GLuint uv_vbo;
+            GLsizei ver_size;
+        };
 
-    struct Material {
-        glm::vec3 ambient;
-        glm::vec3 diffuse;
-        glm::vec3 specular;
-        float power;
-    };
+        Mesh* meshFromFile(const char* filename, GLuint shader_program, GLuint type = GL_TRIANGLES);
 
-    void setMaterial(const Material&, const GLuint);
+        void render(const Mesh&);
 
-    struct ShaderProgram {
-        GLuint program;
-        GLuint vertex;
-        GLuint fragment;
-    };
+        struct Material {
+            glm::vec3 ambient;
+            glm::vec3 diffuse;
+            glm::vec3 specular;
+            float power;
+        };
 
-    ShaderProgram* setupShaderProgram(std::string, std::string);
+        void setMaterial(const Material&, const GLuint);
+
+        struct Object3D {
+            Mesh* mesh;
+            Material* material;
+            //TODO add texture
+        };
+    }
+
+    namespace Registry {
+
+        extern std::map<std::string, Model::Mesh*> meshes;
+        extern std::map<std::string, Model::Material*> materials;
+    }
+
+    namespace Util {
+
+        struct ShaderProgram {
+            GLuint program;
+            GLuint vertex;
+            GLuint fragment;
+        };
+
+        ShaderProgram* setupShaderProgram(std::string, std::string);
+    }
 
 }
 
-#endif //NGIN_NGIN_H
+#endif //NGIN_H

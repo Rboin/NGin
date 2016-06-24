@@ -10,7 +10,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 find_package(OpenGL REQUIRED)
 
 # If GLM is installed, CMake doesn't have to worry about it
-find_package(GLM)
+find_package(glm)
 
 find_package(GLUT REQUIRED)
 find_package(GLEW REQUIRED)

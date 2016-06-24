@@ -16,19 +16,21 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <GL/glew.h>
+#include "ngin.h"
+
+//TODO Window/Util namespace
 #include <GL/freeglut.h>
 
 #include "default_values.h"
 
-using namespace NGin;
 using namespace std;
+using namespace NGin;
 
-ShaderProgram* shader_program;
+Util::ShaderProgram* shader_program;
 
 Camera camera = defaults::camera;
 
-Mesh cone, cube, star, plane, pyramid;
+Model::Mesh cone, cube, star, plane, pyramid;
 glm::vec3 lightPosition(0, 1, -4);
 
 void construct_shader();
@@ -61,22 +63,22 @@ void draw () {
 
     glm::mat4 trans;
 
-    if (length2(camera.dist) > 1.0f) {
+    if (glm::distance(glm::vec3(0), camera.dist) > 1.0f) {
         trans = translate(camera.pos);
         glUniformMatrix4fv(glGetUniformLocation(shader_program->program, "model"), 1, GL_FALSE, glm::value_ptr(trans));
         setMaterial(defaults::solidRed, shader_program->program);
-        render(pyramid);
+        Model::render(pyramid);
     }
 
     trans = glm::translate(glm::vec3(-4.0f,0,4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program->program, "model"), 1, GL_FALSE, glm::value_ptr(trans));
     setMaterial(defaults::solidRed, shader_program->program);
-    render(cube);
+    Model::render(cube);
 
     trans = glm::translate(glm::vec3(4.0f,0,4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program->program, "model"), 1, GL_FALSE, value_ptr(trans));
     setMaterial(defaults::softBlue, shader_program->program);
-    render(pyramid);
+    Model::render(pyramid);
 
     trans = glm::translate(glm::vec3(-4.0f,0,-4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program->program, "model"), 1, GL_FALSE, value_ptr(trans));
@@ -140,14 +142,14 @@ int main (int argc, char **argv) {
 }
 
 void construct_shader() {
-    shader_program = setupShaderProgram("shaders/shader.vert", "shaders/shader.frag");
+    shader_program = Util::setupShaderProgram("shaders/shader.vert", "shaders/shader.frag");
 }
 
 void construct_meshes() {
     //TODO make it pointer values
-    cone = *meshFromFile("objects/cone.obj", shader_program->program);
-    cube = *meshFromFile("objects/cube.obj", shader_program->program);
-    star = *meshFromFile("objects/star.obj", shader_program->program);
-    plane = *meshFromFile("objects/plane.obj", shader_program->program);
-    pyramid = *meshFromFile("objects/pyramid.obj", shader_program->program);
+    cone    = *Model::meshFromFile("objects/cone.obj", shader_program->program);
+    cube    = *Model::meshFromFile("objects/cube.obj", shader_program->program);
+    star    = *Model::meshFromFile("objects/star.obj", shader_program->program);
+    plane   = *Model::meshFromFile("objects/plane.obj", shader_program->program);
+    pyramid = *Model::meshFromFile("objects/pyramid.obj", shader_program->program);
 }

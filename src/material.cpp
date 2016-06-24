@@ -18,7 +18,7 @@
 
 #include "ngin.h"
 
-void NGin::setMaterial (const NGin::Material &material, const GLuint shader) {
+void NGin::Model::setMaterial (const NGin::Model::Material &material, const GLuint shader) {
     glUniform3fv(glGetUniformLocation(shader, "ambient"), 1, glm::value_ptr(material.ambient));
     glUniform3fv(glGetUniformLocation(shader, "diffuse"), 1, glm::value_ptr(material.diffuse));
     glUniform3fv(glGetUniformLocation(shader, "specular"), 1, glm::value_ptr(material.specular));

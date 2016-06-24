@@ -65,14 +65,14 @@ GLuint _create_shader(std::string path, GLuint type) {
     return GLuint(-1);
 }
 
-void _bind_program(NGin::ShaderProgram* p) {
+void _bind_program(NGin::Util::ShaderProgram* p) {
     glAttachShader(p->program, p->vertex);
     glAttachShader(p->program, p->fragment);
     glLinkProgram(p->program);
 }
 
-NGin::ShaderProgram* NGin::setupShaderProgram(std::string vert, std::string frag) {
-    ShaderProgram* prog = new ShaderProgram();
+NGin::Util::ShaderProgram* NGin::Util::setupShaderProgram(std::string vert, std::string frag) {
+    NGin::Util::ShaderProgram* prog = new NGin::Util::ShaderProgram();
 
     prog->program = glCreateProgram();
     prog->vertex = _create_shader(vert, GL_VERTEX_SHADER);
