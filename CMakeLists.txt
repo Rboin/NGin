@@ -21,14 +21,17 @@ link_directories(${GLEW_LIBRARY_DIRS})
 add_definitions(${GLEW_DEFINITIONS})
 
 set(ENGINE_SRC
+        src/shader.cpp
+        src/controls.cpp
         src/mesh.cpp
         src/material.cpp
-        src/controls.cpp
-        src/shader.cpp src/object3d.cpp)
+        src/object3d.cpp)
+
+include_directories(include)
 
 add_library(ngin ${ENGINE_SRC})
-add_executable(preview src/preview.cpp ${ENGINE_SRC})
+add_executable(preview src/preview.cpp)
 
-target_link_libraries(preview ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES})
+target_link_libraries(preview ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES} ngin)
 
 file(COPY local/ DESTINATION local NO_SOURCE_PERMISSIONS)

@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ngin.h"
+#include <ngin.h>
 #include <fstream>
 
 using namespace NGin;

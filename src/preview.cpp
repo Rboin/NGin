@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ngin.h"
+#include <ngin.h>
 
 //TODO Window/Util namespace
 #include <GL/freeglut.h>
