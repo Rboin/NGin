@@ -7,8 +7,13 @@ A C/C++ OpenGL Game Engine
  - [GLew](http://glew.sourceforge.net/)
  - [FreeGLut](http://freeglut.sourceforge.net/)
  - [FreeImage](http://freeimage.sourceforge.net/)
+### DEPENDENCIES BUIDLING
+ - [CMake](https://cmake.org/)
 
 ## INSTALLATION
+It is not registerd in any package manager... Have a happy time building!
+
+## BUILDING
 ```bash
 cmake . && make
 bin/preview

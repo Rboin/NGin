@@ -18,6 +18,7 @@
 
 #include <ngin.h>
 #include <fstream>
+#include <cstring>
 
 using namespace NGin;
 

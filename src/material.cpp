@@ -17,6 +17,7 @@
  */
 
 #include <ngin.h>
+#include <glm/ext.hpp>
 
 using namespace NGin;
 

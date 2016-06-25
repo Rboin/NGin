@@ -17,7 +17,7 @@
  */
 
 #include <ngin.h>
-
+#include <glm/ext.hpp>
 //TODO Window/Util namespace
 #include <GL/freeglut.h>
 
@@ -118,7 +118,7 @@ int main (int argc, char **argv) {
     glutReshapeFunc(resize);
     glutDisplayFunc(draw);
     glutIgnoreKeyRepeat(1);
-    glutTimerFunc(200, update, 0);
+    glutTimerFunc(20, update, 0);
     glutKeyboardFunc(keyPress);
     glutKeyboardUpFunc(keyPress);
     glutMotionFunc(mouseMove);
