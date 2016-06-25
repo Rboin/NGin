@@ -31,3 +31,4 @@
 
 .idea
 build
+!local/objects/*.obj

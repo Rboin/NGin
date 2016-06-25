@@ -31,5 +31,4 @@ add_executable(preview src/preview.cpp ${ENGINE_SRC})
 
 target_link_libraries(preview ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES})
 
-file(COPY objects DESTINATION bin NO_SOURCE_PERMISSIONS)
-file(COPY shaders DESTINATION bin NO_SOURCE_PERMISSIONS)
+file(COPY local/ DESTINATION local NO_SOURCE_PERMISSIONS)

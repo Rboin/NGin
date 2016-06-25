@@ -142,14 +142,14 @@ int main (int argc, char **argv) {
 }
 
 void construct_shader() {
-    shader_program = Util::setupShaderProgram("shaders/shader.vert", "shaders/shader.frag");
+    shader_program = Util::setupShaderProgram("../local/shaders/shader.vert", "../local/shaders/shader.frag");
 }
 
 void construct_meshes() {
     //TODO make it pointer values
-    cone    = *Model::meshFromFile("objects/cone.obj", shader_program->program);
-    cube    = *Model::meshFromFile("objects/cube.obj", shader_program->program);
-    star    = *Model::meshFromFile("objects/star.obj", shader_program->program);
-    plane   = *Model::meshFromFile("objects/plane.obj", shader_program->program);
-    pyramid = *Model::meshFromFile("objects/pyramid.obj", shader_program->program);
+    cone    = *Model::meshFromFile("../local/objects/cone.obj", shader_program->program);
+    cube    = *Model::meshFromFile("../local/objects/cube.obj", shader_program->program);
+    star    = *Model::meshFromFile("../local/objects/star.obj", shader_program->program);
+    plane   = *Model::meshFromFile("../local/objects/plane.obj", shader_program->program);
+    pyramid = *Model::meshFromFile("../local/objects/pyramid.obj", shader_program->program);
 }
