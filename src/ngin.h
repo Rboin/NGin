@@ -20,11 +20,12 @@
 #define NGIN_H
 
 #include <map>
+#include <tuple>
 #include <vector>
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 namespace NGin {
 
@@ -53,24 +54,47 @@ namespace NGin {
         void setMaterial(const Material&, const GLuint);
 
         struct Object3D {
-            Mesh* mesh;
-            Material* material;
+            Mesh* mesh = nullptr;
+            Material material;
             //TODO add texture
+
+            glm::vec3 position;
+            glm::vec3 scale;
+            glm::quat orientation;
+        };
+
+        struct Skeleton {
+
         };
     }
 
     namespace Registry {
 
-        extern std::map<std::string, Model::Mesh*> meshes;
-        extern std::map<std::string, Model::Material*> materials;
+        template<typename T>
+        struct Register {
+
+            typedef struct {
+                std::string path;
+                T* value = nullptr;
+            } Record;
+            std::map<std::string, Record> records;
+        };
+
+        extern Register<Model::Mesh>       meshes;
+        // are materials needed to save or nested in object3d?
+        //extern Register<Model::Material>   materials;
+        extern Register<Model::Object3D>   objects;
     }
 
     namespace Util {
 
         struct ShaderProgram {
+            const unsigned char flag;
             GLuint program;
             GLuint vertex;
             GLuint fragment;
+
+            ShaderProgram(const unsigned char _flag) : flag(_flag) {}
         };
 
         ShaderProgram* setupShaderProgram(std::string, std::string);

@@ -18,6 +18,8 @@
 
 #include "ngin.h"
 
+using namespace NGin;
+
 char* _read_shader(const char* path) {
     // Open the file
     FILE* fp = fopen(path, "r");
@@ -65,14 +67,21 @@ GLuint _create_shader(std::string path, GLuint type) {
     return GLuint(-1);
 }
 
-void _bind_program(NGin::Util::ShaderProgram* p) {
+void _bind_program(Util::ShaderProgram* p) {
     glAttachShader(p->program, p->vertex);
     glAttachShader(p->program, p->fragment);
     glLinkProgram(p->program);
 }
 
-NGin::Util::ShaderProgram* NGin::Util::setupShaderProgram(std::string vert, std::string frag) {
-    NGin::Util::ShaderProgram* prog = new NGin::Util::ShaderProgram();
+const unsigned char begin = 1;
+/**
+ * Scale the type up when using more than 8 shaders
+ */
+unsigned char shader_flag_index = 0;
+
+Util::ShaderProgram* Util::setupShaderProgram(std::string vert, std::string frag) {
+    shader_flag_index = begin << shader_flag_index;
+    Util::ShaderProgram* prog = new Util::ShaderProgram(shader_flag_index);
 
     prog->program = glCreateProgram();
     prog->vertex = _create_shader(vert, GL_VERTEX_SHADER);

@@ -83,12 +83,12 @@ void draw () {
     trans = glm::translate(glm::vec3(-4.0f,0,-4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program->program, "model"), 1, GL_FALSE, value_ptr(trans));
     setMaterial(defaults::solidGreen, shader_program->program);
-    render(pyramid);
+    Model::render(pyramid);
 
     trans = glm::translate(glm::vec3(4.0f,0,-4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program->program, "model"), 1, GL_FALSE, value_ptr(trans));
     setMaterial(defaults::softOrange, shader_program->program);
-    render(cube);
+    Model::render(cube);
 
     glutSwapBuffers();
 }

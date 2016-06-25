@@ -8,10 +8,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 find_package(OpenGL REQUIRED)
-
-# If GLM is installed, CMake doesn't have to worry about it
-find_package(glm)
-
+find_package(glm REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(GLEW REQUIRED)
 
@@ -27,7 +24,7 @@ set(ENGINE_SRC
         src/mesh.cpp
         src/material.cpp
         src/controls.cpp
-        src/shader.cpp)
+        src/shader.cpp src/object3d.cpp)
 
 add_library(ngin ${ENGINE_SRC})
 add_executable(preview src/preview.cpp ${ENGINE_SRC})
