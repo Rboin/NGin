@@ -29,9 +29,6 @@ std::vector<glm::vec2>* uv_buffer = nullptr;
 std::vector<glm::vec3>* normal_buffer = nullptr;
 
 bool _parse_mesh_file(const char* path) {
-    // validate integrity
-    if (vertices_buffer || uv_buffer || normal_buffer)
-        throw "Buffers not closed properly...";
 
     std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
     std::vector<glm::vec3> temp_vertices;
@@ -92,31 +89,26 @@ bool _parse_mesh_file(const char* path) {
             normalIndices.push_back(normalIndex[2]);
         }
         else {
-            // Probably a comment, eat up the rest of the line
             char stupidBuffer[1000];
             fgets(stupidBuffer, 1000, file);
         }
 
     }
 
-    // initialize new buffers
     vertices_buffer = new std::vector<glm::vec3>();
     uv_buffer = new std::vector<glm::vec2>();
     normal_buffer = new std::vector<glm::vec3>();
-    // For each vertex of each triangle
+
     for (unsigned int i = 0; i < vertexIndices.size(); i++) {
 
-        // Get the indices of its attributes
         unsigned int vertexIndex = vertexIndices[i];
         unsigned int uvIndex = uvIndices[i];
         unsigned int normalIndex = normalIndices[i];
 
-        // Get the attributes thanks to the index
         glm::vec3 vertex = temp_vertices[vertexIndex - 1];
         glm::vec2 uv = temp_uvs[uvIndex - 1];
         glm::vec3 normal = temp_normals[normalIndex - 1];
 
-        // Put the attributes in buffers
         vertices_buffer->push_back(vertex);
         uv_buffer->push_back(uv);
         normal_buffer->push_back(normal);

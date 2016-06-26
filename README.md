@@ -12,7 +12,7 @@ A C/C++ OpenGL Game Engine
  - [CMake](https://cmake.org/)
 
 ### INSTALLATION
-It is not registerd in any package manager... Have a happy time building!
+It is not registered in any package manager... Have a happy time building!
 
 ### BUILDING
 ```bash

@@ -26,11 +26,19 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
 
+#define NGIN_SHADER_OBJECT_SHADER 1
+
 namespace NGin {
+
+    /**
+     * Change type when using more than 8 shaders
+     */
+    typedef unsigned char shader_flag_t;
 
     namespace Model {
 
         struct Mesh {
+            shader_flag_t shader_flags;
             GLuint buffer_strategy;
             GLuint vao;
             GLuint pos_vbo;
@@ -53,6 +61,7 @@ namespace NGin {
         void setMaterial(const Material&, const GLuint);
 
         struct Object3D {
+            const shader_flag_t shader_flag;
             Mesh* mesh = nullptr;
             Material material;
             //TODO add texture
@@ -80,24 +89,25 @@ namespace NGin {
         };
 
         extern Register<Model::Mesh>       meshes;
-        // are materials needed to save or nested in object3d?
-        //extern Register<Model::Material>   materials;
         extern Register<Model::Object3D>   objects;
     }
 
     namespace Util {
 
         struct ShaderProgram {
-            const unsigned char flag;
+            const shader_flag_t flag;
             GLuint program;
             GLuint vertex;
             GLuint fragment;
 
-            ShaderProgram(const unsigned char _flag) : flag(_flag) {}
+            ShaderProgram(shader_flag_t _flag) : flag(_flag) {}
         };
 
-        ShaderProgram* setupShaderProgram(std::string, std::string);
+        const ShaderProgram& getShader(const shader_flag_t index);
+
     }
+
+    void init(int argc, char **argv);
 
 }
 
