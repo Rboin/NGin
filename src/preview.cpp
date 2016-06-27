@@ -20,6 +20,7 @@
 #include <glm/ext.hpp>
 //TODO Window/Util namespace
 #include <GL/freeglut.h>
+#include <iostream>
 
 #include "default_values.h"
 
@@ -37,22 +38,23 @@ void update(int delta) {
     updateCamera(camera);
 
     glutPostRedisplay();
-    glutTimerFunc(20, update, delta+1);
+    glutTimerFunc(20, update, delta + 1);
 };
 
-void resize (int w, int h) {
+void resize(int w, int h) {
     const Util::ShaderProgram shader_program = Util::getShader(NGIN_SHADER_OBJECT_SHADER);
     camera.viewWidth = w;
     camera.viewHeight = h;
     glm::mat4 projection = getProjectionMatrix(camera);
-    glUniformMatrix4fv(glGetUniformLocation(shader_program.program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    glUniformMatrix4fv(glGetUniformLocation(shader_program.program, "projection"), 1, GL_FALSE,
+                       glm::value_ptr(projection));
     glViewport(0, 0, w, h);
     glutPostRedisplay();
 }
 
-void draw () {
+void draw() {
     const Util::ShaderProgram& shader_program = Util::getShader(NGIN_SHADER_OBJECT_SHADER);
-    glClearColor(0.0f,0.0f,0.0f,1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     //glClearBufferfv(GL_COLOR, 0, value_ptr(defaults::color_black));
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glUseProgram(shader_program.program);
@@ -74,17 +76,17 @@ void draw () {
     setMaterial(defaults::solidRed, shader_program.program);
     Model::render(cube);
 
-    trans = glm::translate(glm::vec3(4.0f,0,4.0f));
+    trans = glm::translate(glm::vec3(4.0f, 0, 4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program.program, "model"), 1, GL_FALSE, value_ptr(trans));
     setMaterial(defaults::softBlue, shader_program.program);
     Model::render(pyramid);
 
-    trans = glm::translate(glm::vec3(-4.0f,0,-4.0f));
+    trans = glm::translate(glm::vec3(-4.0f, 0, -4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program.program, "model"), 1, GL_FALSE, value_ptr(trans));
     setMaterial(defaults::solidGreen, shader_program.program);
     Model::render(pyramid);
 
-    trans = glm::translate(glm::vec3(4.0f,0,-4.0f));
+    trans = glm::translate(glm::vec3(4.0f, 0, -4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program.program, "model"), 1, GL_FALSE, value_ptr(trans));
     setMaterial(defaults::softOrange, shader_program.program);
     Model::render(cube);
@@ -102,11 +104,11 @@ void mouseMove(int x, int y) {
 }
 
 void special_key(int i, int x, int y) {
-    switch(i) {
+    switch (i) {
     }
 }
 
-int main (int argc, char **argv) {
+int main(int argc, char** argv) {
 
 //    glutInit(&argc, argv);
 //    glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
