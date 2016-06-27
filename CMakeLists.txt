@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(NGin)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -lfreeimage")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # export with UNIX dir structure
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
@@ -30,8 +30,9 @@ set(ENGINE_SRC
 include_directories(include)
 
 add_library(ngin ${ENGINE_SRC})
-add_executable(preview src/preview.cpp)
+add_executable(preview src/preview.cpp ${ENGINE_SRC})
 
-target_link_libraries(preview ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES} ngin)
+target_link_libraries(ngin  ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES})
+target_link_libraries(preview  ngin)
 
 file(COPY local/ DESTINATION local NO_SOURCE_PERMISSIONS)
