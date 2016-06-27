@@ -107,7 +107,7 @@ namespace NGin {
 
     }
 
-    void init(int argc, char **argv);
+    void init(int argc, char **argv, std::string game = "preview");
 
 }
 

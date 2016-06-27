@@ -36,4 +36,4 @@ CMakeCache.txt
 CMakeFiles
 Makefile
 bin
-!local/objects/*.obj
+!games/preview/meshes/*.obj

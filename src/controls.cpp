@@ -18,13 +18,14 @@
 
 #include "controls.h"
 
+// freeglut forgot something -.-
 #define GLUT_WHEEL_UP   3
 #define GLUT_WHEEL_DOWN 4
 
 #define ESC 27
 
-#define BUTTON_LEFT         1
-#define BUTTON_RIGHT        2
+#define BUTTON_LEFT  1
+#define BUTTON_RIGHT 2
 
 #define FORWARD  8
 #define BACKWARD 16

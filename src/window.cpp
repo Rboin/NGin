@@ -21,7 +21,7 @@
 
 #include <GL/freeglut.h>
 
-void NGin::init(int argc, char** argv) {
+void NGin::init(int argc, char** argv, std::string game) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(0, 0);

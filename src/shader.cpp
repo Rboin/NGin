@@ -85,7 +85,7 @@ std::map<const shader_flag_t, Util::ShaderProgram*> _shaders;
  * don't forget to add a handle in ngin.h
  */
 const struct shader_pair_t _shader_paths[] = {
-        {"local/shaders/shader.vert", "local/shaders/shader.frag"}
+        {"share/ngin/shaders/shader.vert", "share/ngin/shaders/shader.frag"}
 };
 
 shader_flag_t _shader_flag_index = 0;

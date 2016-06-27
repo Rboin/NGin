@@ -15,9 +15,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #ifndef NGIN_INIT_H
 #define NGIN_INIT_H
-
 
 /**
  * Required setup functions for NGin::init()

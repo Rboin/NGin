@@ -25,14 +25,15 @@ set(ENGINE_SRC
         src/controls.cpp
         src/mesh.cpp
         src/material.cpp
-        src/object3d.cpp src/window.cpp)
+        src/object3d.cpp
+        src/window.cpp)
 
 include_directories(include)
 
 add_library(ngin ${ENGINE_SRC})
-add_executable(preview src/preview.cpp ${ENGINE_SRC})
+add_executable(preview src/main.cpp)
 
 target_link_libraries(ngin  ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES})
 target_link_libraries(preview  ngin)
 
-file(COPY local/ DESTINATION local)
+file(COPY share/ DESTINATION share)

@@ -20,7 +20,6 @@
 #include <glm/ext.hpp>
 //TODO Window/Util namespace
 #include <GL/freeglut.h>
-#include <iostream>
 
 #include "default_values.h"
 
@@ -148,9 +147,9 @@ int main(int argc, char** argv) {
 void construct_meshes() {
     const Util::ShaderProgram& shader_program = Util::getShader(NGIN_SHADER_OBJECT_SHADER);
     //TODO make it pointer values
-    cone    = *Model::meshFromFile("local/objects/cone.obj", shader_program.program);
-    cube    = *Model::meshFromFile("local/objects/cube.obj", shader_program.program);
-    star    = *Model::meshFromFile("local/objects/star.obj", shader_program.program);
-    plane   = *Model::meshFromFile("local/objects/plane.obj", shader_program.program);
-    pyramid = *Model::meshFromFile("local/objects/pyramid.obj", shader_program.program);
+    cone    = *Model::meshFromFile("games/preview/meshes/cone.obj", shader_program.program);
+    cube    = *Model::meshFromFile("games/preview/meshes/cube.obj", shader_program.program);
+    star    = *Model::meshFromFile("games/preview/meshes/star.obj", shader_program.program);
+    plane   = *Model::meshFromFile("games/preview/meshes/plane.obj", shader_program.program);
+    pyramid = *Model::meshFromFile("games/preview/meshes/pyramid.obj", shader_program.program);
 }
