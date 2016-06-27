@@ -69,8 +69,6 @@ void keyPress(unsigned char key) {
     }
 }
 
-#include <iostream>
-
 void mouseClick(int btn, int btnState, int x, int y) {
 
     if (btn == GLUT_LEFT_BUTTON) {
