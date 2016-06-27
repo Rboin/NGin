@@ -1,4 +1,4 @@
-# game-engine
+# NGin
 A C/C++ OpenGL Game Engine
 
 ### DEPENDENCIES
