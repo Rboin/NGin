@@ -32,6 +32,7 @@ include_directories(include)
 add_library(ngin ${ENGINE_SRC})
 add_executable(preview src/preview.cpp ${ENGINE_SRC})
 
-target_link_libraries(preview ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES})
+target_link_libraries(ngin  ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES})
+target_link_libraries(preview  ngin)
 
 file(COPY local/ DESTINATION local NO_SOURCE_PERMISSIONS)
