@@ -16,34 +16,32 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GAME_ENGINE_CONTROLS_H
-#define GAME_ENGINE_CONTROLS_H
+#ifndef NGIN_OUTPUT_H
+#define NGIN_OUTPUT_H
 
-#include <GL/freeglut.h>
-#include <glm/gtx/quaternion.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "controls.h"
+#include <map>
+#include <tuple>
 
-struct Camera {
-    float viewAngle;
-    float viewWidth;
-    float viewHeight;
-    float viewNearPlane;
-    float viewFarPlane;
-    float scrollSpeed;
-    float mouseSpeed;
-    float movementSpeed;
+namespace Output {
 
-    glm::vec3 pos;
-    glm::vec3 dir;
-    glm::vec3 dist;
-};
+    struct KeyEvent {
+        char key;
+    };
 
-void updateCamera(Camera &);
-glm::mat4 getViewMatrix(const Camera &);
-glm::mat4 getProjectionMatrix(const Camera &);
+    enum MouseEvent {
+        LEFT_MOUSE_CLICK,
+        RIGHT_MOUSE_CLICK,
+        MIDDLE_MOUSE_CLICK,
+        SCROLL
+    };
 
-void mouseClick(int btn, int btnState, int x, int y);
-void mouseMove(int x, int y, Camera &);
-void keyPress(unsigned char key);
+    //TODO are parameters actually needed?
+    typedef void (*output_f) (Camera&, const KeyEvent*);
 
-#endif //GAME_ENGINE_CONTROLS_H
+    extern std::map<KeyEvent*, output_f> key_registry;
+    extern std::map<KeyEvent*, std::pair<MouseEvent, output_f>> mouse_registry;
+
+}
+
+#endif //NGIN_OUTPUT_H

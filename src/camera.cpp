@@ -16,34 +16,52 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GAME_ENGINE_CONTROLS_H
-#define GAME_ENGINE_CONTROLS_H
+#include <iostream>
+#include "output.h"
 
-#include <GL/freeglut.h>
-#include <glm/gtx/quaternion.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+using namespace Output;
 
-struct Camera {
-    float viewAngle;
-    float viewWidth;
-    float viewHeight;
-    float viewNearPlane;
-    float viewFarPlane;
-    float scrollSpeed;
-    float mouseSpeed;
-    float movementSpeed;
+std::map<KeyEvent*, output_f> Output::key_registry;
+std::map<KeyEvent*, std::pair<MouseEvent, output_f>> Output::mouse_registry;
 
-    glm::vec3 pos;
-    glm::vec3 dir;
-    glm::vec3 dist;
-};
+void forward(Camera&, const KeyEvent*) {
+    std::cout << "FORWAAAARD!!" << std::endl;
+}
 
-void updateCamera(Camera &);
-glm::mat4 getViewMatrix(const Camera &);
-glm::mat4 getProjectionMatrix(const Camera &);
+void backward(Camera&, const KeyEvent*) {
 
-void mouseClick(int btn, int btnState, int x, int y);
-void mouseMove(int x, int y, Camera &);
-void keyPress(unsigned char key);
+}
 
-#endif //GAME_ENGINE_CONTROLS_H
+void left(Camera&, const KeyEvent*) {
+
+}
+
+void right(Camera&, const KeyEvent*) {
+
+}
+
+void up(Camera&, const KeyEvent*) {
+
+}
+
+void down(Camera&, const KeyEvent*) {
+
+}
+
+void pitch(Camera&, const KeyEvent*) {
+
+}
+
+void yaw(Camera&, const KeyEvent*) {
+
+}
+
+void roll(Camera&, const KeyEvent*) {
+
+}
+
+void initOutput() {
+    KeyEvent* k = new KeyEvent;
+    k->key = 'w';
+    key_registry[k] = forward;
+}

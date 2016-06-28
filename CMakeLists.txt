@@ -26,7 +26,7 @@ set(ENGINE_SRC
         src/mesh.cpp
         src/material.cpp
         src/object3d.cpp
-        src/window.cpp)
+        src/window.cpp src/camera.cpp)
 
 include_directories(include)
 

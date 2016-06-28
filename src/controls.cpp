@@ -42,7 +42,7 @@ unsigned int state;
 
 float dx, dy;
 
-const glm::vec3 UP(0, 1, 0), SCALE(.1f);
+const glm::vec3 UP(0, 1, 0);
 
 void keyPress(unsigned char key) {
     switch (key) {
@@ -112,33 +112,30 @@ void mouseMove(int x, int y, Camera& camera) {
 
 void updateCamera(Camera& c) {
 
+    // update camera movement
     if ((state & FORWARD) == FORWARD) {
-        c.pos += c.dir * SCALE;
-    }
-
-    if ((state & BACKWARD) == BACKWARD) {
-        c.pos -= c.dir * SCALE;
+        c.pos += c.dir * c.movementSpeed;
+    } else if ((state & BACKWARD) == BACKWARD) {
+        c.pos -= c.dir * c.movementSpeed;
     }
 
     if ((state & LEFT) == LEFT) {
-        c.pos -= cross(c.dir, UP) * SCALE;
-    }
-
-    if ((state & RIGHT) == RIGHT) {
-        c.pos += cross(c.dir, UP) * SCALE;
+        c.pos -= cross(c.dir, UP) * c.movementSpeed;
+    } else if ((state & RIGHT) == RIGHT) {
+        c.pos += cross(c.dir, UP) * c.movementSpeed;
     }
 
     if ((state & UPWARD) == UPWARD) {
-        c.pos += UP * SCALE;
+        c.pos += UP * c.movementSpeed;
+    } else if ((state & DOWNWARD) == DOWNWARD) {
+        c.pos -= UP * c.movementSpeed;
     }
 
-    if ((state & DOWNWARD) == DOWNWARD) {
-        c.pos -= UP * SCALE;
-    }
-
+    // update camera distance
     c.dist = glm::max(c.dist - ((float) scroll_buffer * c.scrollSpeed), glm::vec3());
     scroll_buffer = 0;
 
+    // update camera rotation
     glm::vec3 axis = cross(c.dir, UP);
     glm::quat pitch = glm::angleAxis(glm::radians(dy), axis);
     glm::quat yaw = glm::angleAxis(glm::radians(dx), UP);

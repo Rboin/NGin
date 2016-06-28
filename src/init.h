@@ -35,7 +35,7 @@ namespace UI {
 /**
  * Required setup functions for NGin::init()
  */
-void initIO();
+void initOutput();
 void initShaders();
 
 #endif //NGIN_INIT_H

@@ -123,7 +123,7 @@ void NGin::init(int argc, char** argv, std::string game) {
     glutCreateWindow(UI::window.title.c_str());
 
     glutSetCursor(GLUT_CURSOR_NONE);
-    //initIO();
+    initOutput();
 
     glewInit();
 

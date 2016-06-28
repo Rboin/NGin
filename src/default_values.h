@@ -34,6 +34,7 @@ namespace defaults {
             100.0f, // far plane
             0.3f,   // scroll speed
             0.3f,   // mouse speed
+            0.5f,   // movement speed
             glm::vec3(0, 0, 0), // position
             glm::vec3(0, 0, 1), // direction
             glm::vec3(4),// distance of target

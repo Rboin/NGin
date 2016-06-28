@@ -22,6 +22,7 @@
 #include <GL/freeglut.h>
 
 #include "default_values.h"
+#include "output.h"
 
 using namespace std;
 using namespace NGin;
@@ -98,6 +99,11 @@ void draw() {
 
 void keyPress(unsigned char key, int, int) {
     keyPress(key);
+    for (auto record : Output::key_registry) {
+        if ((unsigned char)record.first->key == key) {
+            record.second(camera, record.first);
+        }
+    }
 }
 
 void mouseMove(int x, int y) {
