@@ -24,9 +24,9 @@ void main() {
 
     vec4 vert_pos = space * vec4(position, 1);
 
-    N = normalize( mat3(space) * normal );
-    L = normalize( mat3(view) * light - vert_pos.xyz );
-    V = normalize( -vert_pos.xyz );
+    N = normalize(mat3(space) * normal);
+    L = normalize(mat3(view) * light);
+    V = normalize(-vert_pos.xyz);
 
     gl_Position = projection * vert_pos;
 }

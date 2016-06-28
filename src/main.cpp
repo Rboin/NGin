@@ -29,7 +29,7 @@ using namespace NGin;
 Camera camera = defaults::camera;
 
 Model::Mesh cone, cube, star, plane, pyramid;
-glm::vec3 lightPosition(0, 1, -4);
+glm::vec3 lightPosition(0, 1, -6);
 
 void construct_meshes();
 
@@ -45,8 +45,7 @@ void resize(int w, int h) {
     camera.viewWidth = w;
     camera.viewHeight = h;
     glm::mat4 projection = getProjectionMatrix(camera);
-    glUniformMatrix4fv(glGetUniformLocation(shader_program.program, "projection"), 1, GL_FALSE,
-                       glm::value_ptr(projection));
+    glUniformMatrix4fv(glGetUniformLocation(shader_program.program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glViewport(0, 0, w, h);
     glutPostRedisplay();
 }
@@ -67,8 +66,12 @@ void draw() {
         trans = translate(camera.pos);
         glUniformMatrix4fv(glGetUniformLocation(shader_program.program, "model"), 1, GL_FALSE, glm::value_ptr(trans));
         setMaterial(defaults::solidRed, shader_program.program);
-        Model::render(pyramid);
+        Model::render(star);
     }
+
+    trans = glm::translate(lightPosition);
+    glUniformMatrix4fv(glGetUniformLocation(shader_program.program, "model"), 1, GL_FALSE, glm::value_ptr(trans));
+    glutSolidTetrahedron();
 
     trans = glm::translate(glm::vec3(-4.0f,0,4.0f));
     glUniformMatrix4fv(glGetUniformLocation(shader_program.program, "model"), 1, GL_FALSE, glm::value_ptr(trans));
@@ -140,7 +143,6 @@ int main(int argc, char** argv) {
     glEnable(GL_DEPTH_TEST);
 
     glutMainLoop();
-
     return 0;
 }
 

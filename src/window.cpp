@@ -20,13 +20,113 @@
 #include "init.h"
 
 #include <GL/freeglut.h>
+#include <iostream>
+
+using namespace std;
+
+struct Window {
+    string title;
+    pair<int, int> resolution;
+    bool fullscreen;
+};
+
+Window window;
+
+string getSection(FILE* f, bool open = false) {
+    char c = fgetc(f);
+    if (c == '[') {
+        return getSection(f, true);
+    } else if (c == ']') {
+        return "";
+    } else if (open) {
+        return c + getSection(f, open);
+    }
+    return getSection(f);
+}
+
+string getKey(FILE* f) {
+    char c = fgetc(f);
+    if (c == '=') {
+        return "";
+    } else if (c == '\n') {
+        return getKey(f);
+    } else if (c == '[') {
+        return "[";
+    }
+    return c + getKey(f);
+}
+
+string getValue(FILE* f) {
+    char c = fgetc(f);
+    if (c == '\n') {
+        return "";
+    } else {
+        return c + getValue(f);
+    }
+}
+
+void parse_window(FILE* f) {
+    string key = getKey(f);
+    if (key == "[") {
+        return;
+    } else if (key == "title") {
+        window.title = getValue(f);
+    } else if (key == "resolution") {
+        bool passedX;
+        string w, h;
+        for (auto c : getValue(f)) {
+            if (c == 'x') {
+                passedX = true;
+                continue;
+            }
+            if (passedX)
+                h += c;
+            else
+                w += c;
+        }
+        window.resolution.first = stoi(w);
+        window.resolution.second = stoi(h);
+    } else if (key == "fullscreen") {
+        window.fullscreen = (getValue(f) != "0");
+    }
+    return parse_window(f);
+}
+
+void parse_keys(FILE* f) {
+
+}
+
+void parse_config() {
+    FILE* f = fopen("games/preview/config.ini", "r");
+    if (f) {
+
+        string section = getSection(f);
+        if (section == "WINDOW") {
+            parse_window(f);
+        } else if (section == "KEYS") {
+            parse_keys(f);
+        }
+
+        section = getSection(f, true);
+        if (section == "WINDOW") {
+            parse_window(f);
+        } else if (section == "KEYS") {
+            parse_keys(f);
+        }
+
+        cout << window.title << endl;
+        fclose(f);
+    }
+}
 
 void NGin::init(int argc, char** argv, std::string game) {
+    parse_config();
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(800, 600);
-    glutCreateWindow("NGin");
+    glutCreateWindow(window.title.c_str());
 
     //initIO();
 

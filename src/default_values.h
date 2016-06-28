@@ -46,7 +46,7 @@ namespace defaults {
 
     NGin::Model::Material softBlue {
             glm::vec3(.2f,.2f,1),
-            glm::vec3(.0f,.2f,.0f),
+            glm::vec3(1, 1, 1),
             glm::vec3(.7f),
             10.0f
     };
@@ -61,7 +61,7 @@ namespace defaults {
     NGin::Model::Material softOrange {
             glm::vec3(.8f,.5f,.2f),
             glm::vec3(.2f,.2f,.2f),
-            glm::vec3(.7f),
+            glm::vec3(.0f, 1, .0f),
             10.0f
     };
 
