@@ -29,6 +29,8 @@ struct Camera {
     float viewHeight;
     float viewNearPlane;
     float viewFarPlane;
+    float scrollSpeed;
+    float mouseSpeed;
 
     glm::vec3 pos;
     glm::vec3 dir;

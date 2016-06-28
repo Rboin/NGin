@@ -24,13 +24,7 @@
 
 using namespace std;
 
-struct Window {
-    string title;
-    pair<int, int> resolution;
-    bool fullscreen;
-};
-
-Window window;
+UI::Window UI::window;
 
 string getSection(FILE* f, bool open = false) {
     char c = fgetc(f);
@@ -70,7 +64,7 @@ void parse_window(FILE* f) {
     if (key == "[") {
         return;
     } else if (key == "title") {
-        window.title = getValue(f);
+        UI::window.title = getValue(f);
     } else if (key == "resolution") {
         bool passedX;
         string w, h;
@@ -84,10 +78,10 @@ void parse_window(FILE* f) {
             else
                 w += c;
         }
-        window.resolution.first = stoi(w);
-        window.resolution.second = stoi(h);
+        UI::window.resolution.first = stoi(w);
+        UI::window.resolution.second = stoi(h);
     } else if (key == "fullscreen") {
-        window.fullscreen = (getValue(f) != "0");
+        UI::window.fullscreen = (getValue(f) != "0");
     }
     return parse_window(f);
 }
@@ -114,7 +108,7 @@ void parse_config() {
             parse_keys(f);
         }
 
-        cout << window.title << endl;
+        cout << UI::window.title << endl;
         fclose(f);
     }
 }
@@ -126,8 +120,9 @@ void NGin::init(int argc, char** argv, std::string game) {
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(800, 600);
-    glutCreateWindow(window.title.c_str());
+    glutCreateWindow(UI::window.title.c_str());
 
+    glutSetCursor(GLUT_CURSOR_NONE);
     //initIO();
 
     glewInit();
